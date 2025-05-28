@@ -7,7 +7,7 @@ const routes = [
   //{ path: '/', name: 'login', component: () => import('@/pages/LoginPage.vue') },
   {
     path: '/',
-    component: () => import('@/layouts/MainLayout.vue'),
+    component: () => import('@/layout/MainLayout.vue'),
     children: [
       { path: '', redirect: 'home' }, // Redireciona a raiz para 'home'
       { path: 'home', component: () => import('@/pages/HomePage.vue')},
