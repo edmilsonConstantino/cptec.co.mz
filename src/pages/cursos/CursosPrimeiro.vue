@@ -28,7 +28,7 @@
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <span class="course-badge">ISO</span>
-                <router-link to="/iso14001" class="btn btn-primary">
+                <router-link to="/Ambiental" class="btn btn-primary">
                   Ver Curso
                 </router-link>
               </div>

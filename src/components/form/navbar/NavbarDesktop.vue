@@ -1,47 +1,10 @@
-.nav-menu.active .nav-link:nth-child(1) { 
-    animation-delay: 0.1s; 
-    transition-delay: 0.1s;
-  }
-  .nav-menu.active .nav-link:nth-child(2) { 
-    animation-delay: 0.2s; 
-    transition-delay: 0.2s;
-  }
-  .nav-menu.active .nav-link:nth-child(3) { 
-    animation-delay: 0.3s; 
-    transition-delay: 0.3s;
-  }
-  .nav-menu.active .nav-link:nth-child(4) { 
-    animation-delay: 0.4s; 
-    transition-delay: 0.4s;
-  }
-  .nav-menu.active .nav-link:nth-child(5) { 
-    animation-delay: 0.5s; 
-    transition-delay: 0.5s;
-  }
-  .nav-menu.active .nav-link:nth-child(6) { 
-    animation-delay: 0.6s; 
-    transition-delay: 0.6s;
-  }
-
-  /* WhatsApp mobile styles */
-  .whatsapp-link {
-    background: rgba(37, 211, 102, 0.1) !important;
-    border-color: rgba(37, 211, 102, 0.2) !important;
-    color: #25D366 !important;
-  }
-
-  .whatsapp-link:hover {
-    background: rgba(37, 211, 102, 0.2) !important;
-    border-color: rgba(37, 211, 102, 0.4) !important;
-  }
-}<template>
-    <nav class="professional-navbar">
+<template>
+    <nav class="professional-navbar" :class="{ scrolled: isScrolled }">
       <div class="navbar-container">
         <!-- LOGO - Lado Esquerdo -->
         <router-link to="/" class="navbar-brand">
           <div class="logo-container">
             <img src="@/assets/imagens/LogoNav.png" alt="Logo" class="logo-image main-logo">
-
           </div>
         </router-link>
 
@@ -56,7 +19,7 @@
         <div class="nav-menu" :class="{ active: isMenuOpen }">
           <ul class="nav-links">
             <li class="nav-item">
-              <router-link class="nav-link" to="/" @click="closeMenu">
+              <router-link class="nav-link" to="/" @click="closeMenu" exact>
                 <span>Início</span>
               </router-link>
             </li>
@@ -89,8 +52,7 @@
           </ul>
         </div>
 
-        <!-- Overlay para Mobile -->
-        <div class="menu-overlay" :class="{ active: isMenuOpen }" @click="closeMenu"></div>
+        <!-- Overlay para Mobile - REMOVIDO PARA CORRIGIR PROBLEMA -->
       </div>
     </nav>
 </template>
@@ -106,13 +68,23 @@ export default {
   },
   methods: {
     toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen
+      this.isMenuOpen = !this.isMenuOpen;
+      // Previne scroll do body quando menu está aberto
+      if (this.isMenuOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
     },
     closeMenu() {
-      // Não fecha o menu no mobile ao clicar nos links
-      if (window.innerWidth > 768) {
-        this.isMenuOpen = false
-      }
+      // SEMPRE fecha o menu, independente do tamanho da tela
+      this.isMenuOpen = false;
+      document.body.style.overflow = '';
+      
+      // Pequeno delay para garantir que a navegação funcione
+      setTimeout(() => {
+        this.isMenuOpen = false;
+      }, 100);
     },
     handleScroll() {
       this.isScrolled = window.scrollY > 50
@@ -122,22 +94,24 @@ export default {
     // Fechar menu ao redimensionar
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
-        this.isMenuOpen = false
+        this.isMenuOpen = false;
+        document.body.style.overflow = '';
       }
-    })
+    });
     
     // Adicionar efeito de scroll
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('scroll', this.handleScroll);
   },
   beforeUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('scroll', this.handleScroll);
+    document.body.style.overflow = '';
   }
 }
 </script>
 
 <style scoped>
 /* === ESTILIZAÇÃO DESKTOP (MANTIDA ORIGINAL) === */
-.professional-navbar {
+  .professional-navbar {
   position: fixed;
   top: 0;
   left: 0;
@@ -145,7 +119,7 @@ export default {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  z-index: 1000;
+  z-index: 9999;
   transition: all 0.3s ease;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
@@ -161,9 +135,9 @@ export default {
 }
 
 /* Logo Section - Lado Esquerdo */
-.navbar-brand {
+  .navbar-brand {
   text-decoration: none;
-  z-index: 1001;
+  z-index: 10001;
   flex-shrink: 0;
 }
 
@@ -203,14 +177,20 @@ export default {
 }
 
 /* Menu Toggle */
-.menu-toggle {
+  .menu-toggle {
   display: none;
   flex-direction: column;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  z-index: 1001;
+  padding: 10px;
+  z-index: 10001;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+  background: rgba(102, 126, 234, 0.1);
 }
 
 .menu-toggle span {
@@ -345,20 +325,29 @@ export default {
   outline-offset: 2px;
 }
 
-/* === ESTILIZAÇÃO MOBILE ATUALIZADA === */
+/* === ESTILIZAÇÃO MOBILE MELHORADA === */
 @media (max-width: 768px) {
   .professional-navbar {
-    background: white;
-    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .navbar-container {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     height: 70px;
   }
 
   .menu-toggle {
     display: flex;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu-toggle:active {
+    transform: scale(0.95);
   }
 
   .logo-image {
@@ -371,17 +360,20 @@ export default {
     top: 70px;
     right: -100%;
     width: 100%;
-    height: 80vh;
-    background: rgb(255, 255, 255);
+    height: calc(100vh - 70px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 1.5rem;
+    padding: 3rem 1.5rem 2rem;
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     margin-left: 0;
     margin-right: 0;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
-    border-radius: 0 0 20px 20px;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+    border-left: 1px solid rgba(102, 126, 234, 0.1);
+    overflow-y: auto;
+    z-index: 10000;
   }
 
   .nav-menu.active {
@@ -390,28 +382,34 @@ export default {
 
   .nav-links {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1.5rem;
     width: 100%;
+    max-width: 300px;
     padding: 0;
     align-items: center;
   }
 
   .nav-link {
-    width: auto;
-    padding: 0.7rem 1.5rem;
-    border-radius: 20px;
+    width: 100%;
+    padding: 1rem 2rem;
+    border-radius: 15px;
     justify-content: center;
     color: #2c3e50;
-    background: rgba(102, 126, 234, 0.05);
-    border: 2px solid rgba(102, 126, 234, 0.1);
-    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: 0.3px;
-    min-width: 160px;
     text-align: center;
-    transform: translateY(20px);
+    transform: translateY(30px);
     opacity: 0;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .nav-menu.active .nav-link {
@@ -423,37 +421,38 @@ export default {
     display: none;
   }
 
-  .nav-link:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: rgba(102, 126, 234, 0.3);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.15);
+  .nav-link:hover,
+  .nav-link:active {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-color: rgba(102, 126, 234, 0.4) !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+    color: #667eea !important;
   }
 
   .nav-link.router-link-active {
-    background: rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.4);
-    color: #667eea;
-    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+    background: rgba(102, 126, 234, 0.15) !important;
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
   }
 
-  .menu-overlay {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+  /* WhatsApp mobile styles melhorados */
+  .whatsapp-link {
+    background: rgba(37, 211, 102, 0.1) !important;
+    border-color: rgba(37, 211, 102, 0.3) !important;
+    color: #25D366 !important;
   }
 
-  .menu-overlay.active {
-    opacity: 1;
-    visibility: visible;
+  .whatsapp-link:hover,
+  .whatsapp-link:active {
+    background: rgba(37, 211, 102, 0.2) !important;
+    border-color: rgba(37, 211, 102, 0.5) !important;
+    color: #128C7E !important;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
   }
+
+  /* Overlay removido - estava causando problemas */
 
   /* Animações escalonadas para os links */
   .nav-menu.active .nav-link:nth-child(1) { 
@@ -476,11 +475,21 @@ export default {
     animation-delay: 0.5s; 
     transition-delay: 0.5s;
   }
+  .nav-menu.active .nav-link:nth-child(6) { 
+    animation-delay: 0.6s; 
+    transition-delay: 0.6s;
+  }
+
+  /* Efeito de toque aprimorado */
+  .nav-link:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease;
+  }
 }
 
 @media (max-width: 480px) {
   .navbar-container {
-    height: 60px;
+    height: 65px;
     padding: 0 1rem;
   }
 
@@ -489,14 +498,35 @@ export default {
     height: 50px;
   }
 
-  .nav-link {
-    min-width: 150px;
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
+  .nav-menu {
+    padding: 2rem 1rem 1.5rem;
+    top: 65px;
+    height: calc(100vh - 65px);
   }
 
   .nav-links {
     gap: 1.2rem;
+    max-width: 280px;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+    min-height: 48px;
+  }
+}
+
+/* Adicionar suporte para toque */
+@media (hover: none) and (pointer: coarse) {
+  .nav-link:hover {
+    background: initial;
+    transform: initial;
+  }
+  
+  .nav-link:active {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-color: rgba(102, 126, 234, 0.4) !important;
+    transform: scale(0.98);
   }
 }
 </style>

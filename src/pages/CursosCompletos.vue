@@ -21,7 +21,7 @@
                 objetivos profissionais com cursos de alta qualidade.
               </p>
               
-              <div class="hero-features d-none d-md-flex">
+              <div class="hero-features">
                 <div class="feature-item">
                   <i class="bi bi-check-circle-fill"></i>
                   <span>Certificação</span>
@@ -36,15 +36,15 @@
                 </div>
               </div>
               
-              <div class="hero-actions d-none d-md-block">
-                <button class="btn btn-primary btn-lg me-3">
+              <div class="hero-actions">
+                <router-link to="/Contacto" class="btn btn-primary btn-lg me-3">
                   <i class="bi bi-play-circle me-2"></i>
                   Ver Cursos
-                </button>
-                <button class="btn btn-outline-light btn-lg">
+                </router-link>
+                <router-link to="/Contacto" class="btn btn-outline-light btn-lg">
                   <i class="bi bi-info-circle me-2"></i>
                   Saiba Mais
-                </button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -62,9 +62,11 @@
         <span class="scroll-text">Role para baixo</span>
       </div>
     </section>
+
+    <!-- Componentes dos Cursos -->
+    <CursosPrimeiro />
+    <CursosSegundo/>
   </div>
-  <CursosPrimeiro />
-  <CursosSegundo/>
 </template>
 
 <script>
@@ -176,6 +178,7 @@ export default {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: slideInRight 1s ease-out 0.7s both;
+  position: relative;
 }
 
 .title-highlight::after {
@@ -213,6 +216,8 @@ export default {
   gap: 1rem;
   margin-bottom: 2.5rem;
   animation: fadeInUp 1s ease-out 1.1s both;
+  flex-wrap: wrap;
+  justify-content: left;
 }
 
 .feature-item {
@@ -408,6 +413,41 @@ export default {
     padding: 0 1rem;
     max-width: 100%;
   }
+
+  /* Features no mobile */
+  .hero-features {
+    flex-direction: row;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: nowrap;
+  }
+
+  .feature-item {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+    justify-content: center;
+    width: fit-content;
+    flex: 1;
+    max-width: none;
+    text-align: center;
+  }
+
+  /* Botões no mobile */
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 576px) {
@@ -441,6 +481,30 @@ export default {
     padding: 0;
     line-height: 1.5;
   }
+
+  .hero-features {
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .feature-item {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    flex: 1;
+    text-align: center;
+  }
+
+  .hero-actions {
+    gap: 0.8rem;
+  }
+
+  .hero-actions .btn {
+    max-width: 260px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
 }
 
 /* Landscape Mobile */
@@ -451,7 +515,7 @@ export default {
   }
   
   .hero-content {
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
   
   .hero-badge {
@@ -463,7 +527,30 @@ export default {
   }
   
   .hero-subtitle {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-features {
+    margin-bottom: 1rem;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .feature-item {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .hero-actions {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .hero-actions .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    max-width: 140px;
   }
 }
 

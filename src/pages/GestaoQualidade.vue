@@ -32,9 +32,9 @@
             </div>
 
             <div class="hero-actions d-flex flex-column flex-md-row gap-3 align-items-start">
-              <button class="btn btn-primary btn-lg px-4 py-3">
+              <router-link to ="/Contacto" class="btn btn-primary btn-lg px-4 py-3">
                 <i class="bi bi-play-circle me-2"></i>Iniciar Curso
-              </button>
+              </router-link>
               
               <div class="floating-card">
                 <div class="card bg-white shadow p-3">
@@ -464,7 +464,7 @@ export default {
 
 @media (max-width: 576px) {
   .hero-section {
-    padding: 3rem 0;
+    padding: 5rem 0;
   }
 
   .hero-title {

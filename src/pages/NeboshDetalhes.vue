@@ -4,7 +4,7 @@
     <section class="hero-section">
       <div class="container">
         <div class="row align-items-center">
-          <div class="col-lg-6">
+          <div class="col-lg-6 order-lg-1 order-2">
             <div class="course-badge mb-3">
               <span class="badge bg-primary text-white px-3 py-2 rounded-pill">
                 <i class="bi bi-shield-check me-2"></i>Saúde Ocupacional
@@ -32,10 +32,10 @@
               </div>
             </div>
 
-            <div class="hero-actions d-flex gap-3">
-              <button class="btn btn-primary btn-lg px-4 py-3">
+            <div class="hero-actions d-flex flex-column flex-md-row gap-3 align-items-start">
+              <router-link to="/Contacto" class="btn btn-primary btn-lg px-4 py-3">
                 <i class="bi bi-play-circle me-2"></i>Iniciar Curso
-              </button>
+              </router-link>
               
               <div class="floating-card">
                 <div class="card bg-white shadow p-3">
@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div class="col-lg-5">
+          <div class="col-lg-5 order-lg-2 order-1">
             <div class="hero-image">
               <img src="@/assets/imagens/NBOCH.png" 
                    alt="NEBOSH Learning Partner" class="img-fluid rounded-4 shadow-lg">
@@ -174,6 +174,8 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Benefits -->
               <div class="course-benefits">
                 <h3 class="mb-4">O que você vai aprender</h3>
                 <div class="row g-4">
@@ -223,99 +225,6 @@
                   </div>
                 </div>
               </div>
-              <!-- Course Details Section -->
-              <div class="iso-details-section mt-5">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <div class="details-card">
-                      <div class="card-header">
-                        <h3 class="text-primary mb-3">NEBOSH</h3>
-                        <p class="text-muted">Módulos que você aprenderá:</p>
-                      </div>
-                      
-                      <div class="modules-grid">
-                        <div class="module-detail">
-                          <i class="bi bi-check-circle text-primary me-2"></i>
-                          <span>Gestão da Saúde e Segurança</span>
-                        </div>
-                        <div class="module-detail">
-                          <i class="bi bi-check-circle text-primary me-2"></i>
-                          <span>Legislação internacional e local de trabalho</span>
-                        </div>
-                        <div class="module-detail">
-                          <i class="bi bi-check-circle text-primary me-2"></i>
-                          <span>Controle de Riscos no Local de Trabalho</span>
-                        </div>
-                        <div class="module-detail">
-                          <i class="bi bi-check-circle text-primary me-2"></i>
-                          <span>Avaliação de probabilidade e severidade</span>
-                        </div>
-                      </div>
-
-                      <div class="program-section mt-4">
-                        <h4 class="mb-3">Programa:</h4>
-                        <div class="program-list">
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Papel da Legislação e Normas</span>
-                          </div>
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Planeamento e implementação de controlo</span>
-                          </div>
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Técnicas de investigação de acidentes</span>
-                          </div>
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Estatísticas avançadas de segurança</span>
-                          </div>
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Auditorias internas e externas</span>
-                          </div>
-                          <div class="program-item">
-                            <i class="bi bi-lock text-primary me-2"></i>
-                            <span>Ambiente organizacional e cultura de segurança</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="course-image-container">
-                      <div class="course-image-wrapper">
-                        <img src="@/assets/imagens/NBOCH.png" 
-                             alt="NEBOSH Gold Learning Partner" class="img-fluid rounded-3">
-                        <div class="course-overlay">
-                          <div class="overlay-badge">
-                            <span class="badge bg-primary text-white">
-                              <i class="bi bi-shield-check me-1"></i>Saúde ocupacional
-                            </span>
-                          </div>
-                          <div class="overlay-duration">
-                            <i class="bi bi-clock me-1"></i>
-                            <span>50 h</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="mt-4">
-                        <div class="card bg-light border-0">
-                          <div class="card-body text-center">
-                            <h6 class="text-primary mb-2">Agendar Consulta</h6>
-                            <p class="text-muted small mb-3">Precisa de mais informações sobre este curso?</p>
-                            <button class="btn btn-outline-primary btn-sm">
-                              <i class="bi bi-calendar-event me-2"></i>Agendar consulta
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -331,41 +240,52 @@ export default {
 </script>
 
 <style scoped>
-/* Main Content */
-.nebosh-course-page {
-
+/* Cores customizadas */
+.bg-custom-blue {
+  background-color: #4a5bc7 !important;
 }
 
+.text-custom-blue {
+  color: #4a5bc7 !important;
+}
+
+/* Main Content */
+.nebosh-course-page {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Hero Section */
 .hero-section {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  padding: 10rem 0;
+  background: linear-gradient(135deg, #4a5bc7 0%, #6366f1 50%, #8b5cf6 100%);
+  padding: 13rem 0 4rem;
   position: relative;
 }
 
 .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
-  color: #1565c0;
+  color: #ffffff;
   margin-bottom: 1.5rem;
   line-height: 1.2;
 }
 
 .hero-subtitle {
   font-size: 1.3rem;
-  color: #6b7280;
+  color: #e2e8f0;
   margin-bottom: 2rem;
   line-height: 1.6;
 }
 
 .course-meta {
-  border-left: 4px solid #1976d2;
+  border-left: 4px solid #fbbf24;
   padding-left: 1rem;
   margin-bottom: 2rem;
 }
 
 .meta-item {
   font-weight: 500;
-  color: #4b5563;
+  color: #f1f5f9;
 }
 
 .hero-actions .btn {
@@ -374,23 +294,26 @@ export default {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #1565c0, #1976d2);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
   border: none;
+  color: #1f2937;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #0d47a1, #1565c0);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   transform: translateY(-2px);
+  color: #1f2937;
 }
 
 .btn-outline-primary {
-  border-color: #1976d2;
-  color: #1976d2;
+  border-color: #fbbf24;
+  color: #fbbf24;
 }
 
 .btn-outline-primary:hover {
-  background-color: #1976d2;
-  border-color: #1976d2;
+  background-color: #fbbf24;
+  border-color: #fbbf24;
+  color: #1f2937;
 }
 
 /* Hero Image */
@@ -399,8 +322,12 @@ export default {
 }
 
 .floating-card {
-  position: relative;
   animation: float 3s ease-in-out infinite;
+}
+
+.floating-card .card {
+  border: none;
+  border-radius: 15px;
 }
 
 @keyframes float {
@@ -419,7 +346,7 @@ export default {
 
 /* Course Content */
 .section-title {
-  color: #1565c0;
+  color: #4a5bc7;
   font-weight: 700;
   font-size: 2.5rem;
 }
@@ -438,7 +365,7 @@ export default {
 }
 
 .module-number {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
+  background: linear-gradient(135deg, #4a5bc7, #6366f1);
   color: white;
   width: 40px;
   height: 40px;
@@ -449,6 +376,7 @@ export default {
   font-weight: 700;
 }
 
+/* Benefits */
 .benefit-item {
   gap: 1rem;
   margin-bottom: 1.5rem;
@@ -457,145 +385,280 @@ export default {
 .benefit-icon {
   width: 50px;
   height: 50px;
-  background: rgba(25, 118, 210, 0.1);
+  background: rgba(74, 91, 199, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1976d2;
+  color: #4a5bc7;
   font-size: 1.5rem;
   flex-shrink: 0;
 }
 
-/* Course Details Section */
-.iso-details-section {
-  background: #f8f9fa;
-  padding: 3rem 0;
-  border-radius: 20px;
-  margin-top: 3rem;
-}
-
-.details-card {
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-
-.card-header h3 {
-  color: #1565c0;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-.modules-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.module-detail {
-  display: flex;
-  align-items: center;
-  padding: 0.8rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  font-weight: 500;
-  color: #4b5563;
-}
-
-.program-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.program-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  font-weight: 500;
-  color: #4b5563;
-  transition: all 0.3s ease;
-}
-
-.program-item:hover {
-  background: #e9ecef;
-  transform: translateX(5px);
-}
-
-/* Course Image Container */
-.course-image-container {
-  position: sticky;
-  top: 2rem;
-}
-
-.course-image-wrapper {
-  position: relative;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.course-image-wrapper img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-
-.course-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
-}
-
-.overlay-badge {
-  align-self: flex-start;
-}
-
-.overlay-duration {
-  align-self: flex-end;
-  background: rgba(21, 101, 192, 0.9);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-top: auto;
-}
-
-/* Responsive */
+/* Mobile Optimizations */
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 170px 0 1rem;
+  }
+
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
   }
   
-  .details-card {
-    padding: 1.5rem;
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .course-badge {
+    text-align: center;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .course-meta {
+    flex-direction: column;
+    gap: 0.8rem !important;
+    border-left: none;
+    border-top: 4px solid #fbbf24;
+    padding-left: 0;
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .meta-item {
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
   }
   
-  .iso-details-section {
-    padding: 2rem 0;
+  .hero-actions {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1rem !important;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
   }
   
-  .course-image-container {
-    position: static;
+  .floating-card {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 300px;
+    animation: none;
+  }
+
+  .floating-card .card {
+    text-align: center;
+    padding: 1rem !important;
+  }
+
+  .col-lg-5 {
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+  }
+
+  .hero-image {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .hero-image img {
+    max-width: 85%;
+    height: auto;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .lead {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .course-modules h3 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .course-benefits h3 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .accordion-button {
+    padding: 1rem !important;
+  }
+
+  .module-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .module-info h6 {
+    font-size: 0.95rem;
+  }
+
+  .module-info small {
+    font-size: 0.8rem;
+  }
+
+  .benefit-item {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .benefit-icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .benefit-item h6 {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 150px 0 2rem;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .col-lg-5 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-image {
+    margin-top: 1rem;
+  }
+
+  .course-meta {
+    gap: 0.6rem !important;
+    margin-bottom: 1rem;
+  }
+
+  .meta-item {
+    font-size: 0.8rem;
+  }
+
+  .meta-item i {
+    font-size: 0.9rem;
+  }
+
+  .hero-actions .btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    max-width: 280px;
+  }
+
+  .floating-card .card {
+    padding: 0.8rem !important;
+  }
+
+  .floating-card .icon-circle {
+    width: 35px;
+    height: 35px;
+  }
+
+  .floating-card h6 {
+    font-size: 0.85rem;
+  }
+
+  .floating-card small {
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .lead {
+    font-size: 0.9rem;
+  }
+
+  .course-modules h3,
+  .course-benefits h3 {
+    font-size: 1.2rem;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .accordion-body {
+    padding: 1rem;
+  }
+
+  .accordion-body li {
+    font-size: 0.85rem;
+  }
+
+  .benefit-item h6 {
+    font-size: 0.9rem;
+  }
+
+  .benefit-item p {
+    font-size: 0.8rem;
+  }
+
+  .benefit-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 130px 0 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .col-lg-5 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-image {
     margin-top: 2rem;
   }
-  
-  .course-image-wrapper img {
-    height: 250px;
+
+  .hero-actions .btn {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .floating-card {
+    max-width: 100%;
   }
 }
 </style>

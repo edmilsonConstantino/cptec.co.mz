@@ -32,9 +32,9 @@
             </div>
 
             <div class="hero-actions d-flex flex-column flex-md-row gap-3 align-items-start">
-              <button class="btn btn-primary btn-lg px-4 py-3">
+              <router-link to="/Contacto" class="btn btn-primary btn-lg px-4 py-3">
                 <i class="bi bi-play-circle me-2"></i>Iniciar Curso
-              </button>
+              </router-link>
               
               <div class="floating-card">
                 <div class="card bg-white shadow p-3">
@@ -250,13 +250,14 @@ export default {
 
 /* Main Content */
 .iso-course-page {
-  /* Removido padding-top já que não há navbar */
+  margin-top: 0;
+  padding-top: 0;
 }
 
 /* Hero Section */
 .hero-section {
   background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
-  padding: 10rem 0;
+  padding: 12rem 0 4rem;
   position: relative;
 }
 
@@ -346,18 +347,6 @@ export default {
   font-size: 2.5rem;
 }
 
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .section-title {
-    font-size: 1.5rem;
-  }
-}
-
 .course-modules .accordion-button {
   background: white;
   border: none;
@@ -402,66 +391,73 @@ export default {
   flex-shrink: 0;
 }
 
-/* Responsive */
+/* Mobile Optimizations */
 @media (max-width: 768px) {
   .hero-section {
-    padding: 4rem 0;
+    padding: 140px 0 3rem;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
   }
   
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .course-badge {
+    text-align: center;
+    margin-bottom: 1.5rem !important;
   }
 
   .course-meta {
     flex-direction: column;
-    gap: 1rem !important;
+    gap: 0.8rem !important;
     border-left: none;
     border-top: 4px solid #198754;
     padding-left: 0;
     padding-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .meta-item {
     justify-content: center;
     text-align: center;
+    font-size: 0.9rem;
   }
   
   .hero-actions {
     flex-direction: column !important;
-    align-items: stretch !important;
+    align-items: center !important;
     gap: 1rem !important;
   }
 
   .hero-actions .btn {
     width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
+    max-width: 300px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
   }
   
   .floating-card {
     margin-top: 1rem;
     width: 100%;
+    max-width: 300px;
+    animation: none;
   }
 
   .floating-card .card {
     text-align: center;
-  }
-
-  .course-badge {
-    text-align: center;
-  }
-
-  .col-lg-6:first-child {
-    margin-bottom: 0;
+    padding: 1rem !important;
   }
 
   .col-lg-5 {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .hero-image {
@@ -469,64 +465,176 @@ export default {
   }
 
   .hero-image img {
-    max-width: 90%;
+    max-width: 85%;
     height: auto;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .lead {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .course-modules h3 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .course-benefits h3 {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .accordion-button {
+    padding: 1rem !important;
+  }
+
+  .module-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .module-info h6 {
+    font-size: 0.95rem;
+  }
+
+  .module-info small {
+    font-size: 0.8rem;
+  }
+
+  .benefit-item {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .benefit-icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .benefit-item h6 {
+    margin-bottom: 0.5rem;
   }
 }
 
 @media (max-width: 576px) {
   .hero-section {
-    padding: 3rem 0;
+    padding: 120px 0 2rem;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.3;
   }
 
   .hero-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: 1rem;
   }
 
   .course-meta {
-    gap: 0.8rem !important;
-    margin-bottom: 1.5rem;
+    gap: 0.6rem !important;
+    margin-bottom: 1rem;
   }
 
   .meta-item {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .meta-item i {
-    font-size: 1rem;
-  }
-
-  .hero-actions .btn {
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-
-  .floating-card .card {
-    padding: 1rem !important;
-  }
-
-  .floating-card .icon-circle {
-    width: 40px;
-    height: 40px;
-  }
-
-  .floating-card h6 {
     font-size: 0.9rem;
   }
 
+  .hero-actions .btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    max-width: 280px;
+  }
+
+  .floating-card .card {
+    padding: 0.8rem !important;
+  }
+
+  .floating-card .icon-circle {
+    width: 35px;
+    height: 35px;
+  }
+
+  .floating-card h6 {
+    font-size: 0.85rem;
+  }
+
   .floating-card small {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .lead {
+    font-size: 0.9rem;
+  }
+
+  .course-modules h3,
+  .course-benefits h3 {
+    font-size: 1.2rem;
   }
 
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .accordion-body {
+    padding: 1rem;
+  }
+
+  .accordion-body li {
+    font-size: 0.85rem;
+  }
+
+  .benefit-item h6 {
+    font-size: 0.9rem;
+  }
+
+  .benefit-item p {
+    font-size: 0.8rem;
+  }
+
+  .benefit-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 110px 0 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .hero-actions .btn {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .floating-card {
+    max-width: 100%;
   }
 }
 </style>
