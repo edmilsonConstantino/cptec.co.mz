@@ -42,7 +42,7 @@
               </router-link>
             </li>
             <li class="nav-item whatsapp-item">
-              <a href="https://wa.me/+25887553696" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+              <a href="https://wa.me/+258875531696?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
                 <i class="bi bi-whatsapp"></i>
                 <span>WhatsApp</span>
               </a>
@@ -50,7 +50,7 @@
           </ul>
         </div>
 
-        <!-- Overlay transparente para fechar menu ao clicar fora -->
+      
         <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
       </div>
     </nav>
@@ -68,12 +68,12 @@ export default {
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-      // Não impede mais o scroll do body para permitir navegação na página
+     
     },
     closeMenu() {
       this.isMenuOpen = false;
       
-      // Pequeno delay para garantir que a navegação funcione
+
       setTimeout(() => {
         this.isMenuOpen = false;
       }, 100);
@@ -83,7 +83,7 @@ export default {
     }
   },
   mounted() {
-    // Fechar menu ao redimensionar
+  
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         this.isMenuOpen = false;
@@ -92,6 +92,9 @@ export default {
     
     // Adicionar efeito de scroll
     window.addEventListener('scroll', this.handleScroll);
+    
+    // Scroll para o topo quando a página carrega
+    window.scrollTo(0, 0);
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -272,8 +275,8 @@ export default {
 }
 
 /* WhatsApp Styles */
-.whatsapp-icon {
-  font-size: 20px; /* Aumentado de 18px para 20px */
+.bi-whatsapp {
+  font-size: 20px;
   margin-right: 8px;
   display: inline-block;
 }
@@ -288,9 +291,10 @@ export default {
   color: #128C7E !important;
   background: rgba(37, 211, 102, 0.15);
   border-color: rgba(37, 211, 102, 0.3);
+  transform: translateY(-1px) scale(1.02);
 }
 
-.whatsapp-link:hover .whatsapp-icon {
+.whatsapp-link:hover .bi-whatsapp {
   transform: scale(1.1);
 }
 
@@ -353,14 +357,14 @@ export default {
     top: 70px;
     right: -100%;
     width: 100%;
-    height: 80vh; /* Aumentado de 65vh para 80vh */
-    max-height: 600px; /* Aumentado de 500px para 600px */
+    height: 80vh;
+    max-height: 600px;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 3rem 1.5rem 2.5rem; /* Aumentado padding superior e inferior */
+    padding: 3rem 1.5rem 2.5rem;
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     margin-left: 0;
     margin-right: 0;
@@ -400,7 +404,7 @@ export default {
     flex-direction: column;
     gap: 0;
     width: 100%;
-    max-width: 320px; /* Aumentado de 280px para 320px */
+    max-width: 320px;
     padding: 0;
     align-items: center;
     background: rgba(255, 255, 255, 0.95);
@@ -419,13 +423,13 @@ export default {
 
   .nav-link {
     width: 100%;
-    padding: 1.5rem 1.5rem; /* Aumentado padding de 1.2rem para 1.5rem */
+    padding: 1.5rem 1.5rem;
     border-radius: 0;
     justify-content: center;
     color: #2c3e50;
     background: transparent;
     border: none;
-    font-size: 1.2rem; /* Aumentado de 1.1rem para 1.2rem */
+    font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.3px;
     text-align: center;
@@ -433,7 +437,7 @@ export default {
     opacity: 0;
     transition: all 0.3s ease;
     box-shadow: none;
-    min-height: 70px; /* Aumentado de 60px para 70px */
+    min-height: 70px;
     max-height: 70px;
     display: flex;
     align-items: center;
@@ -478,8 +482,8 @@ export default {
   }
 
   /* WhatsApp mobile styles */
-  .whatsapp-icon {
-    font-size: 20px; /* Aumentado para maior visibilidade */
+  .bi-whatsapp {
+    font-size: 20px;
     margin-right: 8px;
     transition: transform 0.3s ease;
     display: inline-block;
@@ -499,7 +503,7 @@ export default {
     box-shadow: none;
   }
 
-  .whatsapp-link:hover .whatsapp-icon {
+  .whatsapp-link:hover .bi-whatsapp {
     transform: scale(1.1);
   }
 
