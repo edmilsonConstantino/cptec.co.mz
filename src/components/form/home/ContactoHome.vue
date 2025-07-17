@@ -484,7 +484,7 @@ export default {
 /* Mobile Optimizations */
 @media (max-width: 768px) {
   .hero-section {
-    padding: 6rem 0 3rem;
+    padding:8rem 0 3rem;
     margin-top: 0;
   }
   
@@ -577,7 +577,7 @@ export default {
 
 @media (max-width: 576px) {
   .hero-section {
-    padding: 5rem 0 2rem;
+    padding: 8rem 0 2rem;
     margin-top: 0;
   }
   
@@ -647,7 +647,7 @@ export default {
 /* Ajustes específicos para mobile muito pequeno */
 @media (max-width: 480px) {
   .hero-section {
-    padding: 4rem 0 2rem;
+    padding: 8rem 0 2rem;
   }
   
   .display-6 {
