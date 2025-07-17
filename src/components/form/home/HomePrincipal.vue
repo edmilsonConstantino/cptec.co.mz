@@ -110,7 +110,6 @@ export default {
   min-height: 100vh;
 }
 
-/* Navbar Styles */
 .professional-navbar {
   position: fixed;
   top: 0;
