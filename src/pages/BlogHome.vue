@@ -52,7 +52,7 @@
           <div class="col-lg-3 col-md-6 col-6">
             <div class="text-center">
               <div class="iso-certificate">
-                <img src="@/assets/imagens/ISO 14001.png" alt="ISO 14001" class="img-fluid">
+                <img src="@/assets/imagens/iso50001.png" alt="ISO 14001" class="img-fluid">
               </div>
             </div>
           </div>
@@ -214,7 +214,7 @@
             </div>
           </div>
 
-          <!-- Sidebar -->
+
           <div class="col-lg-4">
             <div class="sidebar-content">
               <div class="sidebar-card bg-primary text-white p-4 rounded-3 mb-4">
@@ -242,7 +242,7 @@
                 <div class="stat-item mb-3">
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="text-muted">Empresas certificadas</span>
-                    <span class="fw-bold text-primary">500+</span>
+                    <span class="fw-bold text-primary">10+</span>
                   </div>
                 </div>
                 <div class="stat-item mb-3">
@@ -284,7 +284,7 @@ export default {
 </script>
 
 <style scoped>
-/* Hero Section */
+
 .hero-section {
   min-height: 100vh;
   background: linear-gradient(135deg, #3b4cb8 0%, #2c3e50 100%);
@@ -327,7 +327,7 @@ export default {
   animation: float 6s ease-in-out infinite;
 }
 
-/* ISO Certificates */
+
 .iso-certificate {
   transition: transform 0.3s ease;
   max-width: 150px;
@@ -352,7 +352,7 @@ export default {
   color: #3b4cb8 !important;
 }
 
-/* Content Cards */
+
 .content-card {
   background: white;
   border-radius: 15px;
@@ -370,7 +370,7 @@ export default {
   border-bottom: 2px solid #f8f9fa;
 }
 
-/* Benefits Section */
+
 .benefit-item {
   display: flex;
   align-items: flex-start;
@@ -393,7 +393,7 @@ export default {
   flex: 1;
 }
 
-/* Timeline Process */
+
 .process-timeline {
   position: relative;
 }
@@ -438,13 +438,13 @@ export default {
   padding-top: 0.25rem;
 }
 
-/* CTA Section */
+
 .cta-section {
   border: 2px solid #e9ecef;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-/* Sidebar */
+
 .sidebar-card {
   background: linear-gradient(135deg, #3b4cb8 0%, #2c3e50 100%) !important;
 }
@@ -461,7 +461,7 @@ export default {
   border-bottom: 1px solid #f8f9fa;
 }
 
-/* Animations */
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
@@ -471,7 +471,7 @@ export default {
 @media (max-width: 768px) {
   .hero-section {
     min-height: 80vh;
-    padding: 2rem 0;
+    padding: 5rem 0;
   }
   
   .display-4 {

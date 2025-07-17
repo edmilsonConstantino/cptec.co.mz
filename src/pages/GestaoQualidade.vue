@@ -77,7 +77,7 @@
 
               <!-- Course Modules -->
               <div class="course-modules mb-5">
-                <h3 class="mb-4">Módulos do Curso</h3>
+                <h3 class="modules-title mb-4">Módulos do Curso</h3>
                 <div class="accordion" id="moduleAccordion">
                   <div class="accordion-item border-0 shadow-sm mb-3">
                     <h2 class="accordion-header">
@@ -85,7 +85,7 @@
                         <div class="module-info">
                           <span class="module-number">01</span>
                           <div>
-                            <h6 class="mb-1">Fundamentos da Qualidade</h6>
+                            <h6 class="module-title mb-1">Fundamentos da Qualidade</h6>
                             <small class="text-muted">Princípios e conceitos básicos</small>
                           </div>
                         </div>
@@ -108,7 +108,7 @@
                         <div class="module-info">
                           <span class="module-number">02</span>
                           <div>
-                            <h6 class="mb-1">Sistema de Gestão da Qualidade</h6>
+                            <h6 class="module-title mb-1">Sistema de Gestão da Qualidade</h6>
                             <small class="text-muted">Implementação e documentação</small>
                           </div>
                         </div>
@@ -131,7 +131,7 @@
                         <div class="module-info">
                           <span class="module-number">03</span>
                           <div>
-                            <h6 class="mb-1">Controle de Processos</h6>
+                            <h6 class="module-title mb-1">Controle de Processos</h6>
                             <small class="text-muted">Monitoramento e medição</small>
                           </div>
                         </div>
@@ -154,7 +154,7 @@
                         <div class="module-info">
                           <span class="module-number">04</span>
                           <div>
-                            <h6 class="mb-1">Avaliação e Melhoria</h6>
+                            <h6 class="module-title mb-1">Avaliação e Melhoria</h6>
                             <small class="text-muted">Auditoria e melhoria contínua</small>
                           </div>
                         </div>
@@ -175,7 +175,7 @@
 
               <!-- Benefits -->
               <div class="course-benefits">
-                <h3 class="mb-4">O que você vai aprender</h3>
+                <h3 class="benefits-title mb-4">O que você vai aprender</h3>
                 <div class="row g-4">
                   <div class="col-md-6">
                     <div class="benefit-item d-flex">
@@ -183,7 +183,7 @@
                         <i class="bi bi-gear-wide-connected"></i>
                       </div>
                       <div>
-                        <h6 class="fw-bold">Gestão de Processos</h6>
+                        <h6 class="benefit-title fw-bold">Gestão de Processos</h6>
                         <p class="text-muted mb-0">Domine técnicas de mapeamento e otimização de processos</p>
                       </div>
                     </div>
@@ -194,7 +194,7 @@
                         <i class="bi bi-person-check"></i>
                       </div>
                       <div>
-                        <h6 class="fw-bold">Satisfação do Cliente</h6>
+                        <h6 class="benefit-title fw-bold">Satisfação do Cliente</h6>
                         <p class="text-muted mb-0">Aprenda a medir e melhorar a satisfação dos clientes</p>
                       </div>
                     </div>
@@ -205,7 +205,7 @@
                         <i class="bi bi-clipboard-check"></i>
                       </div>
                       <div>
-                        <h6 class="fw-bold">Auditoria Interna</h6>
+                        <h6 class="benefit-title fw-bold">Auditoria Interna</h6>
                         <p class="text-muted mb-0">Desenvolva habilidades para conduzir auditorias eficazes</p>
                       </div>
                     </div>
@@ -216,7 +216,7 @@
                         <i class="bi bi-arrow-up-circle"></i>
                       </div>
                       <div>
-                        <h6 class="fw-bold">Melhoria Contínua</h6>
+                        <h6 class="benefit-title fw-bold">Melhoria Contínua</h6>
                         <p class="text-muted mb-0">Implemente ciclos de melhoria contínua na organização</p>
                       </div>
                     </div>
@@ -233,7 +233,11 @@
 
 <script>
 export default {
-  name: 'ISO9001CoursePage'
+  name: 'ISO9001CoursePage',
+  mounted() {
+    // Scroll para o topo quando a página carrega
+    window.scrollTo(0, 0);
+  }
 }
 </script>
 
@@ -328,23 +332,37 @@ export default {
   justify-content: center;
 }
 
-/* Course Content */
+/* Course Content - Títulos organizados */
 .section-title {
   color: #3d4ed8;
   font-weight: 700;
   font-size: 2.5rem;
+  text-align: center;
 }
 
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
+.modules-title {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 2rem;
+  text-align: center;
 }
 
-@media (max-width: 576px) {
-  .section-title {
-    font-size: 1.5rem;
-  }
+.benefits-title {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.module-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.benefit-title {
+  font-size: 1.1rem;
+  color: #2c3e50;
 }
 
 .course-modules .accordion-button {
@@ -390,19 +408,52 @@ export default {
   flex-shrink: 0;
 }
 
-/* Responsive Mobile */
+/* Responsive Mobile - Títulos organizados */
 @media (max-width: 768px) {
   .hero-section {
-    padding: 4rem 0;
+    padding: 6rem 0 4rem;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 1.2rem;
   }
   
   .hero-subtitle {
     font-size: 1.1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .modules-title {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .benefits-title {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .module-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  .benefit-title {
+    font-size: 1rem;
+    line-height: 1.3;
   }
 
   .course-meta {
@@ -412,6 +463,7 @@ export default {
     border-top: 4px solid #3d4ed8;
     padding-left: 0;
     padding-top: 1rem;
+    text-align: center;
   }
 
   .meta-item {
@@ -460,21 +512,57 @@ export default {
     max-width: 90%;
     height: auto;
   }
+
+  .lead {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }
 
 @media (max-width: 576px) {
   .hero-section {
-    padding: 5rem 0;
+    padding: 5rem 0 3rem;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.3;
+    margin-bottom: 1rem;
   }
 
   .hero-subtitle {
     font-size: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .modules-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .benefits-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .module-title {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .benefit-title {
+    font-size: 0.95rem;
+    line-height: 1.2;
   }
 
   .course-meta {
@@ -491,7 +579,7 @@ export default {
   }
 
   .hero-actions .btn {
-    padding: 0.8rem;
+    padding: 0.9rem;
     font-size: 1rem;
   }
 
@@ -515,6 +603,74 @@ export default {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .lead {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  .accordion-button {
+    padding: 1rem !important;
+  }
+
+  .module-info {
+    gap: 0.8rem;
+  }
+
+  .module-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .benefit-item {
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .benefit-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 4rem 0 2rem;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .modules-title, .benefits-title {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .module-title {
+    font-size: 0.85rem;
+  }
+
+  .benefit-title {
+    font-size: 0.9rem;
+  }
+
+  .lead {
+    font-size: 0.9rem;
   }
 }
 </style>

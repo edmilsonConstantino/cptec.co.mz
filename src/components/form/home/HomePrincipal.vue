@@ -5,30 +5,29 @@
       <div class="container">
         <div class="row align-items-center min-vh-100">
           <div class="col-lg-6 text-white">
-            <h1 class="h1 fw-bold mb-4">{{ title }}<span class="text-custom-blue d-block">{{ rotatingText }}</span></h1>
-            <p class="mb-3 opacity-75">Conquiste certificações ISO e <span class="text-custom-blue">acelere sua carreira</span></p>
+            <h1 class="h1 fw-bold mb-4">{{ title }}<span class="text-custom-yellow d-block">{{ rotatingText }}</span></h1>
+            <p class="mb-3 opacity-75">Conquiste certificações ISO e <span class="text-custom-yellow">acelere sua carreira</span></p>
             <div class="d-flex gap-3 mb-4">
-              <router-link to="/Cursos" class="btn btn-custom-blue fw-bold px-4 py-2">EXPLORAR</router-link>
-              <router-link to="/Contacto"  class="btn btn-outline-light px-4 py-2">Saiba Mais</router-link>
+              <router-link to="/Cursos" class="btn btn-custom-yellow fw-bold px-4 py-2">EXPLORAR</router-link>
+              <router-link to="/Sobre-Nós"  class="btn btn-outline-light px-4 py-2">Saiba Mais</router-link>
             </div>
                       
             <div class="stats-container">
               <div class="stat-item">
-                <strong class="text-custom-blue">5K+</strong>
+                <strong class="text-custom-yellow">500+</strong>
                 <span>Certificados</span>
               </div>
               <div class="stat-item">
-                <strong class="text-custom-blue">15+</strong>
+                <strong class="text-custom-yellow">3+</strong>
                 <span>Anos</span>
               </div>
               <div class="stat-item">
-                <strong class="text-custom-blue">4.9</strong>
+                <strong class="text-custom-yellow">4.9</strong>
                 <span>Avaliação</span>
               </div>
             </div>
           </div>
           <div class="col-lg-6 text-center mt-4 mt-lg-0">
-            <!-- Espaço vazio onde estava a imagem -->
           </div>
         </div>
       </div>
@@ -84,21 +83,25 @@ export default {
 </script>
 
 <style scoped>
-/* Cor customizada */
-.text-custom-blue {
-  color: #3d4ed8 !important;
+/* Cor customizada - ALTERADA PARA AMARELO */
+.text-custom-yellow {
+  color: #ffc107 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.btn-custom-blue {
-  background: #3d4ed8;
-  color: white;
-  border-color: #3d4ed8;
+.btn-custom-yellow {
+  background: #ffc107;
+  color: #162415;
+  border-color: #ffc107;
+  font-weight: 700;
 }
 
-.btn-custom-blue:hover {
-  background: #2d3ba8;
+.btn-custom-yellow:hover {
+  background: #ffb300;
+  color: #162415;
+  border-color: #ffb300;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(61, 78, 216, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
 }
 
 /* Wrapper da página */

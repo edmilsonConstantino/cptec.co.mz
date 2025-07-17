@@ -41,7 +41,7 @@
                   <i class="bi bi-play-circle me-2"></i>
                   Ver Cursos
                 </router-link>
-                <router-link to="/Contacto" class="btn btn-outline-light btn-lg">
+                <router-link to="/Sobre-Nós" class="btn btn-outline-light btn-lg">
                   <i class="bi bi-info-circle me-2"></i>
                   Saiba Mais
                 </router-link>
@@ -62,10 +62,10 @@
         <span class="scroll-text">Role para baixo</span>
       </div>
     </section>
-
     <!-- Componentes dos Cursos -->
     <CursosPrimeiro />
     <CursosSegundo/>
+    
   </div>
 </template>
 
@@ -81,6 +81,7 @@ export default {
   },
   mounted() {
     this.initScrollIndicator()
+
   },
   methods: {
     initScrollIndicator() {
@@ -92,7 +93,8 @@ export default {
           indicator.style.opacity = scrolled > threshold ? '0' : '1'
         })
       }
-    }
+    },
+
   }
 }
 </script>
@@ -283,6 +285,172 @@ export default {
   transform: translateY(-2px);
 }
 
+/* CTA Section */
+/* .cta-section {
+  padding: 1rem 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23f1f3f4" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.cta-card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+.cta-card.animate {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b4cb8, #ffeb3b);
+  border-radius: 20px 20px 0 0;
+}
+
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 193, 7, 0.1);
+  color: #856404;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.cta-badge i {
+  color: #ffc107;
+}
+
+.cta-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.text-highlight {
+  color: #ffc107;
+  position: relative;
+}
+
+.text-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ffc107, #ffeb3b);
+  opacity: 0.3;
+  border-radius: 2px;
+}
+
+.cta-description {
+  font-size: 1.1rem;
+  color: #6c757d;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.cta-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.cta-feature {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.cta-feature i {
+  color: #ffc107;
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.cta-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-cta {
+  background: linear-gradient(135deg, #ffc107, #ffb300);
+  color: #2c3e50;
+  border: none;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(255, 193, 7, 0.4);
+  color: #2c3e50;
+  background: linear-gradient(135deg, #ffb300, #ffa000);
+}
+
+.btn-cta i {
+  transition: transform 0.3s ease;
+}
+
+.btn-cta:hover i {
+  transform: translateX(3px);
+}
+
+.cta-subtext {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+  text-align: center;
+  font-style: italic;
+} */
+
 /* Scroll Indicator */
 .scroll-indicator {
   position: absolute;
@@ -448,6 +616,37 @@ export default {
     padding: 0.8rem 1.5rem;
     font-size: 0.9rem;
   }
+
+  /* CTA Section Mobile */
+  .cta-section {
+    padding: 4rem 0;
+  }
+
+  .cta-card {
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-description {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-features {
+    margin-bottom: 2rem;
+  }
+
+  .btn-cta {
+    width: 100%;
+    max-width: 280px;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 576px) {
@@ -505,6 +704,29 @@ export default {
     padding: 0.7rem 1.2rem;
     font-size: 0.85rem;
   }
+
+  /* CTA Mobile Pequeno */
+  .cta-section {
+    padding: 3rem 0;
+  }
+
+  .cta-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+  }
+
+  .cta-description {
+    font-size: 0.9rem;
+  }
+
+  .btn-cta {
+    max-width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+  }
 }
 
 /* Landscape Mobile */
@@ -560,4 +782,4 @@ export default {
     background-attachment: fixed;
   }
 }
-</style>
+</style>  

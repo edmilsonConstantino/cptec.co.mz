@@ -14,7 +14,7 @@ const routes = [
       // {path: '/login', name: 'login', component: LoginPage},
       // { path: '/register', name: 'register', component: () => import('@/pages/SignUp.vue') },
       
-      { path: '/aulas', name: 'aulas', component: () => import('@/pages/CursosDisponiveis.vue') },
+      // { path: '/aulas', name: 'aulas', component: () => import('@/pages/CursosDisponiveis.vue') },
       { path: '/Ambiental', name: 'Ambiental', component: () => import('@/pages/GestaoDetalhes.vue') },
       { path: '/Qualidade', name: 'Qualidade', component: () => import('@/pages/GestaoQualidade.vue') },
       { path: '/Saude', name: 'Saude', component: () => import('@/pages/SaudeDetalhes.vue') },
@@ -24,6 +24,7 @@ const routes = [
       { path: '/Contacto', name: 'Contacto', component: () => import('@/components/form/home/ContactoHome.vue') },
       { path: '/Depoimentos', name: 'Depoimentos', component: () => import('@/pages/DepoiMentos.vue') },
       { path: '/Blog', name: 'Blog', component: () => import('@/pages/BlogHome.vue') },
+      { path: '/Sobre-Nós', name: 'Sobre-Nós', component: () => import('@/pages/SobreNos.vue') },
       // { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/GestaoDetalhes.vue') },
 
       { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/CursosCompletos.vue') },

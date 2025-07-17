@@ -2,20 +2,18 @@
     <nav class="professional-navbar" :class="{ scrolled: isScrolled }">
       <div class="navbar-container">
         <!-- LOGO - Lado Esquerdo -->
-        <router-link to="/" class="navbar-brand">
+        <router-link to="/home" class="navbar-brand">
           <div class="logo-container">
             <img src="@/assets/imagens/LogoNav.png" alt="Logo" class="logo-image main-logo">
           </div>
         </router-link>
 
-        <!-- Menu Toggle para Mobile -->
         <button class="menu-toggle" @click="toggleMenu" :class="{ active: isMenuOpen }">
           <span></span>
           <span></span>
           <span></span>
         </button>
 
-        <!-- Navigation Links - Lado Direito -->
         <div class="nav-menu" :class="{ active: isMenuOpen }">
           <ul class="nav-links">
             <li class="nav-item">
@@ -35,7 +33,7 @@
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/Blog" @click="closeMenu">
-                <span>Blog</span>
+                <span>certificações</span>
               </router-link>
             </li>
             <li class="nav-item">
@@ -44,7 +42,7 @@
               </router-link>
             </li>
             <li class="nav-item whatsapp-item">
-              <a href="https://wa.me/258XXXXXXXXX" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+              <a href="https://wa.me/+25887553696" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
                 <i class="bi bi-whatsapp"></i>
                 <span>WhatsApp</span>
               </a>
@@ -52,7 +50,8 @@
           </ul>
         </div>
 
-        <!-- Overlay para Mobile - REMOVIDO PARA CORRIGIR PROBLEMA -->
+        <!-- Overlay transparente para fechar menu ao clicar fora -->
+        <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
       </div>
     </nav>
 </template>
@@ -69,17 +68,10 @@ export default {
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-      // Previne scroll do body quando menu está aberto
-      if (this.isMenuOpen) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
-      }
+      // Não impede mais o scroll do body para permitir navegação na página
     },
     closeMenu() {
-      // SEMPRE fecha o menu, independente do tamanho da tela
       this.isMenuOpen = false;
-      document.body.style.overflow = '';
       
       // Pequeno delay para garantir que a navegação funcione
       setTimeout(() => {
@@ -95,7 +87,6 @@ export default {
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         this.isMenuOpen = false;
-        document.body.style.overflow = '';
       }
     });
     
@@ -104,14 +95,13 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    document.body.style.overflow = '';
   }
 }
 </script>
 
 <style scoped>
-/* === ESTILIZAÇÃO DESKTOP (MANTIDA ORIGINAL) === */
-  .professional-navbar {
+/* === ESTILIZAÇÃO DESKTOP === */
+.professional-navbar {
   position: fixed;
   top: 0;
   left: 0;
@@ -131,11 +121,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 70px;
 }
 
-/* Logo Section - Lado Esquerdo */
-  .navbar-brand {
+/* Logo Section */
+.navbar-brand {
   text-decoration: none;
   z-index: 10001;
   flex-shrink: 0;
@@ -177,7 +167,7 @@ export default {
 }
 
 /* Menu Toggle */
-  .menu-toggle {
+.menu-toggle {
   display: none;
   flex-direction: column;
   background: none;
@@ -214,7 +204,7 @@ export default {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Navigation Menu - Lado Direito */
+/* Navigation Menu */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -282,9 +272,10 @@ export default {
 }
 
 /* WhatsApp Styles */
-.bi-whatsapp {
-  font-size: 18px;
+.whatsapp-icon {
+  font-size: 20px; /* Aumentado de 18px para 20px */
   margin-right: 8px;
+  display: inline-block;
 }
 
 .whatsapp-link {
@@ -299,7 +290,7 @@ export default {
   border-color: rgba(37, 211, 102, 0.3);
 }
 
-.whatsapp-link:hover .bi-whatsapp {
+.whatsapp-link:hover .whatsapp-icon {
   transform: scale(1.1);
 }
 
@@ -325,7 +316,7 @@ export default {
   outline-offset: 2px;
 }
 
-/* === ESTILIZAÇÃO MOBILE MELHORADA === */
+/* === ESTILIZAÇÃO MOBILE === */
 @media (max-width: 768px) {
   .professional-navbar {
     background: rgba(255, 255, 255, 0.98) !important;
@@ -337,6 +328,7 @@ export default {
   .navbar-container {
     padding: 0 1.5rem;
     height: 70px;
+    position: relative;
   }
 
   .menu-toggle {
@@ -355,23 +347,27 @@ export default {
     height: 60px;
   }
 
+  /* Menu agora ocupa mais espaço na tela */
   .nav-menu {
     position: fixed;
     top: 70px;
     right: -100%;
     width: 100%;
-    height: calc(100vh - 70px);
+    height: 80vh; /* Aumentado de 65vh para 80vh */
+    max-height: 600px; /* Aumentado de 500px para 600px */
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 3rem 1.5rem 2rem;
+    padding: 3rem 1.5rem 2.5rem; /* Aumentado padding superior e inferior */
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     margin-left: 0;
     margin-right: 0;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
     border-left: 1px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    border-bottom-left-radius: 20px;
     overflow-y: auto;
     z-index: 10000;
   }
@@ -380,36 +376,70 @@ export default {
     right: 0;
   }
 
+  /* Overlay que permite fechar o menu clicando fora */
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
   .nav-links {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0;
     width: 100%;
-    max-width: 300px;
+    max-width: 320px; /* Aumentado de 280px para 320px */
     padding: 0;
     align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .nav-item {
+    width: 100%;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+  }
+
+  .nav-item:last-child {
+    border-bottom: none;
   }
 
   .nav-link {
     width: 100%;
-    padding: 1rem 2rem;
-    border-radius: 15px;
+    padding: 1.5rem 1.5rem; /* Aumentado padding de 1.2rem para 1.5rem */
+    border-radius: 0;
     justify-content: center;
     color: #2c3e50;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    font-size: 1.1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem; /* Aumentado de 1.1rem para 1.2rem */
     font-weight: 600;
     letter-spacing: 0.3px;
     text-align: center;
     transform: translateY(30px);
     opacity: 0;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    min-height: 50px;
+    box-shadow: none;
+    min-height: 70px; /* Aumentado de 60px para 70px */
+    max-height: 70px;
     display: flex;
     align-items: center;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    position: relative;
   }
 
   .nav-menu.active .nav-link {
@@ -424,60 +454,77 @@ export default {
   .nav-link:hover,
   .nav-link:active {
     background: rgba(102, 126, 234, 0.1) !important;
-    border-color: rgba(102, 126, 234, 0.4) !important;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+    border-color: transparent !important;
+    transform: translateY(0);
+    box-shadow: none;
     color: #667eea !important;
   }
 
   .nav-link.router-link-active {
     background: rgba(102, 126, 234, 0.15) !important;
-    border-color: rgba(102, 126, 234, 0.5) !important;
+    border-color: transparent !important;
     color: #667eea !important;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: none;
   }
 
-  /* WhatsApp mobile styles melhorados */
+  .nav-link.router-link-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #667eea;
+  }
+
+  /* WhatsApp mobile styles */
+  .whatsapp-icon {
+    font-size: 20px; /* Aumentado para maior visibilidade */
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
   .whatsapp-link {
-    background: rgba(37, 211, 102, 0.1) !important;
-    border-color: rgba(37, 211, 102, 0.3) !important;
+    background: transparent !important;
+    border-color: transparent !important;
     color: #25D366 !important;
   }
 
   .whatsapp-link:hover,
   .whatsapp-link:active {
-    background: rgba(37, 211, 102, 0.2) !important;
-    border-color: rgba(37, 211, 102, 0.5) !important;
+    background: rgba(37, 211, 102, 0.1) !important;
+    border-color: transparent !important;
     color: #128C7E !important;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
+    box-shadow: none;
   }
 
-  /* Overlay removido - estava causando problemas */
+  .whatsapp-link:hover .whatsapp-icon {
+    transform: scale(1.1);
+  }
+
+  .whatsapp-link.router-link-active::after {
+    background: #25D366;
+  }
 
   /* Animações escalonadas para os links */
   .nav-menu.active .nav-link:nth-child(1) { 
-    animation-delay: 0.1s; 
     transition-delay: 0.1s;
   }
   .nav-menu.active .nav-link:nth-child(2) { 
-    animation-delay: 0.2s; 
-    transition-delay: 0.2s;
+    transition-delay: 0.15s;
   }
   .nav-menu.active .nav-link:nth-child(3) { 
-    animation-delay: 0.3s; 
-    transition-delay: 0.3s;
+    transition-delay: 0.2s;
   }
   .nav-menu.active .nav-link:nth-child(4) { 
-    animation-delay: 0.4s; 
-    transition-delay: 0.4s;
+    transition-delay: 0.25s;
   }
   .nav-menu.active .nav-link:nth-child(5) { 
-    animation-delay: 0.5s; 
-    transition-delay: 0.5s;
+    transition-delay: 0.3s;
   }
   .nav-menu.active .nav-link:nth-child(6) { 
-    animation-delay: 0.6s; 
-    transition-delay: 0.6s;
+    transition-delay: 0.35s;
   }
 
   /* Efeito de toque aprimorado */
@@ -499,20 +546,22 @@ export default {
   }
 
   .nav-menu {
-    padding: 2rem 1rem 1.5rem;
+    padding: 2.5rem 1rem 2rem;
     top: 65px;
-    height: calc(100vh - 65px);
+    height: 75vh;
+    max-height: 550px;
   }
 
   .nav-links {
-    gap: 1.2rem;
-    max-width: 280px;
+    gap: 0;
+    max-width: 320px;
   }
 
   .nav-link {
-    font-size: 1rem;
-    padding: 1rem 1.5rem;
-    min-height: 48px;
+    font-size: 1.1rem;
+    padding: 1.3rem 1.2rem;
+    min-height: 65px;
+    max-height: 65px;
   }
 }
 

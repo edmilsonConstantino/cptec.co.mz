@@ -126,7 +126,7 @@
                 to="/Contacto"
                 class="btn btn-blue w-100 rounded-pill py-3 fw-semibold service-btn d-flex align-items-center justify-content-center text-decoration-none text-white"
               >
-                <span>Explorar Cursos</span>
+                <span>Certificações</span>
                 <i class="bi bi-arrow-right ms-2"></i>
               </router-link>
             </div>

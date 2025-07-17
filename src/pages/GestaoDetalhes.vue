@@ -63,7 +63,6 @@
       </div>
     </section>
 
-    <!-- Course Overview -->
     <section class="py-5 bg-light">
       <div class="container">
         <div class="row">
@@ -76,7 +75,7 @@
                 para a sustentabilidade e conformidade regulamentar.
               </p>
 
-              <!-- Course Modules -->
+
               <div class="course-modules mb-5">
                 <h3 class="mb-4">Módulos do Curso</h3>
                 <div class="accordion" id="moduleAccordion">
@@ -174,7 +173,6 @@
                 </div>
               </div>
 
-              <!-- Benefits -->
               <div class="course-benefits">
                 <h3 class="mb-4">O que você vai aprender</h3>
                 <div class="row g-4">
@@ -239,7 +237,7 @@ export default {
 </script>
 
 <style scoped>
-/* Cores customizadas */
+
 .bg-custom-blue {
   background-color: #3d4ed8 !important;
 }
@@ -248,13 +246,12 @@ export default {
   color: #3d4ed8 !important;
 }
 
-/* Main Content */
 .iso-course-page {
   margin-top: 0;
   padding-top: 0;
 }
 
-/* Hero Section */
+
 .hero-section {
   background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
   padding: 12rem 0 4rem;
@@ -340,7 +337,7 @@ export default {
   justify-content: center;
 }
 
-/* Course Content */
+
 .section-title {
   color: #3d4ed8;
   font-weight: 700;
@@ -372,7 +369,7 @@ export default {
   font-weight: 700;
 }
 
-/* Benefits */
+
 .benefit-item {
   gap: 1rem;
   margin-bottom: 1.5rem;
@@ -391,7 +388,7 @@ export default {
   flex-shrink: 0;
 }
 
-/* Mobile Optimizations */
+
 @media (max-width: 768px) {
   .hero-section {
     padding: 140px 0 3rem;

@@ -21,10 +21,11 @@
         <div class="footer-section links-section">
           <h6 class="footer-title">Links Úteis</h6>
           <ul class="footer-links">
-            <li><a href="#inicio" class="footer-link">Início</a></li>
-            <li><a href="#servicos" class="footer-link">Serviços</a></li>
-            <li><a href="#cursos" class="footer-link">Cursos</a></li>
-            <li><a href="#contato" class="footer-link">Contato</a></li>
+            <router-link to="/home" class="footer-link">Início </router-link>
+            <li><router-link to="/Blog" class="footer-link">Serviços </router-link></li>
+            <li><router-link to="/Cursos" class="footer-link">Cursos </router-link></li>
+            <li><router-link to="/Contacto" class="footer-link">Contato </router-link></li>
+            <li><router-link to="/Sobre-Nós" class="footer-link">Sobre Nós </router-link></li>
           </ul>
         </div>
 
@@ -53,15 +54,15 @@
           <ul class="footer-contact">
             <li>
               <i class="bi bi-envelope"></i>
-              <span>edyniltonnhamazane@gmail.com</span>
+              <span>cptecacadmy@.gmail.com</span>
             </li>
             <li>
               <i class="bi bi-geo-alt"></i>
-              <span>Maputo - Moçambique</span>
+              <span>Matola, Infulene A nº48</span>
             </li>
             <li>
               <i class="bi bi-telephone"></i>
-              <span>+258 84 000 0000</span>
+              <span>+258 87 553 1696</span>
             </li>
           </ul>
         </div>
