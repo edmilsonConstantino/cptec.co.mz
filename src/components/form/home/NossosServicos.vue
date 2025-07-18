@@ -1,7 +1,6 @@
 <template>
   <section class="py-4 bg-light">
     <div class="container">
-      <!-- Header -->
       <div class="text-center mb-5">
         <div class="mb-4">
           <div class="d-flex align-items-center justify-content-center mb-3">
@@ -29,9 +28,9 @@
         </div>
       </div>
 
-      <!-- Services Grid -->
+      <!-- Servicos Grid's -->
       <div class="row g-4">
-        <!-- Cursos -->
+
         <div class="col-lg-6">
           <div class="card border-0 shadow h-100 service-card">
             <div class="position-relative overflow-hidden">

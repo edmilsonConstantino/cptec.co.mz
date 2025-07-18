@@ -16,33 +16,41 @@
 
         <div class="nav-menu" :class="{ active: isMenuOpen }">
           <ul class="nav-links">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/" @click="closeMenu" exact>
+            <li class="nav-item" :class="{ active: activeSection === 'inicio' }">
+              <router-link class="nav-link" to="/" @click="setActiveSection('inicio')">
                 <span>Início</span>
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Depoimentos" @click="closeMenu">
-                <span>Depoimentos</span>
+            <li class="nav-item" :class="{ active: activeSection === 'depoimentos' }">
+              <router-link class="nav-link" to="/Depoimentos" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'depoimentos')" class="nav-link">
+                  <span>Depoimentos</span>
+                </a>
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Cursos" @click="closeMenu">
-                <span>Cursos</span>
+            <li class="nav-item" :class="{ active: activeSection === 'cursos' }">
+              <router-link class="nav-link" to="/Cursos" @click="setActiveSection('cursos')" custom v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'cursos')" class="nav-link">
+                  <span>Cursos</span>
+                </a>
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Blog" @click="closeMenu">
-                <span>certificações</span>
+            <li class="nav-item" :class="{ active: activeSection === 'certificacoes' }">
+              <router-link class="nav-link" to="/Blog" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
+                  <span>Certificações</span>
+                </a>
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/Contacto" @click="closeMenu">
-                <span>Contacto</span>
+            <li class="nav-item" :class="{ active: activeSection === 'contato' }">
+              <router-link class="nav-link" to="/Contacto" @click="setActiveSection('contato')" custom v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'contato')" class="nav-link">
+                  <span>Contacto</span>
+                </a>
               </router-link>
             </li>
             <li class="nav-item whatsapp-item">
-              <a href="https://wa.me/+258875531696?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+              <a href="https://wa.me/+25887553696?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
                 <i class="bi bi-whatsapp"></i>
                 <span>WhatsApp</span>
               </a>
@@ -50,7 +58,6 @@
           </ul>
         </div>
 
-      
         <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
       </div>
     </nav>
@@ -62,38 +69,41 @@ export default {
   data() {
     return {
       isMenuOpen: false,
-      isScrolled: false
+      isScrolled: false,
+      activeSection: 'inicio' 
     }
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
-     
     },
     closeMenu() {
       this.isMenuOpen = false;
       
-
       setTimeout(() => {
         this.isMenuOpen = false;
       }, 100);
+    },
+    setActiveSection(section) {
+      this.activeSection = section;
+      this.closeMenu();
+    },
+    handleNavigation(navigate, section) {
+      this.setActiveSection(section);
+      navigate();
     },
     handleScroll() {
       this.isScrolled = window.scrollY > 50
     }
   },
   mounted() {
-  
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         this.isMenuOpen = false;
       }
     });
     
-    // Adicionar efeito de scroll
     window.addEventListener('scroll', this.handleScroll);
-    
-    // Scroll para o topo quando a página carrega
     window.scrollTo(0, 0);
   },
   beforeUnmount() {
@@ -169,7 +179,7 @@ export default {
   background-clip: text;
 }
 
-/* Menu Toggle */
+
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -241,6 +251,7 @@ export default {
   transition: all 0.3s ease;
   position: relative;
   letter-spacing: 0.3px;
+   cursor: pointer;
 }
 
 .nav-link::before {
@@ -253,24 +264,26 @@ export default {
   background: linear-gradient(45deg, #667eea, #764ba2);
   transition: all 0.3s ease;
   transform: translateX(-50%);
-  border-radius: 2px;
+  
 }
 
-.nav-link:hover {
+
+.nav-item.active .nav-link {
+  color: #667eea !important;
+  background: rgba(102, 126, 234, 0.1) !important;
+}
+
+.nav-item.active .nav-link::before {
+  width: 60% !important;
+}
+
+
+.nav-item:not(.active) .nav-link:hover {
   color: #667eea;
   background: rgba(102, 126, 234, 0.05);
 }
 
-.nav-link:hover::before {
-  width: 60%;
-}
-
-.nav-link.router-link-active {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-}
-
-.nav-link.router-link-active::before {
+.nav-item:not(.active) .nav-link:hover::before {
   width: 60%;
 }
 
@@ -298,23 +311,19 @@ export default {
   transform: scale(1.1);
 }
 
-/* Menu Overlay */
 .menu-overlay {
   display: none;
 }
 
-/* Scroll Effect */
 .professional-navbar.scrolled {
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Hover Effects */
 .nav-item:hover .nav-link {
   transform: translateY(-1px);
 }
 
-/* Focus States */
 .nav-link:focus {
   outline: 2px solid #667eea;
   outline-offset: 2px;
@@ -351,7 +360,6 @@ export default {
     height: 60px;
   }
 
-  /* Menu agora ocupa mais espaço na tela */
   .nav-menu {
     position: fixed;
     top: 70px;
@@ -380,7 +388,6 @@ export default {
     right: 0;
   }
 
-  /* Overlay que permite fechar o menu clicando fora */
   .menu-overlay {
     display: block;
     position: fixed;
@@ -410,6 +417,7 @@ export default {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 0;
     overflow: hidden;
+    
   }
 
   .nav-item {
@@ -455,23 +463,13 @@ export default {
     display: none;
   }
 
-  .nav-link:hover,
-  .nav-link:active {
-    background: rgba(102, 126, 234, 0.1) !important;
-    border-color: transparent !important;
-    transform: translateY(0);
-    box-shadow: none;
-    color: #667eea !important;
-  }
-
-  .nav-link.router-link-active {
+  /* SEÇÃO ATIVA no mobile */
+  .nav-item.active .nav-link {
     background: rgba(102, 126, 234, 0.15) !important;
-    border-color: transparent !important;
     color: #667eea !important;
-    box-shadow: none;
   }
 
-  .nav-link.router-link-active::after {
+  .nav-item.active .nav-link::after {
     content: '';
     position: absolute;
     left: 0;
@@ -479,6 +477,16 @@ export default {
     bottom: 0;
     width: 4px;
     background: #667eea;
+  }
+
+  /* Outros links no mobile */
+  .nav-item:not(.active):not(.whatsapp-item) .nav-link:hover,
+  .nav-item:not(.active):not(.whatsapp-item) .nav-link:active {
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-color: transparent !important;
+    transform: translateY(0);
+    box-shadow: none;
+    color: #667eea !important;
   }
 
   /* WhatsApp mobile styles */
@@ -511,7 +519,6 @@ export default {
     background: #25D366;
   }
 
-  /* Animações escalonadas para os links */
   .nav-menu.active .nav-link:nth-child(1) { 
     transition-delay: 0.1s;
   }
@@ -531,7 +538,6 @@ export default {
     transition-delay: 0.35s;
   }
 
-  /* Efeito de toque aprimorado */
   .nav-link:active {
     transform: scale(0.98) !important;
     transition: transform 0.1s ease;

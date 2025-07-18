@@ -14,7 +14,7 @@
                       
             <div class="stats-container">
               <div class="stat-item">
-                <strong class="text-custom-yellow">500+</strong>
+                <strong class="text-custom-yellow">10+</strong>
                 <span>Certificados</span>
               </div>
               <div class="stat-item">
