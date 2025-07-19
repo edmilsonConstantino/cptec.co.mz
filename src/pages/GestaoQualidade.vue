@@ -1,6 +1,5 @@
 <template>
   <div class="iso-course-page">
-    <!-- Hero Section -->
     <section class="hero-section">
       <div class="container">
         <div class="row align-items-center">
@@ -32,7 +31,7 @@
             </div>
 
             <div class="hero-actions d-flex flex-column flex-md-row gap-3 align-items-start">
-              <router-link to ="/Contacto" class="btn btn-primary btn-lg px-4 py-3">
+              <router-link to="/Contacto" class="btn btn-primary btn-lg px-4 py-3">
                 <i class="bi bi-play-circle me-2"></i>Iniciar Curso
               </router-link>
               
@@ -62,7 +61,6 @@
       </div>
     </section>
 
-    <!-- Course Overview -->
     <section class="py-5 bg-light">
       <div class="container">
         <div class="row">
@@ -75,13 +73,19 @@
                 do cliente e melhoria contínua dos processos organizacionais.
               </p>
 
-              <!-- Course Modules -->
               <div class="course-modules mb-5">
                 <h3 class="modules-title mb-4">Módulos do Curso</h3>
                 <div class="accordion" id="moduleAccordion">
+                  <!-- Módulo 1 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#module1">
+                    <h2 class="accordion-header" id="heading1">
+                      <button 
+                        class="accordion-button" 
+                        :class="{ 'collapsed': activeModule !== 1 }"
+                        type="button" 
+                        @click="toggleModule(1)"
+                        :aria-expanded="activeModule === 1"
+                        aria-controls="module1">
                         <div class="module-info">
                           <span class="module-number">01</span>
                           <div>
@@ -91,7 +95,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module1" class="accordion-collapse collapse show">
+                    <div 
+                      id="module1" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 1 }"
+                      aria-labelledby="heading1" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-custom-blue me-2"></i>História e evolução da ISO 9001</li>
@@ -102,9 +111,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 2 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module2">
+                    <h2 class="accordion-header" id="heading2">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 2 }"
+                        type="button" 
+                        @click="toggleModule(2)"
+                        :aria-expanded="activeModule === 2"
+                        aria-controls="module2">
                         <div class="module-info">
                           <span class="module-number">02</span>
                           <div>
@@ -114,7 +130,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module2" class="accordion-collapse collapse">
+                    <div 
+                      id="module2" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 2 }"
+                      aria-labelledby="heading2" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-custom-blue me-2"></i>Mapeamento de processos</li>
@@ -125,9 +146,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 3 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module3">
+                    <h2 class="accordion-header" id="heading3">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 3 }"
+                        type="button" 
+                        @click="toggleModule(3)"
+                        :aria-expanded="activeModule === 3"
+                        aria-controls="module3">
                         <div class="module-info">
                           <span class="module-number">03</span>
                           <div>
@@ -137,7 +165,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module3" class="accordion-collapse collapse">
+                    <div 
+                      id="module3" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 3 }"
+                      aria-labelledby="heading3" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-custom-blue me-2"></i>Controle de documentos</li>
@@ -148,9 +181,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 4 -->
                   <div class="accordion-item border-0 shadow-sm">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module4">
+                    <h2 class="accordion-header" id="heading4">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 4 }"
+                        type="button" 
+                        @click="toggleModule(4)"
+                        :aria-expanded="activeModule === 4"
+                        aria-controls="module4">
                         <div class="module-info">
                           <span class="module-number">04</span>
                           <div>
@@ -160,7 +200,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module4" class="accordion-collapse collapse">
+                    <div 
+                      id="module4" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 4 }"
+                      aria-labelledby="heading4" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-custom-blue me-2"></i>Satisfação do cliente</li>
@@ -173,7 +218,6 @@
                 </div>
               </div>
 
-              <!-- Benefits -->
               <div class="course-benefits">
                 <h3 class="benefits-title mb-4">O que você vai aprender</h3>
                 <div class="row g-4">
@@ -234,9 +278,21 @@
 <script>
 export default {
   name: 'ISO9001CoursePage',
-  mounted() {
-    // Scroll para o topo quando a página carrega
-    window.scrollTo(0, 0);
+  data() {
+    return {
+      activeModule: 1 // Módulo 1 aberto por padrão
+    }
+  },
+  methods: {
+    toggleModule(moduleNumber) {
+      // Se o módulo clicado já está ativo, fecha ele
+      if (this.activeModule === moduleNumber) {
+        this.activeModule = null;
+      } else {
+        // Caso contrário, abre o módulo clicado
+        this.activeModule = moduleNumber;
+      }
+    }
   }
 }
 </script>
@@ -251,7 +307,6 @@ export default {
   color: #3d4ed8 !important;
 }
 
-/* Main Content */
 .iso-course-page {
 
 }
@@ -303,7 +358,6 @@ export default {
   transform: translateY(-2px);
 }
 
-/* Hero Image */
 .hero-image {
   position: relative;
 }
@@ -332,7 +386,6 @@ export default {
   justify-content: center;
 }
 
-/* Course Content - Títulos organizados */
 .section-title {
   color: #3d4ed8;
   font-weight: 700;
@@ -365,17 +418,31 @@ export default {
   color: #2c3e50;
 }
 
+
 .course-modules .accordion-button {
   background: white;
   border: none;
   box-shadow: none;
   padding: 1.5rem;
+  position: relative;
+}
+
+.course-modules .accordion-button:not(.collapsed) {
+  background: white;
+  color: #3d4ed8;
+  box-shadow: none;
+}
+
+.course-modules .accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(61, 78, 216, 0.25);
+  border: none;
 }
 
 .module-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
 }
 
 .module-number {
@@ -388,6 +455,11 @@ export default {
   align-items: center;
   justify-content: center;
   font-weight: 700;
+}
+
+
+.accordion-collapse {
+  transition: all 0.3s ease;
 }
 
 .benefit-item {
@@ -408,7 +480,6 @@ export default {
   flex-shrink: 0;
 }
 
-/* Responsive Mobile - Títulos organizados */
 @media (max-width: 768px) {
   .hero-section {
     padding: 6rem 0 4rem;

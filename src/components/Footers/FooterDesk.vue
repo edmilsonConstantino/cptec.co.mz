@@ -25,7 +25,7 @@
             <li><router-link to="/Blog" class="footer-link">Serviços </router-link></li>
             <li><router-link to="/Cursos" class="footer-link">Cursos </router-link></li>
             <li><router-link to="/Contacto" class="footer-link">Contato </router-link></li>
-            <li><router-link to="/Sobre-Nós" class="footer-link">Sobre Nós </router-link></li>
+            <li><router-link to="/SobreNos" class="footer-link">Sobre Nós </router-link></li>
           </ul>
         </div>
 

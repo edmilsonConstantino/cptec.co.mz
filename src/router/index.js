@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { createApp } from 'vue';
 // import LoginPage from '@/pages/LoginPage.vue'
 
-
 const routes = [
   //{ path: '/', name: 'login', component: () => import('@/pages/LoginPage.vue') },
   {
@@ -23,8 +22,8 @@ const routes = [
       { path: '/Nebosh', name: 'Nebosh', component: () => import('@/pages/NeboshDetalhes.vue') },
       { path: '/Contacto', name: 'Contacto', component: () => import('@/components/form/home/ContactoHome.vue') },
       { path: '/Depoimentos', name: 'Depoimentos', component: () => import('@/pages/DepoiMentos.vue') },
-      { path: '/Blog', name: 'Blog', component: () => import('@/pages/BlogHome.vue') },
-      { path: '/Sobre-Nós', name: 'Sobre-Nós', component: () => import('@/pages/SobreNos.vue') },
+      { path: '/Certificacoes', name: 'Blog', component: () => import('@/pages/BlogHome.vue') },
+      { path: '/SobreNos', name: 'SobreNos', component: () => import('@/pages/HeroSobreNos.vue') },
       // { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/GestaoDetalhes.vue') },
 
       { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/CursosCompletos.vue') },
@@ -38,8 +37,22 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  
+  scrollBehavior(to, from, savedPosition) {
+   
+    if (savedPosition) {
+      return savedPosition;
+    }
+    
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' };
+    }
+
+    return { top: 0, behavior: 'smooth' };
+  }
 });
+
 
 //const pinia = createPinia();
 const app = createApp({});

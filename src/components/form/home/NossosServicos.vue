@@ -28,7 +28,6 @@
         </div>
       </div>
 
-      <!-- Servicos Grid's -->
       <div class="row g-4">
 
         <div class="col-lg-6">
@@ -81,7 +80,6 @@
           </div>
         </div>
 
-        <!-- Consultoria -->
         <div class="col-lg-6">
           <div class="card border-0 shadow h-100 service-card">
             <div class="position-relative overflow-hidden">
@@ -122,7 +120,7 @@
               </div>
               
               <router-link
-                to="/Contacto"
+                to="/Certificacoes"
                 class="btn btn-blue w-100 rounded-pill py-3 fw-semibold service-btn d-flex align-items-center justify-content-center text-decoration-none text-white"
               >
                 <span>Certificações</span>

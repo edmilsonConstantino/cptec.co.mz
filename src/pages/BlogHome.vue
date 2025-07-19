@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Hero Section -->
+
     <section class="hero-section text-center text-white position-relative overflow-hidden">
       <div class="hero-overlay"></div>
       <div class="container position-relative" style="z-index: 2;">
@@ -14,14 +14,13 @@
               Garanta a qualidade dos seus processos, aumente a credibilidade no mercado e
               atenda aos requisitos internacionais com nossos serviços de certificação ISO
             </p>
-            <button class="btn btn-outline-light btn-lg px-5 py-3 text-uppercase fw-semibold">
+            <router-link to= "/Contacto"  class="btn btn-outline-light btn-lg px-5 py-3 text-uppercase fw-semibold">
               Solicitar Orçamento
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
-      
-      <!-- Floating Icons -->
+ 
       <div class="floating-icons d-none d-lg-block">
         <div class="floating-icon" style="top: 20%; left: 10%;">
           <i class="bi bi-graph-up fs-2"></i>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Hero Section -->
+ 
     <section class="hero-section text-center text-white">
       <div class="container">
         <div class="hero-content">
@@ -13,11 +13,10 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
+  
     <section class="py-5 bg-light">
       <div class="container">
         <div class="row g-4">
-          <!-- Testimonial 1 -->
           <div class="col-lg-4 col-md-6">
             <div class="testimonial-card">
               <div class="testimonial-header">
@@ -56,7 +55,6 @@
             </div>
           </div>
 
-          <!-- Testimonial 2 -->
           <div class="col-lg-4 col-md-6">
             <div class="testimonial-card">
               <div class="testimonial-header">
@@ -96,7 +94,6 @@
             </div>
           </div>
 
-          <!-- Testimonial 3 -->
           <div class="col-lg-4 col-md-6">
             <div class="testimonial-card">
               <div class="testimonial-header">
@@ -139,7 +136,6 @@
       </div>
     </section>
 
-    <!-- Stats Section Horizontal -->
     <section class="py-5 bg-light">
       <div class="container">
         <div class="stats-horizontal">
@@ -186,7 +182,6 @@
       </div>
     </section>
 
-    <!-- CTA Section - Saiba Mais Sobre Nós -->
     <section class="cta-section">
       <div class="container">
         <div class="cta-card">
@@ -227,7 +222,7 @@
             
             <div class="col-lg-4 text-center">
               <div class="cta-action">
-                <router-link to="/Sobre-Nós" class="btn btn-cta">
+                <router-link to="/SobreNos" class="btn btn-cta">
                   <i class="bi bi-arrow-right-circle me-2"></i>
                   Saiba Mais Sobre Nós
                 </router-link>
@@ -248,14 +243,14 @@
 export default {
   name: 'DepoimentosPage',
   mounted() {
-    // Scroll para o topo quando a página carrega
+
     window.scrollTo(0, 0);
   }
 }
 </script>
 
 <style scoped>
-/* Hero Section */
+
 .hero-section {
   background: linear-gradient(135deg, #3b4cb8 0%, #2c3e50 100%);
   padding: 6rem 0 4rem;
@@ -266,7 +261,7 @@ export default {
   margin: 0 auto;
 }
 
-/* Texto Amarelo - Destaque */
+
 .text-yellow {
   color: #ffc107 !important;
   font-weight: 800;
@@ -286,7 +281,7 @@ export default {
   border-radius: 2px;
 }
 
-/* Testimonial Cards */
+
 .testimonial-card {
   background: white;
   border-radius: 20px;
@@ -389,7 +384,6 @@ export default {
   display: inline-block;
 }
 
-/* Stats Section Horizontal */
 .stats-horizontal {
   display: flex;
   justify-content: center;
@@ -449,7 +443,6 @@ export default {
   text-align: center;
 }
 
-/* CTA Section - Saiba Mais Sobre Nós */
 .cta-section {
   padding: 1rem 0;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);

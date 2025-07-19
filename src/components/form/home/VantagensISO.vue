@@ -84,7 +84,7 @@
       <div class="row text-center mt-5 pt-5 border-top">
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="stat-item">
-            <h2 class="fw-bold text-blue mb-2">00+</h2>
+            <h2 class="fw-bold text-blue mb-2">500+</h2>
             <p class="text-muted mb-0">Profissionais Certificados</p>
           </div>
         </div>

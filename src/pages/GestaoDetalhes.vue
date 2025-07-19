@@ -56,7 +56,7 @@
           <div class="col-lg-5 order-lg-2 order-1">
             <div class="hero-image">
               <img src="@/assets/imagens/image1.png" 
-                   alt="ISO 14001" class="img-fluid rounded-4 shadow-lg">
+                  alt="ISO 14001" class="img-fluid rounded-4 shadow-lg">
             </div>
           </div>
         </div>
@@ -75,13 +75,19 @@
                 para a sustentabilidade e conformidade regulamentar.
               </p>
 
-
               <div class="course-modules mb-5">
                 <h3 class="mb-4">Módulos do Curso</h3>
                 <div class="accordion" id="moduleAccordion">
+                  <!-- Módulo 1 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#module1">
+                    <h2 class="accordion-header" id="heading1">
+                      <button 
+                        class="accordion-button" 
+                        :class="{ 'collapsed': activeModule !== 1 }"
+                        type="button" 
+                        @click="toggleModule(1)"
+                        :aria-expanded="activeModule === 1"
+                        aria-controls="module1">
                         <div class="module-info">
                           <span class="module-number">01</span>
                           <div>
@@ -91,7 +97,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module1" class="accordion-collapse collapse show">
+                    <div 
+                      id="module1" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 1 }"
+                      aria-labelledby="heading1" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>História e evolução da norma</li>
@@ -102,9 +113,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 2 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module2">
+                    <h2 class="accordion-header" id="heading2">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 2 }"
+                        type="button" 
+                        @click="toggleModule(2)"
+                        :aria-expanded="activeModule === 2"
+                        aria-controls="module2">
                         <div class="module-info">
                           <span class="module-number">02</span>
                           <div>
@@ -114,7 +132,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module2" class="accordion-collapse collapse">
+                    <div 
+                      id="module2" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 2 }"
+                      aria-labelledby="heading2" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Análise de contexto organizacional</li>
@@ -125,9 +148,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 3 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module3">
+                    <h2 class="accordion-header" id="heading3">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 3 }"
+                        type="button" 
+                        @click="toggleModule(3)"
+                        :aria-expanded="activeModule === 3"
+                        aria-controls="module3">
                         <div class="module-info">
                           <span class="module-number">03</span>
                           <div>
@@ -137,7 +167,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module3" class="accordion-collapse collapse">
+                    <div 
+                      id="module3" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 3 }"
+                      aria-labelledby="heading3" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Controles operacionais</li>
@@ -148,9 +183,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 4 -->
                   <div class="accordion-item border-0 shadow-sm">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module4">
+                    <h2 class="accordion-header" id="heading4">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 4 }"
+                        type="button" 
+                        @click="toggleModule(4)"
+                        :aria-expanded="activeModule === 4"
+                        aria-controls="module4">
                         <div class="module-info">
                           <span class="module-number">04</span>
                           <div>
@@ -160,7 +202,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module4" class="accordion-collapse collapse">
+                    <div 
+                      id="module4" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 4 }"
+                      aria-labelledby="heading4" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Auditorias internas</li>
@@ -232,12 +279,27 @@
 
 <script>
 export default {
-  name: 'ISO14001CoursePage'
+  name: 'ISO14001CoursePage',
+  data() {
+    return {
+      activeModule: 1 // Módulo 1 aberto por padrão
+    }
+  },
+  methods: {
+    toggleModule(moduleNumber) {
+      // Se o módulo clicado já está ativo, fecha ele
+      if (this.activeModule === moduleNumber) {
+        this.activeModule = null;
+      } else {
+        // Caso contrário, abre o módulo clicado
+        this.activeModule = moduleNumber;
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-
 .bg-custom-blue {
   background-color: #3d4ed8 !important;
 }
@@ -250,7 +312,6 @@ export default {
   margin-top: 0;
   padding-top: 0;
 }
-
 
 .hero-section {
   background: linear-gradient(135deg, #f8fffe 0%, #f0f9f4 100%);
@@ -337,24 +398,37 @@ export default {
   justify-content: center;
 }
 
-
 .section-title {
   color: #3d4ed8;
   font-weight: 700;
   font-size: 2.5rem;
 }
 
+/* Accordion Styles */
 .course-modules .accordion-button {
   background: white;
   border: none;
   box-shadow: none;
   padding: 1.5rem;
+  position: relative;
+}
+
+.course-modules .accordion-button:not(.collapsed) {
+  background: white;
+  color: #3d4ed8;
+  box-shadow: none;
+}
+
+.course-modules .accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(61, 78, 216, 0.25);
+  border: none;
 }
 
 .module-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
 }
 
 .module-number {
@@ -369,6 +443,12 @@ export default {
   font-weight: 700;
 }
 
+/* Ícone do accordion - removido pois já existe no design original */
+
+/* Transição suave para o conteúdo */
+.accordion-collapse {
+  transition: all 0.3s ease;
+}
 
 .benefit-item {
   gap: 1rem;
@@ -387,7 +467,6 @@ export default {
   font-size: 1.5rem;
   flex-shrink: 0;
 }
-
 
 @media (max-width: 768px) {
   .hero-section {

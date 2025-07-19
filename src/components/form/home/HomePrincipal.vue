@@ -9,7 +9,7 @@
             <p class="mb-3 opacity-75">Conquiste certificações ISO e <span class="text-custom-yellow">acelere sua carreira</span></p>
             <div class="d-flex gap-3 mb-4">
               <router-link to="/Cursos" class="btn btn-custom-yellow fw-bold px-4 py-2">EXPLORAR</router-link>
-              <router-link to="/Sobre-Nós"  class="btn btn-outline-light px-4 py-2">Saiba Mais</router-link>
+              <router-link to="/SobreNos"  class="btn btn-outline-light px-4 py-2">Saiba Mais</router-link>
             </div>
                       
             <div class="stats-container">

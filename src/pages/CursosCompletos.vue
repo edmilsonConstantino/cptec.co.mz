@@ -1,6 +1,5 @@
 <template>
   <div class="cursos-page">
-    <!-- Header Section -->
     <section class="hero-section">
       <div class="container">
         <div class="row align-items-center min-vh-100">
@@ -41,7 +40,7 @@
                   <i class="bi bi-play-circle me-2"></i>
                   Ver Cursos
                 </router-link>
-                <router-link to="/Sobre-Nós" class="btn btn-outline-light btn-lg">
+                <router-link to="/SobreNos" class="btn btn-outline-light btn-lg">
                   <i class="bi bi-info-circle me-2"></i>
                   Saiba Mais
                 </router-link>
@@ -51,10 +50,8 @@
         </div>
       </div>
       
-      <!-- Overlay para melhor legibilidade -->
       <div class="hero-overlay"></div>
       
-      <!-- Scroll Indicator -->
       <div class="scroll-indicator d-none d-md-block">
         <div class="scroll-mouse">
           <div class="scroll-wheel"></div>
@@ -62,7 +59,7 @@
         <span class="scroll-text">Role para baixo</span>
       </div>
     </section>
-    <!-- Componentes dos Cursos -->
+   
     <CursosPrimeiro />
     <CursosSegundo/>
     
@@ -104,7 +101,6 @@ export default {
   position: relative;
 }
 
-/* Hero Section */
 .hero-section {
   position: relative;
   min-height: 100vh;
@@ -119,7 +115,6 @@ export default {
   overflow: hidden;
 }
 
-/* Overlay para contraste */
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -130,14 +125,13 @@ export default {
   z-index: 1;
 }
 
-/* Conteúdo do Hero */
 .hero-content {
   position: relative;
   z-index: 2;
   animation: fadeInUp 1s ease-out;
 }
 
-/* Badge do Hero */
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -195,7 +189,6 @@ export default {
   animation: expandWidth 1s ease-out 1.2s both;
 }
 
-/* Subtítulo */
 .hero-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.3rem);
   line-height: 1.6;
@@ -212,7 +205,6 @@ export default {
   font-weight: 600;
 }
 
-/* Features */
 .hero-features {
   display: flex;
   gap: 1rem;
@@ -246,7 +238,6 @@ export default {
   font-size: 1rem;
 }
 
-/* Botões de Ação */
 .hero-actions {
   animation: fadeInUp 1s ease-out 1.3s both;
 }
@@ -284,7 +275,7 @@ export default {
   border-color: white;
   transform: translateY(-2px);
 }
-/* Scroll Indicator */
+
 .scroll-indicator {
   position: absolute;
   bottom: 2rem;
@@ -324,7 +315,6 @@ export default {
   letter-spacing: 1px;
 }
 
-/* Animações */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -378,7 +368,6 @@ export default {
   }
 }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
   .hero-section {
     background-attachment: scroll;
@@ -415,7 +404,6 @@ export default {
     max-width: 100%;
   }
 
-  /* Features no mobile */
   .hero-features {
     flex-direction: row;
     gap: 0.6rem;
@@ -435,7 +423,7 @@ export default {
     text-align: center;
   }
 
-  /* Botões no mobile */
+
   .hero-actions {
     display: flex;
     flex-direction: column;
@@ -450,7 +438,6 @@ export default {
     font-size: 0.9rem;
   }
 
-  /* CTA Section Mobile */
   .cta-section {
     padding: 4rem 0;
   }
@@ -538,7 +525,6 @@ export default {
     font-size: 0.85rem;
   }
 
-  /* CTA Mobile Pequeno */
   .cta-section {
     padding: 3rem 0;
   }
@@ -562,7 +548,6 @@ export default {
   }
 }
 
-/* Landscape Mobile */
 @media (max-height: 500px) and (orientation: landscape) {
   .hero-section {
     min-height: 100vh;
@@ -609,7 +594,6 @@ export default {
   }
 }
 
-/* Efeito parallax sutil - apenas desktop */
 @media (min-width: 768px) {
   .hero-section {
     background-attachment: fixed;

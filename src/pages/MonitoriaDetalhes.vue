@@ -81,9 +81,16 @@
               <div class="course-modules mb-5">
                 <h3 class="mb-4">Módulos do Curso</h3>
                 <div class="accordion" id="moduleAccordion">
+                  <!-- Módulo 1 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#module1">
+                    <h2 class="accordion-header" id="heading1">
+                      <button 
+                        class="accordion-button" 
+                        :class="{ 'collapsed': activeModule !== 1 }"
+                        type="button" 
+                        @click="toggleModule(1)"
+                        :aria-expanded="activeModule === 1"
+                        aria-controls="module1">
                         <div class="module-info">
                           <span class="module-number">01</span>
                           <div>
@@ -93,7 +100,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module1" class="accordion-collapse collapse show">
+                    <div 
+                      id="module1" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 1 }"
+                      aria-labelledby="heading1" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-primary me-2"></i>Conceitos associados ao planeamento, monitorização e avaliação</li>
@@ -104,9 +116,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 2 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module2">
+                    <h2 class="accordion-header" id="heading2">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 2 }"
+                        type="button" 
+                        @click="toggleModule(2)"
+                        :aria-expanded="activeModule === 2"
+                        aria-controls="module2">
                         <div class="module-info">
                           <span class="module-number">02</span>
                           <div>
@@ -116,7 +135,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module2" class="accordion-collapse collapse">
+                    <div 
+                      id="module2" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 2 }"
+                      aria-labelledby="heading2" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-primary me-2"></i>Estratégias e metodologias de utilização</li>
@@ -127,9 +151,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 3 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module3">
+                    <h2 class="accordion-header" id="heading3">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 3 }"
+                        type="button" 
+                        @click="toggleModule(3)"
+                        :aria-expanded="activeModule === 3"
+                        aria-controls="module3">
                         <div class="module-info">
                           <span class="module-number">03</span>
                           <div>
@@ -139,7 +170,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module3" class="accordion-collapse collapse">
+                    <div 
+                      id="module3" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 3 }"
+                      aria-labelledby="heading3" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-primary me-2"></i>Técnicas e ferramentas de monitoria participativa</li>
@@ -150,9 +186,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 4 -->
                   <div class="accordion-item border-0 shadow-sm mb-3">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module4">
+                    <h2 class="accordion-header" id="heading4">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 4 }"
+                        type="button" 
+                        @click="toggleModule(4)"
+                        :aria-expanded="activeModule === 4"
+                        aria-controls="module4">
                         <div class="module-info">
                           <span class="module-number">04</span>
                           <div>
@@ -162,7 +205,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module4" class="accordion-collapse collapse">
+                    <div 
+                      id="module4" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 4 }"
+                      aria-labelledby="heading4" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-primary me-2"></i>Aplicação de ferramentas de monitoria</li>
@@ -173,9 +221,16 @@
                     </div>
                   </div>
 
+                  <!-- Módulo 5 -->
                   <div class="accordion-item border-0 shadow-sm">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module5">
+                    <h2 class="accordion-header" id="heading5">
+                      <button 
+                        class="accordion-button collapsed" 
+                        :class="{ 'collapsed': activeModule !== 5 }"
+                        type="button" 
+                        @click="toggleModule(5)"
+                        :aria-expanded="activeModule === 5"
+                        aria-controls="module5">
                         <div class="module-info">
                           <span class="module-number">05</span>
                           <div>
@@ -185,7 +240,12 @@
                         </div>
                       </button>
                     </h2>
-                    <div id="module5" class="accordion-collapse collapse">
+                    <div 
+                      id="module5" 
+                      class="accordion-collapse collapse" 
+                      :class="{ 'show': activeModule === 5 }"
+                      aria-labelledby="heading5" 
+                      data-bs-parent="#moduleAccordion">
                       <div class="accordion-body">
                         <ul class="list-unstyled">
                           <li class="mb-2"><i class="bi bi-check-circle text-primary me-2"></i>Elaboração de instrumentos de recolha de dados</li>
@@ -258,7 +318,23 @@
 
 <script>
 export default {
-  name: 'ProjectMonitoringCoursePage'
+  name: 'ProjectMonitoringCoursePage',
+  data() {
+    return {
+      activeModule: 1 // Módulo 1 aberto por padrão
+    }
+  },
+  methods: {
+    toggleModule(moduleNumber) {
+      // Se o módulo clicado já está ativo, fecha ele
+      if (this.activeModule === moduleNumber) {
+        this.activeModule = null;
+      } else {
+        // Caso contrário, abre o módulo clicado
+        this.activeModule = moduleNumber;
+      }
+    }
+  }
 }
 </script>
 
@@ -374,17 +450,31 @@ export default {
   font-size: 2.5rem;
 }
 
+/* Accordion Styles */
 .course-modules .accordion-button {
   background: white;
   border: none;
   box-shadow: none;
   padding: 1.5rem;
+  position: relative;
+}
+
+.course-modules .accordion-button:not(.collapsed) {
+  background: white;
+  color: #4a5bc7;
+  box-shadow: none;
+}
+
+.course-modules .accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(74, 91, 199, 0.25);
+  border: none;
 }
 
 .module-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
 }
 
 .module-number {
@@ -397,6 +487,11 @@ export default {
   align-items: center;
   justify-content: center;
   font-weight: 700;
+}
+
+/* Transição suave para o conteúdo */
+.accordion-collapse {
+  transition: all 0.3s ease;
 }
 
 /* Benefits */

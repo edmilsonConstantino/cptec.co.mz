@@ -7,9 +7,9 @@
           <h1 class="display-6 fw-bold mb-3">Fale Conosco</h1>
           <p class="lead mb-4">Sua próxima aventura começa aqui!</p>
           
-          <!-- Botão para Sobre Nós -->
+        
           <div class="hero-cta">
-            <router-link to="/Sobre-Nós" class="btn btn-hero">
+            <router-link to="/SobreNos" class="btn btn-hero">
               <i class="bi bi-info-circle me-2"></i>
               Conheça Nossa História
             </router-link>
@@ -21,10 +21,9 @@
       </div>
     </section>
 
-    <!-- Main Content -->
     <div class="container py-4">
       <div class="row g-4">
-        <!-- Contact Form -->
+
         <div class="col-lg-7">
           <div class="contact-form bg-white rounded-3 shadow p-4">
             <h3 class="h4 text-center mb-4">
@@ -32,16 +31,15 @@
               Entre em Contato
             </h3>
             
-            <!-- Success Alert -->
             <div v-if="showAlert" class="alert alert-success alert-dismissible fade show">
               <i class="bi bi-check-circle-fill me-2"></i>
               Mensagem enviada com sucesso!
               <button type="button" class="btn-close" @click="hideAlert"></button>
             </div>
             
-            <!-- Contact Form -->
+    
             <form @submit.prevent="submitForm" novalidate>
-              <!-- Name Field -->
+
               <div class="mb-3">
                 <label class="form-label fw-semibold">
                   <i class="bi bi-person me-1"></i>Nome *
@@ -57,9 +55,9 @@
                 <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
               </div>
 
-              <!-- Email and Phone Row for Desktop / Stacked for Mobile -->
+        
               <div class="row g-3 mb-3">
-                <!-- Email Field -->
+ 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">
                     <i class="bi bi-envelope me-1"></i>Email *
@@ -75,7 +73,6 @@
                   <div v-if="errors.email" class="invalid-feedback">{{ errors.email }}</div>
                 </div>
 
-                <!-- Phone Field -->
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">
                     <i class="bi bi-telephone me-1"></i>Telefone *
@@ -92,8 +89,6 @@
                   <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone }}</div>
                 </div>
               </div>
-
-              <!-- Message Field -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">
                   <i class="bi bi-chat-dots me-1"></i>Mensagem
@@ -106,7 +101,6 @@
                 ></textarea>
               </div>
 
-              <!-- Privacy Checkbox -->
               <div class="form-check mb-4">
                 <input 
                   class="form-check-input"
@@ -121,8 +115,6 @@
                 </label>
                 <div v-if="errors.privacy" class="invalid-feedback d-block">{{ errors.privacy }}</div>
               </div>
-
-              <!-- Submit Button -->
               <div class="d-grid">
                 <button 
                   type="submit" 
@@ -138,7 +130,6 @@
           </div>
         </div>
 
-        <!-- Contact Information -->
         <div class="col-lg-5">
           <div class="contact-info bg-light rounded-3 p-4 h-100">
             <h3 class="h4 mb-4">
@@ -146,9 +137,8 @@
               Informações de Contato
             </h3>
 
-            <!-- Contact Items -->
             <div class="contact-items">
-              <!-- Email -->
+
               <div class="contact-item">
                 <div class="contact-icon bg-primary">
                   <i class="bi bi-envelope-fill"></i>
@@ -161,7 +151,7 @@
                 </div>
               </div>
 
-              <!-- Phone -->
+
               <div class="contact-item">
                 <div class="contact-icon bg-primary">
                   <i class="bi bi-telephone-fill"></i>
@@ -169,12 +159,12 @@
                 <div class="contact-details">
                   <h6 class="fw-bold mb-1">Telefone</h6>
                   <a href="tel:+258840000000" class="text-decoration-none contact-link">
-                    +258 84 000 0000
+                    +258 87 553 1696
                   </a>
                 </div>
               </div>
 
-              <!-- Location -->
+
               <div class="contact-item clickable-location" @click="openGoogleMaps">
                 <div class="contact-icon bg-primary">
                   <i class="bi bi-geo-alt-fill"></i>

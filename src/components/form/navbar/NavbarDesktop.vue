@@ -1,8 +1,7 @@
 <template>
     <nav class="professional-navbar" :class="{ scrolled: isScrolled }">
       <div class="navbar-container">
-        <!-- LOGO - Lado Esquerdo -->
-        <router-link to="/home" class="navbar-brand">
+        <router-link to="/" class="navbar-brand">
           <div class="logo-container">
             <img src="@/assets/imagens/LogoNav.png" alt="Logo" class="logo-image main-logo">
           </div>
@@ -70,7 +69,12 @@ export default {
     return {
       isMenuOpen: false,
       isScrolled: false,
-      activeSection: 'inicio' 
+      activeSection: 'inicio'
+    }
+  },
+  watch: {
+    '$route'() {
+      this.updateActiveSection();
     }
   },
   methods: {
@@ -94,9 +98,38 @@ export default {
     },
     handleScroll() {
       this.isScrolled = window.scrollY > 50
+    },
+    
+    getInitialActiveSection() {
+      const currentRoute = this.$route?.path || window.location.pathname;
+      
+      const routeMap = {
+        '/': 'inicio',
+        '/Depoimentos': 'depoimentos',
+        '/Cursos': 'cursos', 
+        '/Certificacoes': 'certificacoes',
+        '/Contacto': 'contato',
+        '/SobreNos': 'SobreNos',
+        '/Ambiental': 'cursos',
+        '/Qualidade': 'cursos',
+        '/Saude': 'cursos',
+        '/Higiene': 'cursos',
+        '/Monitoria': 'cursos',
+        '/Nebosh': 'cursos'
+      };
+      
+      return routeMap[currentRoute] || 'inicio';
+    },
+    
+    updateActiveSection() {
+      const newActiveSection = this.getInitialActiveSection();
+      this.activeSection = newActiveSection;
     }
   },
+  
   mounted() {
+    this.updateActiveSection();
+    
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         this.isMenuOpen = false;
@@ -113,7 +146,6 @@ export default {
 </script>
 
 <style scoped>
-/* === ESTILIZAÇÃO DESKTOP === */
 .professional-navbar {
   position: fixed;
   top: 0;
@@ -137,7 +169,6 @@ export default {
   height: 70px;
 }
 
-/* Logo Section */
 .navbar-brand {
   text-decoration: none;
   z-index: 10001;
@@ -179,7 +210,6 @@ export default {
   background-clip: text;
 }
 
-
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -217,7 +247,6 @@ export default {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Navigation Menu */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -251,7 +280,7 @@ export default {
   transition: all 0.3s ease;
   position: relative;
   letter-spacing: 0.3px;
-   cursor: pointer;
+  cursor: pointer;
 }
 
 .nav-link::before {
@@ -264,9 +293,8 @@ export default {
   background: linear-gradient(45deg, #667eea, #764ba2);
   transition: all 0.3s ease;
   transform: translateX(-50%);
-  
+  border-radius: 2px;
 }
-
 
 .nav-item.active .nav-link {
   color: #667eea !important;
@@ -277,7 +305,6 @@ export default {
   width: 60% !important;
 }
 
-
 .nav-item:not(.active) .nav-link:hover {
   color: #667eea;
   background: rgba(102, 126, 234, 0.05);
@@ -287,7 +314,6 @@ export default {
   width: 60%;
 }
 
-/* WhatsApp Styles */
 .bi-whatsapp {
   font-size: 20px;
   margin-right: 8px;
@@ -329,7 +355,6 @@ export default {
   outline-offset: 2px;
 }
 
-/* === ESTILIZAÇÃO MOBILE === */
 @media (max-width: 768px) {
   .professional-navbar {
     background: rgba(255, 255, 255, 0.98) !important;
@@ -417,7 +442,6 @@ export default {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 0;
     overflow: hidden;
-    
   }
 
   .nav-item {
@@ -463,7 +487,6 @@ export default {
     display: none;
   }
 
-  /* SEÇÃO ATIVA no mobile */
   .nav-item.active .nav-link {
     background: rgba(102, 126, 234, 0.15) !important;
     color: #667eea !important;
@@ -479,7 +502,6 @@ export default {
     background: #667eea;
   }
 
-  /* Outros links no mobile */
   .nav-item:not(.active):not(.whatsapp-item) .nav-link:hover,
   .nav-item:not(.active):not(.whatsapp-item) .nav-link:active {
     background: rgba(102, 126, 234, 0.1) !important;
@@ -489,7 +511,6 @@ export default {
     color: #667eea !important;
   }
 
-  /* WhatsApp mobile styles */
   .bi-whatsapp {
     font-size: 20px;
     margin-right: 8px;
@@ -575,7 +596,6 @@ export default {
   }
 }
 
-/* Adicionar suporte para toque */
 @media (hover: none) and (pointer: coarse) {
   .nav-link:hover {
     background: initial;
