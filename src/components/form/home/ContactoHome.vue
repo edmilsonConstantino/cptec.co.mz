@@ -159,7 +159,7 @@
                 <div class="contact-details">
                   <h6 class="fw-bold mb-1">Telefone</h6>
                   <a href="tel:+258840000000" class="text-decoration-none contact-link">
-                    +258 87 553 1696
+                    +258 87 553 1696 | 84 694 9523
                   </a>
                 </div>
               </div>

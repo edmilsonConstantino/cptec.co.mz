@@ -35,7 +35,7 @@
               </router-link>
             </li>
             <li class="nav-item" :class="{ active: activeSection === 'certificacoes' }">
-              <router-link class="nav-link" to="/Blog" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
+              <router-link class="nav-link" to="/Certificacoes" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
                   <span>Certificações</span>
                 </a>
@@ -49,14 +49,13 @@
               </router-link>
             </li>
             <li class="nav-item whatsapp-item">
-              <a href="https://wa.me/+25887553696?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+              <a href="https://wa.me/+258846949523?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
                 <i class="bi bi-whatsapp"></i>
                 <span>WhatsApp</span>
               </a>
             </li>
           </ul>
         </div>
-
         <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
       </div>
     </nav>
