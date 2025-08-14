@@ -6,19 +6,22 @@
       <!-- <navbarMobile v-else /> -->
     </div>
         <router-view />
-       </div>
+      </div>
+      <WhatsAppButton />
     </div>
 </template>
 
 <script>
 import navbarDesktop from '@/components/form/navbar/NavbarDesktop.vue';
 // import navbarMobile from '@/components/form/navbar/NavbarMobile.vue';
+import WhatsAppButton from '@/components/WhatsAppButton.vue';
 
 export default {
   name: 'MainLayout',
   components: {
     navbarDesktop,
     // navbarMobile
+    WhatsAppButton,
   },
   data() {
     return {
