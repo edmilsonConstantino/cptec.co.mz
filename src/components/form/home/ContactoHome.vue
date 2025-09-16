@@ -7,7 +7,6 @@
           <h1 class="display-6 fw-bold mb-3">Fale Conosco</h1>
           <p class="lead mb-4">Sua próxima aventura começa aqui!</p>
           
-        
           <div class="hero-cta">
             <router-link to="/SobreNos" class="btn btn-hero">
               <i class="bi bi-info-circle me-2"></i>
@@ -24,111 +23,160 @@
     <div class="container py-4">
       <div class="row g-4">
 
-        <div class="col-lg-7">
-          <div class="contact-form bg-white rounded-3 shadow p-4">
-            <h3 class="h4 text-center mb-4">
-              <i class="bi bi-envelope-heart text-primary me-2"></i>
-              Entre em Contato
-            </h3>
-            
-            <div v-if="showAlert" class="alert alert-success alert-dismissible fade show">
-              <i class="bi bi-check-circle-fill me-2"></i>
-              Mensagem enviada com sucesso!
-              <button type="button" class="btn-close" @click="hideAlert"></button>
-            </div>
-            
+       <div class="col-lg-7">
+  <div class="contact-form bg-white rounded-3 shadow p-4">
+    <h3 class="h4 text-center mb-4">
+      <i class="bi bi-envelope-heart text-primary me-2"></i>
+      Entre em Contato
+    </h3>
     
-            <form @submit.prevent="submitForm" novalidate>
+    <!-- Alert de Sucesso -->
+    <div v-if="showSuccessAlert" class="alert alert-success alert-dismissible fade show">
+      <i class="bi bi-check-circle-fill me-2"></i>
+      {{ successMessage }}
+      <button type="button" class="btn-close" @click="hideSuccessAlert"></button>
+    </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-semibold">
-                  <i class="bi bi-person me-1"></i>Nome *
-                </label>
-                <input 
-                  type="text" 
-                  class="form-control form-control-lg"
-                  :class="{'is-invalid': errors.name}"
-                  v-model="form.name"
-                  placeholder="Seu nome completo"
-                  required
-                >
-                <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
-              </div>
+    <!-- Alert de Erro -->
+    <div v-if="showErrorAlert" class="alert alert-danger alert-dismissible fade show">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ errorMessage }}
+      <button type="button" class="btn-close" @click="hideErrorAlert"></button>
+    </div>
+    
+    <form @submit.prevent="submitForm" novalidate>
 
-        
-              <div class="row g-3 mb-3">
- 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">
-                    <i class="bi bi-envelope me-1"></i>Email *
-                  </label>
-                  <input 
-                    type="email" 
-                    class="form-control form-control-lg"
-                    :class="{'is-invalid': errors.email}"
-                    v-model="form.email"
-                    placeholder="seu@email.com"
-                    required
-                  >
-                  <div v-if="errors.email" class="invalid-feedback">{{ errors.email }}</div>
-                </div>
+      <!-- Nome -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">
+          <i class="bi bi-person me-1"></i>Nome *
+        </label>
+        <input 
+          type="text" 
+          class="form-control form-control-lg"
+          :class="{'is-invalid': errors.name}"
+          v-model="form.name"
+          placeholder="Seu nome completo"
+          required
+        >
+        <div v-if="errors.name" class="invalid-feedback">
+          {{ Array.isArray(errors.name) ? errors.name[0] : errors.name }}
+        </div>
+      </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">
-                    <i class="bi bi-telephone me-1"></i>Telefone *
-                  </label>
-                  <input 
-                    type="tel" 
-                    class="form-control form-control-lg"
-                    :class="{'is-invalid': errors.phone}"
-                    v-model="form.phone"
-                    @input="formatPhone"
-                    placeholder="(+258) 00000-0000"
-                    required
-                  >
-                  <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone }}</div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">
-                  <i class="bi bi-chat-dots me-1"></i>Mensagem
-                </label>
-                <textarea 
-                  class="form-control"
-                  v-model="form.message"
-                  rows="4"
-                  placeholder="Descreva como podemos ajudá-lo..."
-                ></textarea>
-              </div>
-
-              <div class="form-check mb-4">
-                <input 
-                  class="form-check-input"
-                  :class="{'is-invalid': errors.privacy}"
-                  type="checkbox" 
-                  id="privacy"
-                  v-model="form.privacy"
-                  required
-                >
-                <label class="form-check-label small" for="privacy">
-                  Autorizo armazenar minha submissão para resposta à consulta. *
-                </label>
-                <div v-if="errors.privacy" class="invalid-feedback d-block">{{ errors.privacy }}</div>
-              </div>
-              <div class="d-grid">
-                <button 
-                  type="submit" 
-                  class="btn btn-primary btn-lg"
-                  :disabled="isSubmitting"
-                >
-                  <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
-                  <i v-else class="bi bi-send me-2"></i>
-                  {{ isSubmitting ? 'Enviando...' : 'Enviar Mensagem' }}
-                </button>
-              </div>
-            </form>
+      <!-- Email e Telefone -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-envelope me-1"></i>Email *
+          </label>
+          <input 
+            type="email" 
+            class="form-control form-control-lg"
+            :class="{'is-invalid': errors.email}"
+            v-model="form.email"
+            placeholder="seu@email.com"
+            required
+          >
+          <div v-if="errors.email" class="invalid-feedback">
+            {{ Array.isArray(errors.email) ? errors.email[0] : errors.email }}
           </div>
         </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-telephone me-1"></i>Telefone *
+          </label>
+          <input 
+            type="tel" 
+            class="form-control form-control-lg"
+            :class="{'is-invalid': errors.phone}"
+            v-model="form.phone"
+            @input="formatPhone"
+            placeholder="+258 84 000 0000"
+            required
+          >
+          <div v-if="errors.phone" class="invalid-feedback">
+            {{ Array.isArray(errors.phone) ? errors.phone[0] : errors.phone }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Serviço de Interesse -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">
+          <i class="bi bi-bookmark-star me-1"></i>Serviço de Interesse *
+        </label>
+        <select 
+          class="form-select form-select-lg"
+          v-model="form.service"
+          :class="{'is-invalid': errors.service}"
+          required
+        >
+          <option disabled value="">Selecione um serviço</option>
+          <option value="ISO 14001 - Gestão Ambiental">🌿 ISO 14001 - Gestão Ambiental</option>
+          <option value="ISO 9001 - Gestão da Qualidade">🏅 ISO 9001 - Gestão da Qualidade</option>
+          <option value="ISO 45001 - Saúde e Segurança">👷 ISO 45001 - Saúde e Segurança</option>
+          <option value="Higiene, Segurança e Saúde no Trabalho">🛡️ Higiene, Segurança e Saúde no Trabalho</option>
+          <option value="Monitoria, Gestão e Avaliação de Projectos">📊 Monitoria, Gestão e Avaliação de Projectos</option>
+          <option value="NEBOSH">🏭 NEBOSH</option>
+        </select>
+        <div v-if="errors.service" class="invalid-feedback d-block">
+          {{ Array.isArray(errors.service) ? errors.service[0] : errors.service }}
+        </div>
+      </div>
+
+      <!-- Mensagem -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">
+          <i class="bi bi-chat-dots me-1"></i>Mensagem *
+        </label>
+        <textarea 
+          class="form-control"
+          :class="{'is-invalid': errors.message}"
+          v-model="form.message"
+          rows="4"
+          placeholder="Descreva como podemos ajudá-lo..."
+          required
+        ></textarea>
+        <div v-if="errors.message" class="invalid-feedback">
+          {{ Array.isArray(errors.message) ? errors.message[0] : errors.message }}
+        </div>
+      </div>
+
+      <!-- Política de Privacidade -->
+      <div class="form-check mb-4">
+        <input 
+          class="form-check-input"
+          :class="{'is-invalid': errors.consent}"
+          type="checkbox" 
+          id="privacy"
+          v-model="form.consent"
+          required
+        >
+        <label class="form-check-label small" for="privacy">
+          Autorizo armazenar minha submissão para resposta à consulta. *
+        </label>
+        <div v-if="errors.consent" class="invalid-feedback d-block">
+          {{ Array.isArray(errors.consent) ? errors.consent[0] : errors.consent }}
+        </div>
+      </div>
+
+      <!-- Botão -->
+      <div class="d-grid">
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-lg"
+          :disabled="isSubmitting"
+        >
+          <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+          <i v-else class="bi bi-send me-2"></i>
+          {{ isSubmitting ? 'Enviando...' : 'Enviar Mensagem' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
         <div class="col-lg-5">
           <div class="contact-info bg-light rounded-3 p-4 h-100">
@@ -151,19 +199,17 @@
                 </div>
               </div>
 
-
               <div class="contact-item">
                 <div class="contact-icon bg-primary">
                   <i class="bi bi-telephone-fill"></i>
                 </div>
                 <div class="contact-details">
                   <h6 class="fw-bold mb-1">Telefone</h6>
-                  <a href="tel:+258840000000" class="text-decoration-none contact-link">
+                  <a href="tel:+258875531696" class="text-decoration-none contact-link">
                     +258 87 553 1696 | 84 694 9523
                   </a>
                 </div>
               </div>
-
 
               <div class="contact-item clickable-location" @click="openGoogleMaps">
                 <div class="contact-icon bg-primary">
@@ -179,7 +225,6 @@
               </div>
             </div>
 
-            <!-- Business Hours -->
             <div class="business-hours mt-4">
               <h5 class="h6 mb-3">
                 <i class="bi bi-clock text-primary me-2"></i>
@@ -209,12 +254,16 @@ export default {
         name: '',
         email: '',
         phone: '',
+        service: '',
         message: '',
-        privacy: false
+        consent: false
       },
       errors: {},
       isSubmitting: false,
-      showAlert: false,
+      showSuccessAlert: false,
+      showErrorAlert: false,
+      successMessage: '',
+      errorMessage: '',
       hours: {
         'Segunda': '9:00 - 22:00',
         'Terça': '9:00 - 22:00',
@@ -227,58 +276,189 @@ export default {
     }
   },
   mounted() {
-    // Scroll para o topo quando a página carrega
-    window.scrollTo(0, 0)
+  
+    window.scrollTo(0, 0);
   },
   methods: {
+  
     validateForm() {
-      this.errors = {}
+      this.errors = {};
       
-      if (!this.form.name.trim()) this.errors.name = 'Nome é obrigatório'
-      if (!this.form.email.trim()) this.errors.email = 'Email é obrigatório'
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email)) this.errors.email = 'Email inválido'
-      if (!this.form.phone.trim()) this.errors.phone = 'Telefone é obrigatório'
-      if (!this.form.privacy) this.errors.privacy = 'Aceite os termos'
+      if (!this.form.name.trim()) {
+        this.errors.name = 'Nome é obrigatório';
+      }
       
-      return Object.keys(this.errors).length === 0
+      if (!this.form.email.trim()) {
+        this.errors.email = 'Email é obrigatório';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email)) {
+        this.errors.email = 'Email inválido';
+      }
+      
+      if (!this.form.phone.trim()) {
+        this.errors.phone = 'Telefone é obrigatório';
+      }
+      
+      if (!this.form.service) {
+        this.errors.service = 'Selecione um serviço';
+      }
+      
+      if (!this.form.message.trim()) {
+        this.errors.message = 'Mensagem é obrigatória';
+      }
+      
+      if (!this.form.consent) {
+        this.errors.consent = 'Você deve autorizar para prosseguir';
+      }
+      
+      return Object.keys(this.errors).length === 0;
     },
-    
+
     formatPhone() {
-      let value = this.form.phone.replace(/\D/g, '')
-      if (value.length <= 11) {
-        if (value.length <= 2) this.form.phone = value
-        else if (value.length <= 7) this.form.phone = `(${value.slice(0, 2)}) ${value.slice(2)}`
-        else this.form.phone = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`
+      let value = this.form.phone.replace(/\D/g, '');
+      
+  
+      if (value.startsWith('258')) {
+        value = value.substring(3);
+      }
+      
+
+      if (value.length <= 9) {
+        if (value.length <= 2) {
+          this.form.phone = `+258 ${value}`;
+        } else if (value.length <= 4) {
+          this.form.phone = `+258 ${value.slice(0, 2)} ${value.slice(2)}`;
+        } else if (value.length <= 7) {
+          this.form.phone = `+258 ${value.slice(0, 2)} ${value.slice(2, 5)} ${value.slice(5)}`;
+        } else {
+          this.form.phone = `+258 ${value.slice(0, 2)} ${value.slice(2, 5)} ${value.slice(5, 9)}`;
+        }
       }
     },
-    
+
+   
     async submitForm() {
-      if (!this.validateForm()) return
+   
+      this.hideSuccessAlert();
+      this.hideErrorAlert();
       
-      this.isSubmitting = true
+    
+      if (!this.validateForm()) {
+        return;
+      }
+
+      this.isSubmitting = true;
+      
       try {
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        this.form = { name: '', email: '', phone: '', message: '', privacy: false }
-        this.showAlert = true
-        setTimeout(() => this.hideAlert(), 5000)
+        // estou a tentar diferentes URLs do backend
+        const backendUrls = [
+          "http://127.0.0.1:8000/api/submissions/",
+          "http://localhost:8000/api/submissions/"
+        ];
+        
+        let response = null;
+        
+        for (const url of backendUrls) {
+          try {
+            response = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+              mode: 'cors',
+              body: JSON.stringify({
+                name: this.form.name.trim(),
+                email: this.form.email.trim(),
+                phone: this.form.phone.replace(/\s+/g, ''),
+                service: this.form.service,
+                message: this.form.message.trim(),
+                consent: this.form.consent
+              }),
+            });
+            break; // Se chegou aqui deu certo
+          } catch (error) {
+    
+            console.log(`Tentativa falhou para ${url}:`, error.message);
+            continue; // Tenta prxima URL
+          }
+        }
+    
+
+        const data = await response.json();
+
+        if (response.ok) {
+
+          this.successMessage = data.message || 'Mensagem enviada com sucesso!';
+          this.showSuccessAlert = true;
+          
+          this.resetForm();
+        
+          setTimeout(() => {
+            this.hideSuccessAlert();
+          }, 5000);
+          
+          this.$emit('form-submitted', data);
+          
+        } else {
+    
+          if (data.errors) {
+            this.errors = data.errors;
+          }
+          
+          this.errorMessage = data.message || 'Erro na validação dos dados.';
+          this.showErrorAlert = true;
+          
+      
+          setTimeout(() => {
+            this.hideErrorAlert();
+          }, 8000);
+        }
+
       } catch (error) {
-        alert('Erro ao enviar formulário')
+        console.error('Erro ao enviar formulário:', error);
+        
+        this.errorMessage = 'Erro de conexão. Verifique sua internet e tente novamente.';
+        this.showErrorAlert = true;
+        
+
+        setTimeout(() => {
+          this.hideErrorAlert();
+        }, 8000);
+        
       } finally {
-        this.isSubmitting = false
+        this.isSubmitting = false;
       }
     },
-    
-    hideAlert() {
-      this.showAlert = false
+    resetForm() {
+      this.form = {
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: '',
+        consent: false
+      };
+      this.errors = {};
     },
-    
+
+
+    hideSuccessAlert() {
+      this.showSuccessAlert = false;
+      this.successMessage = '';
+    },
+
+    hideErrorAlert() {
+      this.showErrorAlert = false;
+      this.errorMessage = '';
+      this.errors = {};
+    },
+
+   
     openGoogleMaps() {
-      const address = 'Matola, Infulene A nº48, Mozambique'
-      const encodedAddress = encodeURIComponent(address)
-      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`
-      
-      // Abrir em uma nova aba
-      window.open(googleMapsUrl, '_blank')
+      const address = 'Matola, Infulene A nº48, Mozambique';
+      const encodedAddress = encodeURIComponent(address);
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+      window.open(googleMapsUrl, '_blank');
     }
   }
 }
@@ -469,6 +649,26 @@ export default {
 
 .hour-time {
   font-weight: 500;
+}
+
+/* Alert Styles */
+.alert {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
 }
 
 /* Mobile Optimizations */
