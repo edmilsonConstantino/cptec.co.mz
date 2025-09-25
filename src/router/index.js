@@ -10,6 +10,7 @@ const routes = [
     children: [
       { path: '', redirect: 'home' }, // Redireciona a raiz para 'home'
       { path: 'home', component: () => import('@/pages/HomePage.vue')},
+      { path: 'declaracoes', component: () => import('@/pages/DeclaracoesHome.vue')},
       // {path: '/login', name: 'login', component: LoginPage},
       // { path: '/register', name: 'register', component: () => import('@/pages/SignUp.vue') },
       
@@ -21,9 +22,10 @@ const routes = [
       { path: '/Monitoria', name: 'Monitoria', component: () => import('@/pages/MonitoriaDetalhes.vue') },
       { path: '/Nebosh', name: 'Nebosh', component: () => import('@/pages/NeboshDetalhes.vue') },
       { path: '/Contacto', name: 'Contacto', component: () => import('@/components/form/home/ContactoHome.vue') },
-      { path: '/Depoimentos', name: 'Depoimentos', component: () => import('@/pages/DepoiMentos.vue') },
+      { path: '/Depoimento', name: 'Depoimento', component: () => import('@/pages/DepoiMentos.vue') },
       { path: '/Certificacoes', name: 'Blog', component: () => import('@/pages/BlogHome.vue') },
       { path: '/SobreNos', name: 'SobreNos', component: () => import('@/pages/HeroSobreNos.vue') },
+     
       // { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/GestaoDetalhes.vue') },
 
       { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/CursosCompletos.vue') },

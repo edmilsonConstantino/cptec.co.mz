@@ -21,7 +21,7 @@
               </router-link>
             </li>
             <li class="nav-item" :class="{ active: activeSection === 'depoimentos' }">
-              <router-link class="nav-link" to="/Depoimentos" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
+              <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'depoimentos')" class="nav-link">
                   <span>Depoimentos</span>
                 </a>
