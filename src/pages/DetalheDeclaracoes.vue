@@ -319,9 +319,16 @@ export default {
   mounted() {
     this.checkMobile()
     window.addEventListener('resize', this.checkMobile)
+    // Adicionei histrico para mobile
+    if (this.isMobile && this.selectedDeclaracao) {
+      window.history.pushState({ modal: true }, '')
+      window.addEventListener('popstate', this.handleBack)
+    }
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.checkMobile)
+    // Remove listener de popstate
+    window.removeEventListener('popstate', this.handleBack)
   },
   methods: {
     checkMobile() {
@@ -360,6 +367,12 @@ export default {
         month: 'long', 
         day: 'numeric' 
       })
+    },
+
+    handleBack() {
+      if (this.isMobile && this.selectedDeclaracao) {
+        this.closeModal()
+      }
     }
   },
   
@@ -368,6 +381,14 @@ export default {
       if (newVal) {
         document.body.style.overflow = 'hidden'
         this.checkMobile()
+        // Adicionei historico quando abrir no mobile
+        if (this.isMobile) {
+          window.history.pushState({ modal: true }, '')
+          window.addEventListener('popstate', this.handleBack)
+        }
+      } else {
+        // Remove listener ao fechar
+        window.removeEventListener('popstate', this.handleBack)
       }
     }
   }

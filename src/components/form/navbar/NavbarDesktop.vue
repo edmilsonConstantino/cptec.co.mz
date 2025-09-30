@@ -21,7 +21,7 @@
               </router-link>
             </li>
             <li class="nav-item" :class="{ active: activeSection === 'depoimentos' }">
-              <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
+              <router-link class="nav-link" to="/Depoimento" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'depoimentos')" class="nav-link">
                   <span>Depoimentos</span>
                 </a>
@@ -38,6 +38,13 @@
               <router-link class="nav-link" to="/Certificacoes" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
                   <span>Certificações</span>
+                </a>
+              </router-link>
+            </li>
+            <li class="nav-item" :class="{ active: activeSection === 'declaracoes' }">
+              <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('declaracoes')" custom v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
+                  <span>Declarações </span>
                 </a>
               </router-link>
             </li>
@@ -107,6 +114,7 @@ export default {
         '/Depoimentos': 'depoimentos',
         '/Cursos': 'cursos', 
         '/Certificacoes': 'certificacoes',
+        '/Declaracoes': 'declaracoes',
         '/Contacto': 'contato',
         '/SobreNos': 'SobreNos',
         '/Ambiental': 'cursos',
@@ -460,7 +468,7 @@ export default {
     color: #2c3e50;
     background: transparent;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: 0.3px;
     text-align: center;
@@ -468,8 +476,8 @@ export default {
     opacity: 0;
     transition: all 0.3s ease;
     box-shadow: none;
-    min-height: 70px;
-    max-height: 70px;
+    min-height: 40px;
+    max-height: 40px;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -588,10 +596,10 @@ export default {
   }
 
   .nav-link {
-    font-size: 1.1rem;
-    padding: 1.3rem 1.2rem;
-    min-height: 65px;
-    max-height: 65px;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    min-height: 36px;
+    max-height: 36px;
   }
 }
 

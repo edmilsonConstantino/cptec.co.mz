@@ -82,16 +82,16 @@
         >
           <i class="bi bi-chevron-right"></i>
         </button>
-
-        <div class="carousel-dots">
-          <button 
-            v-for="(_, index) in Math.ceil(declaracoes.length / slidesToShow)" 
-            :key="index"
-            @click="goToSlide(index)"
-            class="dot"
-            :class="{ active: Math.floor(currentSlide / slidesToShow) === index }"
-          ></button>
-        </div>
+      </div>
+      <!-- Mova os dots para fora do carousel-container -->
+      <div class="carousel-dots">
+        <button 
+          v-for="(_, index) in Math.ceil(declaracoes.length / slidesToShow)" 
+          :key="index"
+          @click="goToSlide(index)"
+          class="dot"
+          :class="{ active: Math.floor(currentSlide / slidesToShow) === index }"
+        ></button>
       </div>
     </div>
   </section>
@@ -198,16 +198,16 @@ export default {
   },
   
   computed: {
-    carouselStyle() {
-      if (this.isMobile) {
-        return {}
-      }
-      return {
-        transform: `translateX(-${this.currentSlide * (100 / this.declaracoes.length)}%)`,
-        transition: 'transform 0.5s ease-in-out',
-        width: `${this.declaracoes.length * (100 / this.slidesToShow)}%`
-      }
-    },
+ carouselStyle() {
+  if (this.isMobile) {
+    return {}
+  }
+  return {
+    transform: `translateX(-${(this.currentSlide * 100) / this.slidesToShow}%)`,
+    transition: 'transform 0.5s ease-in-out',
+    width: `${(this.declaracoes.length / this.slidesToShow) * 100}%`
+  }
+},
     
     maxSlide() {
       return this.declaracoes.length - this.slidesToShow
@@ -218,11 +218,20 @@ export default {
     this.updateResponsiveSettings()
     this.startAutoSlide()
     window.addEventListener('resize', this.updateResponsiveSettings)
+    // Adiciona listener de scroll para mobile
+    this.$nextTick(() => {
+      if (this.$refs.carouselTrack) {
+        this.$refs.carouselTrack.addEventListener('scroll', this.handleTrackScroll)
+      }
+    })
   },
-  
   beforeUnmount() {
     this.stopAutoSlide()
     window.removeEventListener('resize', this.updateResponsiveSettings)
+    // Remove listener de scroll
+    if (this.$refs.carouselTrack) {
+      this.$refs.carouselTrack.removeEventListener('scroll', this.handleTrackScroll)
+    }
   },
   
   methods: {
@@ -298,22 +307,28 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString)
       return date.toLocaleDateString('pt-BR')
-    }
+    },
+
+    handleTrackScroll() {
+      if (!this.isMobile) return
+      const track = this.$refs.carouselTrack
+      const slideWidth = track.querySelector('.carousel-slide')?.offsetWidth || 1
+      const scrollLeft = track.scrollLeft
+      const index = Math.round(scrollLeft / (slideWidth + 0)) // 0 = gap/padding se houver
+      this.currentSlide = index
+    },
   }
 }
 </script>
 
 <style scoped>
-
 * {
   box-sizing: border-box;
 }
 
-
 .carousel-section {
   padding: 4rem 0;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  overflow: hidden;
 }
 
 .section-title {
@@ -331,9 +346,11 @@ export default {
 
 .carousel-container {
   position: relative;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 0 80px;
+  padding: 0;
+  display: flex;
+  overflow: visible;
 }
 
 .carousel-track {
@@ -342,10 +359,11 @@ export default {
 }
 
 .carousel-slide {
-  flex: 0 0 20%;
-  padding: 0 15px;
+  flex: 0 0 calc(100% / 3);
+  padding: 0 12px;
   box-sizing: border-box;
 }
+
 
 .student-card {
   background: white;
@@ -354,9 +372,14 @@ export default {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
-  height: 600px;
   display: flex;
   flex-direction: column;
+  height: 520px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  /* Remove margin extra */
+  border: none;
 }
 
 .student-card:hover {
@@ -369,17 +392,18 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  height: 150px;
+  height: 120px;
   background: linear-gradient(135deg, #3b4cb8, #4e73df);
   z-index: 1;
 }
 
 .student-photo {
   position: relative;
-  width: 100px;
-  height: 100px;
-  margin: 30px auto 20px;
+  width: 90px;
+  height: 90px;
+  margin: 25px auto 15px;
   z-index: 2;
+  top: -5px;
 }
 
 .student-photo img {
@@ -390,10 +414,10 @@ export default {
   object-position: center;
   border: 4px solid white;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  min-width: 100px;
-  min-height: 100px;
-  max-width: 100px;
-  max-height: 100px;
+  min-width: 90px;
+  min-height: 90px;
+  max-width: 90px;
+  max-height: 90px;
 }
 
 .photo-overlay {
@@ -414,7 +438,7 @@ export default {
 }
 
 .student-info {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 1.2rem 1.2rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -422,22 +446,23 @@ export default {
 }
 
 .student-name {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  margin-top: 1.2rem; /* Novo: afasta o nome da foto */
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.6rem;
+  min-height: 2.8rem;
 }
 
 .student-course {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #6c757d;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -449,45 +474,45 @@ export default {
 .student-details {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1.2rem;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
 }
 
 .detail-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #495057;
 }
 
 .detail-item i {
   color: #3b4cb8;
-  margin-right: 0.5rem;
-  width: 16px;
+  margin-right: 0.4rem;
+  width: 14px;
 }
 
 .student-testimonial {
   background: rgba(59, 76, 184, 0.05);
-  padding: 1rem;
+  padding: 0.9rem;
   border-radius: 10px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100px;
+  min-height: 80px;
 }
 
 .quote-icon {
   color: #3b4cb8;
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
 }
 
 .student-testimonial p {
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.8rem;
+  line-height: 1.45;
   color: #495057;
   margin: 0;
   flex: 1;
@@ -541,7 +566,6 @@ export default {
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
 
-
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -580,10 +604,14 @@ export default {
 }
 
 .carousel-dots {
+  position: relative;
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .dot {
@@ -600,8 +628,6 @@ export default {
   background: linear-gradient(135deg, #3b4cb8, #4e73df);
   transform: scale(1.3);
 }
-
-/* RESPONSIVE BREAKPOINTS */
 
 @media (max-width: 1200px) {
   .carousel-slide {
@@ -621,7 +647,6 @@ export default {
   }
 }
 
-/* Tablet pequeno - 992px e abaixo */
 @media (max-width: 992px) {
   .carousel-section {
     padding: 3rem 0;
@@ -640,7 +665,6 @@ export default {
   }
 }
 
-
 @media (max-width: 768px) {
   .carousel-section {
     padding: 2.5rem 0;
@@ -655,25 +679,22 @@ export default {
     font-size: 1rem;
   }
   
-
   .carousel-container {
     padding: 0;
-    overflow: visible;
+    max-width: 100vw;
   }
-  
+
   .carousel-track {
     overflow-x: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     gap: 15px;
-    padding: 0 20px; 
+    padding: 0 10px 20px 10px;
     scrollbar-width: none;
     -ms-overflow-style: none;
-  }
-  
-  .carousel-track::-webkit-scrollbar {
-    display: none;
+    min-width: 100%;
+    box-sizing: border-box;
   }
   
   .carousel-slide {
@@ -685,101 +706,24 @@ export default {
   .student-card {
     height: 480px;
     border-radius: 16px;
-    margin: 0;
+    margin: 0; /* Remove margin extra */
     max-width: 100%;
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: none;
   }
-  
-  .card-background {
-    height: 100px;
-  }
-  
-  .student-photo {
-    width: 70px;
-    height: 70px;
-    margin: 20px auto 15px;
-  }
-  
-  .student-photo img {
-    min-width: 70px;
-    min-height: 70px;
-    max-width: 70px;
-    max-height: 70px;
-    border-width: 3px;
-  }
-  
-  .photo-overlay {
-    width: 24px;
-    height: 24px;
-    font-size: 0.8rem;
-    bottom: -3px;
-    right: -3px;
-    border-width: 2px;
-  }
-  
-  .student-info {
-    padding: 0 1rem 1rem;
-  }
-  
+
   .student-name {
     font-size: 1rem;
     min-height: 2rem;
     margin-bottom: 0.4rem;
+    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
   }
-  
-  .student-course {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-    min-height: 2rem;
-  }
-  
-  .student-details {
-    gap: 0.3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .detail-item {
-    font-size: 0.7rem;
-  }
-  
-  .detail-item i {
-    width: 14px;
-  }
-  
-  .student-testimonial {
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    min-height: 80px;
-  }
-  
-  .quote-icon {
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-  }
-  
-  .student-testimonial p {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    -webkit-line-clamp: 3;
-  }
-  
-  .certificate-code {
-    font-size: 0.7rem;
-    padding: 0.4rem;
-  }
-  
-  .btn-view-cert {
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    border-radius: 8px;
-  }
-  
+
   .carousel-dots {
+    position: relative;
     margin-top: 2rem;
-  }
-  
-  .dot {
-    width: 8px;
-    height: 8px;
+    display: flex; /* Garante que apareça no mobile */
   }
 }
 
@@ -789,7 +733,7 @@ export default {
   }
   
   .carousel-track {
-    padding: 0 15px; 
+    padding: 0 15px;
   }
   
   .carousel-slide {
@@ -834,6 +778,7 @@ export default {
   .student-name {
     font-size: 0.9rem;
     min-height: 1.8rem;
+    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
   }
   
   .student-course {
@@ -851,7 +796,7 @@ export default {
   }
   
   .student-testimonial p {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     -webkit-line-clamp: 2;
   }
   
@@ -864,8 +809,11 @@ export default {
     padding: 0.5rem 0.8rem;
     font-size: 0.75rem;
   }
-}
 
+  .carousel-dots {
+    margin-top: 1.2rem;
+  }
+}
 
 @media (max-width: 375px) {
   .carousel-track {
@@ -922,6 +870,7 @@ export default {
     font-size: 0.85rem;
     min-height: 1.6rem;
     margin-bottom: 0.3rem;
+    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
   }
   
   .student-course {
@@ -977,30 +926,7 @@ export default {
   }
   
   .carousel-dots {
-    margin-top: 1.5rem;
-  }
-  
-  .dot {
-    width: 6px;
-    height: 6px;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .student-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  }
-  
-  .btn-view-cert:hover {
-    background: linear-gradient(135deg, #218838, #1abc9c);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-  }
-  
-  .carousel-btn:hover:not(:disabled) {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 8px 25px rgba(59, 76, 184, 0.4);
+    margin-top: 1rem;
   }
 }
 </style>
