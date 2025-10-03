@@ -15,7 +15,7 @@
             </h1>
             
             <p class="hero-subtitle">
-              Consulte as <span class="highlight-text">declarações oficiais</span> dos alunos que 
+              Consulte os <span class="highlight-text">Certificados oficiais</span> dos alunos que 
               concluíram nossos cursos com sucesso.
             </p>
             

@@ -173,7 +173,6 @@
             </div>
           </div>
 
-          <!-- Grid de Detalhes Desktop -->
           <div class="details-grid-section" v-if="!isMobile">
             <div class="details-grid">
               <div class="detail-card premium">
@@ -319,7 +318,7 @@ export default {
   mounted() {
     this.checkMobile()
     window.addEventListener('resize', this.checkMobile)
-    // Adicionei histrico para mobile
+   
     if (this.isMobile && this.selectedDeclaracao) {
       window.history.pushState({ modal: true }, '')
       window.addEventListener('popstate', this.handleBack)
@@ -327,7 +326,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.checkMobile)
-    // Remove listener de popstate
+    
     window.removeEventListener('popstate', this.handleBack)
   },
   methods: {
@@ -381,13 +380,11 @@ export default {
       if (newVal) {
         document.body.style.overflow = 'hidden'
         this.checkMobile()
-        // Adicionei historico quando abrir no mobile
         if (this.isMobile) {
           window.history.pushState({ modal: true }, '')
           window.addEventListener('popstate', this.handleBack)
         }
       } else {
-        // Remove listener ao fechar
         window.removeEventListener('popstate', this.handleBack)
       }
     }
@@ -423,7 +420,6 @@ export default {
   50% { box-shadow: 0 0 30px rgba(59, 76, 184, 0.6); }
 }
 
-/* Modal Base */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -579,13 +575,11 @@ export default {
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
-/* Certificate Full */
 .certificate-full {
   padding: 3rem 2.5rem;
   position: relative;
 }
 
-/* Header Desktop */
 .certificate-header {
   display: flex;
   align-items: center;

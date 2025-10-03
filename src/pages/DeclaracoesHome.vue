@@ -1,40 +1,34 @@
 <template>
-
   <div>
-    <HeroDeclaracoes  @scrollToSearch="scrollToSearch"/>
 
+    <HeroDeclaracoes @scrollToSearch="scrollToSearch" />
 
-    
-    <UltimasDeclaracoes @viewDetails="openModal"/>
+    <UltimasDeclaracoes @viewDetails="openModal" />
 
+    <DetalheDeclaracoes 
+      :selectedDeclaracao="selectedDeclaracao" 
+      @close="closeModal"
+    />
 
-     
-    <DetalheDeclaracoes :selectedDeclaracao="selectedDeclaracao" 
-      @close="closeModal"/>
-    
-    <BuscarDeclaracoes/>
+    <BuscarDeclaracoes 
+      ref="buscarDeclaracoes"
+      @viewDetails="openModal" 
+    />
   </div>
- <div>
- 
- </div>
 </template>
 
 <script>
-
 import HeroDeclaracoes from '@/pages/HeroDeclaracoes.vue'
 import UltimasDeclaracoes from '@/pages/UltimasDeclaracoes.vue'
 import DetalheDeclaracoes from '@/pages/DetalheDeclaracoes.vue'
 import BuscarDeclaracoes from '@/pages/BuscaDeclaracoes.vue'
-
 
 export default {
   components: {
     HeroDeclaracoes,
     UltimasDeclaracoes,
     DetalheDeclaracoes,
-    BuscarDeclaracoes,
-
-   
+    BuscarDeclaracoes
   },
   data() {
     return {
@@ -42,11 +36,19 @@ export default {
     }
   },
   methods: {
+
     scrollToSearch() {
+      const searchSection = this.$refs.buscarDeclaracoes?.$el
+      if (searchSection) {
+        searchSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     },
+
+  
     openModal(declaracao) {
       this.selectedDeclaracao = declaracao
     },
+
     closeModal() {
       this.selectedDeclaracao = null
     }

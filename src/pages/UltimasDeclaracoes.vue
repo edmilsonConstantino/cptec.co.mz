@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12 text-center mb-1 mb-md-5 ">
-          <h2 class="section-title">Últimas Declarações Emitidas</h2>
+          <h2 class="section-title">Últimos Certificados Emitidos</h2>
           <p class="section-subtitle">Conheça os alunos que acabaram de concluir nossos cursos</p>
         </div>
       </div>
@@ -368,10 +368,10 @@ export default {
 }
 
 .student-card {
-  background: white;
+  background: rgb(255, 255, 255);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   position: relative;
   display: flex;
@@ -497,6 +497,7 @@ export default {
   flex-direction: column;
   height: 110px;
   flex-shrink: 0;
+  justify-content: flex-start;
 }
 
 .quote-icon {
@@ -504,6 +505,8 @@ export default {
   font-size: 1.2rem;
   margin-bottom: 0.4rem;
   flex-shrink: 0;
+  margin-top: 0;
+  align-self: flex-start;
 }
 
 .student-testimonial p {
@@ -768,11 +771,13 @@ export default {
     overflow: hidden;
     padding: 0.6rem;
     margin-bottom: 0.6rem;
+    justify-content: flex-start;
   }
 
   .quote-icon {
     font-size: 1rem;
     margin-bottom: 0.3rem;
+    align-self: flex-start;
   }
 
   .student-testimonial p {
@@ -862,6 +867,7 @@ export default {
     height: 75px;
     margin-bottom: 0.5rem;
     padding: 0.5rem;
+    justify-content: flex-start;
   }
 
   .student-testimonial p {
@@ -961,11 +967,13 @@ export default {
     max-height: 70px;
     height: 70px;
     margin-bottom: 0.5rem;
+    justify-content: flex-start;
   }
   
   .quote-icon {
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
+    align-self: flex-start;
   }
   
   .student-testimonial p {

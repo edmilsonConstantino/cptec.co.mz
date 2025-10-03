@@ -34,20 +34,66 @@
                 </a>
               </router-link>
             </li>
-            <li class="nav-item" :class="{ active: activeSection === 'certificacoes' }">
+            
+            <!-- Dropdown Desktop para Certificações -->
+            <li class="nav-item dropdown-item" 
+                :class="{ active: activeSection === 'certificacoes' || activeSection === 'declaracoes' }"
+                @mouseenter="showDropdown = true"
+                @mouseleave="showDropdown = false">
+              <div class="nav-link dropdown-trigger">
+                <span class="dropdown-text">{{ currentDropdownText }}</span>
+                <i class="bi bi-chevron-down dropdown-icon" :class="{ rotated: showDropdown }"></i>
+              </div>
+              
+              <div class="dropdown-menu" :class="{ show: showDropdown }">
+                <router-link 
+                  to="/Certificacoes" 
+                  class="dropdown-item-link"
+                  @click="setActiveSection('certificacoes')"
+                  custom 
+                  v-slot="{ navigate }">
+                  <a @click="handleNavigation(navigate, 'certificacoes')" class="dropdown-item-link">
+                    <i class="bi bi-award-fill"></i>
+                    <div class="dropdown-item-content">
+                      <span class="dropdown-item-title">Certificações</span>
+                      <span class="dropdown-item-desc">Certificados oficiais</span>
+                    </div>
+                  </a>
+                </router-link>
+                
+                <router-link 
+                  to="/declaracoes" 
+                  class="dropdown-item-link"
+                  @click="setActiveSection('declaracoes')"
+                  custom 
+                  v-slot="{ navigate }">
+                  <a @click="handleNavigation(navigate, 'declaracoes')" class="dropdown-item-link">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                    <div class="dropdown-item-content">
+                      <span class="dropdown-item-title">Declarações</span>
+                      <span class="dropdown-item-desc">Consulte declarações</span>
+                    </div>
+                  </a>
+                </router-link>
+              </div>
+            </li>
+
+            <!-- Mobile: Manter separado -->
+            <li class="nav-item mobile-only" :class="{ active: activeSection === 'certificacoes' }">
               <router-link class="nav-link" to="/Certificacoes" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
                   <span>Certificações</span>
                 </a>
               </router-link>
             </li>
-            <li class="nav-item" :class="{ active: activeSection === 'declaracoes' }">
+            <li class="nav-item mobile-only" :class="{ active: activeSection === 'declaracoes' }">
               <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('declaracoes')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
-                  <span>Declarações </span>
+                <a @click="handleNavigation(navigate, 'declaracoes')" class="nav-link">
+                  <span>Declarações</span>
                 </a>
               </router-link>
             </li>
+
             <li class="nav-item" :class="{ active: activeSection === 'contato' }">
               <router-link class="nav-link" to="/Contacto" @click="setActiveSection('contato')" custom v-slot="{ navigate }">
                 <a @click="handleNavigation(navigate, 'contato')" class="nav-link">
@@ -75,7 +121,16 @@ export default {
     return {
       isMenuOpen: false,
       isScrolled: false,
-      activeSection: 'inicio'
+      activeSection: 'inicio',
+      showDropdown: false,
+      currentDropdownIndex: 0,
+      dropdownTexts: ['Certificações', 'Declarações'],
+      textInterval: null
+    }
+  },
+  computed: {
+    currentDropdownText() {
+      return this.dropdownTexts[this.currentDropdownIndex];
     }
   },
   watch: {
@@ -89,7 +144,6 @@ export default {
     },
     closeMenu() {
       this.isMenuOpen = false;
-      
       setTimeout(() => {
         this.isMenuOpen = false;
       }, 100);
@@ -101,20 +155,30 @@ export default {
     handleNavigation(navigate, section) {
       this.setActiveSection(section);
       navigate();
+      this.showDropdown = false;
     },
     handleScroll() {
-      this.isScrolled = window.scrollY > 50
+      this.isScrolled = window.scrollY > 50;
     },
-    
+    startTextRotation() {
+      this.textInterval = setInterval(() => {
+        this.currentDropdownIndex = (this.currentDropdownIndex + 1) % this.dropdownTexts.length;
+      }, 2000);
+    },
+    stopTextRotation() {
+      if (this.textInterval) {
+        clearInterval(this.textInterval);
+        this.textInterval = null;
+      }
+    },
     getInitialActiveSection() {
       const currentRoute = this.$route?.path || window.location.pathname;
-      
       const routeMap = {
         '/': 'inicio',
         '/Depoimentos': 'depoimentos',
         '/Cursos': 'cursos', 
         '/Certificacoes': 'certificacoes',
-        '/Declaracoes': 'declaracoes',
+        '/declaracoes': 'declaracoes',
         '/Contacto': 'contato',
         '/SobreNos': 'SobreNos',
         '/Ambiental': 'cursos',
@@ -124,18 +188,16 @@ export default {
         '/Monitoria': 'cursos',
         '/Nebosh': 'cursos'
       };
-      
       return routeMap[currentRoute] || 'inicio';
     },
-    
     updateActiveSection() {
       const newActiveSection = this.getInitialActiveSection();
       this.activeSection = newActiveSection;
     }
   },
-  
   mounted() {
     this.updateActiveSection();
+    this.startTextRotation();
     
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
@@ -148,6 +210,7 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    this.stopTextRotation();
   }
 }
 </script>
@@ -198,23 +261,6 @@ export default {
 
 .logo-image:hover {
   transform: scale(1.05);
-}
-
-.brand-text {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.brand-primary {
-  color: #2c3e50;
-}
-
-.brand-gradient {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .menu-toggle {
@@ -321,6 +367,119 @@ export default {
   width: 60%;
 }
 
+/* Dropdown Styles - Desktop Only */
+.dropdown-item {
+  position: relative;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-text {
+  transition: all 0.3s ease;
+  display: inline-block;
+  min-width: 110px;
+}
+
+.dropdown-icon {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+  color: inherit;
+}
+
+.dropdown-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  min-width: 260px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-left: 1px solid rgba(102, 126, 234, 0.1);
+  border-top: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2c3e50;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdown-item-link:hover {
+  background: rgba(102, 126, 234, 0.08);
+  transform: translateX(4px);
+}
+
+.dropdown-item-link i {
+  font-size: 1.4rem;
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.dropdown-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropdown-item-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.dropdown-item-desc {
+  font-size: 0.75rem;
+  color: #718096;
+  font-weight: 400;
+}
+
+/* Hide dropdown on mobile, show separate items */
+.mobile-only {
+  display: none;
+}
+
 .bi-whatsapp {
   font-size: 20px;
   margin-right: 8px;
@@ -363,6 +522,16 @@ export default {
 }
 
 @media (max-width: 768px) {
+  /* Hide dropdown on mobile */
+  .dropdown-item {
+    display: none !important;
+  }
+  
+  /* Show separate items on mobile */
+  .mobile-only {
+    display: block;
+  }
+
   .professional-navbar {
     background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(10px);
@@ -518,13 +687,6 @@ export default {
     color: #667eea !important;
   }
 
-  .bi-whatsapp {
-    font-size: 20px;
-    margin-right: 8px;
-    transition: transform 0.3s ease;
-    display: inline-block;
-  }
-
   .whatsapp-link {
     background: transparent !important;
     border-color: transparent !important;
@@ -541,29 +703,6 @@ export default {
 
   .whatsapp-link:hover .bi-whatsapp {
     transform: scale(1.1);
-  }
-
-  .whatsapp-link.router-link-active::after {
-    background: #25D366;
-  }
-
-  .nav-menu.active .nav-link:nth-child(1) { 
-    transition-delay: 0.1s;
-  }
-  .nav-menu.active .nav-link:nth-child(2) { 
-    transition-delay: 0.15s;
-  }
-  .nav-menu.active .nav-link:nth-child(3) { 
-    transition-delay: 0.2s;
-  }
-  .nav-menu.active .nav-link:nth-child(4) { 
-    transition-delay: 0.25s;
-  }
-  .nav-menu.active .nav-link:nth-child(5) { 
-    transition-delay: 0.3s;
-  }
-  .nav-menu.active .nav-link:nth-child(6) { 
-    transition-delay: 0.35s;
   }
 
   .nav-link:active {
@@ -600,19 +739,6 @@ export default {
     padding: 0.7rem 1rem;
     min-height: 36px;
     max-height: 36px;
-  }
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .nav-link:hover {
-    background: initial;
-    transform: initial;
-  }
-  
-  .nav-link:active {
-    background: rgba(102, 126, 234, 0.1) !important;
-    border-color: rgba(102, 126, 234, 0.4) !important;
-    transform: scale(0.98);
   }
 }
 </style>
