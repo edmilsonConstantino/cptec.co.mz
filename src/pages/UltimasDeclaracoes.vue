@@ -9,7 +9,12 @@
       </div>
       
       <div class="carousel-container">
-        <div class="carousel-track" ref="carouselTrack" :style="carouselStyle">
+        <div 
+          class="carousel-track" 
+          ref="carouselTrack" 
+          :style="carouselStyle"
+          @scroll="handleTrackScroll"
+        >
           <div 
             v-for="(declaracao) in declaracoes" 
             :key="declaracao.id"
@@ -65,7 +70,6 @@
           </div>
         </div>
         
-
         <button 
           @click="prevSlide" 
           class="carousel-btn prev-btn" 
@@ -83,14 +87,14 @@
           <i class="bi bi-chevron-right"></i>
         </button>
       </div>
-      <!-- Mova os dots para fora do carousel-container -->
+      
       <div class="carousel-dots">
         <button 
-          v-for="(_, index) in Math.ceil(declaracoes.length / slidesToShow)" 
+          v-for="(_, index) in dotsCount" 
           :key="index"
           @click="goToSlide(index)"
           class="dot"
-          :class="{ active: Math.floor(currentSlide / slidesToShow) === index }"
+          :class="{ active: currentDotIndex === index }"
         ></button>
       </div>
     </div>
@@ -98,227 +102,257 @@
 </template>
 
 <script>
+import CertificationsService from "@/components/services/certifications";
+
 export default {
-  name: 'CarouselSection',
-  emits: ['viewDetails'],
+  name: "CarouselSection",
+  emits: ["viewDetails"],
+
   data() {
     return {
       currentSlide: 0,
       slidesToShow: 3,
       autoSlideInterval: null,
       isMobile: false,
-      
-      declaracoes: [
-        {
-          id: 1,
-          nomeCompleto: 'João Carlos Silva Santos',
-          documento: '123456789',
-          curso: 'Desenvolvimento Web Full Stack',
-          duracao: '6 meses',
-          cargaHoraria: '240 horas',
-          dataConclusao: '2024-03-15',
-          codigo: 'CFP-2024-001-WEB',
-          ano: '2024',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'O curso me proporcionou conhecimentos essenciais em desenvolvimento web. Aprendi tecnologias modernas e consegui minha primeira oportunidade como desenvolvedor full stack.'
-        },
-        {
-          id: 2,
-          nomeCompleto: 'Maria José Fernandes Costa',
-          documento: '987654321',
-          curso: 'Marketing Digital Avançado',
-          duracao: '4 meses',
-          cargaHoraria: '180 horas',
-          dataConclusao: '2024-02-28',
-          codigo: 'CFP-2024-002-MKT',
-          ano: '2024',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1494790108755-2616b9234706?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'Excelente curso de marketing digital! Os professores são muito qualificados e o conteúdo é atualizado com as tendências do mercado.'
-        },
-        {
-          id: 3,
-          nomeCompleto: 'Paulo Roberto Mendes Lima',
-          documento: '456789123',
-          curso: 'Ciência de Dados e Analytics',
-          duracao: '8 meses',
-          cargaHoraria: '320 horas',
-          dataConclusao: '2024-01-20',
-          codigo: 'CFP-2024-003-DATA',
-          ano: '2024',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'Curso excepcional em ciência de dados. Aprendi desde estatística básica até machine learning avançado. Material muito bem estruturado.'
-        },
-        {
-          id: 4,
-          nomeCompleto: 'Ana Paula Costa Oliveira',
-          documento: '789123456',
-          curso: 'Design UX/UI Profissional',
-          duracao: '5 meses',
-          cargaHoraria: '200 horas',
-          dataConclusao: '2023-12-10',
-          codigo: 'CFP-2023-045-UX',
-          ano: '2023',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'O curso de UX/UI mudou minha carreira completamente. Aprendi metodologias de design centrado no usuário e hoje trabalho em uma grande empresa.'
-        },
-        {
-          id: 5,
-          nomeCompleto: 'Roberto Lima Carvalho',
-          documento: '321654987',
-          curso: 'Gestão Empresarial',
-          duracao: '6 meses',
-          cargaHoraria: '250 horas',
-          dataConclusao: '2023-11-25',
-          codigo: 'CFP-2023-046-GES',
-          ano: '2023',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'Curso muito completo sobre gestão empresarial. Os conhecimentos me ajudaram a reestruturar minha empresa e aumentar a produtividade.'
-        },
-        {
-          id: 6,
-          nomeCompleto: 'Carla Fernandes Rodrigues',
-          documento: '654987321',
-          curso: 'Gestão de Projetos Ágeis',
-          duracao: '4 meses',
-          cargaHoraria: '160 horas',
-          dataConclusao: '2023-10-15',
-          codigo: 'CFP-2023-047-PROJ',
-          ano: '2023',
-          status: 'Aprovado',
-          foto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face&auto=format&q=80',
-          depoimento: 'Aprendi metodologias ágeis que transformaram como gerencio projetos. Recebi uma promoção logo após concluir o curso.'
-        }
-      ]
-    }
+      declaracoes: [], 
+      loading: true,
+      error: null,
+      isScrolling: false,
+    };
   },
-  
+
   computed: {
- carouselStyle() {
-  if (this.isMobile) {
-    return {}
-  }
-  return {
-    transform: `translateX(-${(this.currentSlide * 100) / this.slidesToShow}%)`,
-    transition: 'transform 0.5s ease-in-out',
-    width: `${(this.declaracoes.length / this.slidesToShow) * 100}%`
-  }
-},
-    
-    maxSlide() {
-      return this.declaracoes.length - this.slidesToShow
-    }
-  },
-  
-  mounted() {
-    this.updateResponsiveSettings()
-    this.startAutoSlide()
-    window.addEventListener('resize', this.updateResponsiveSettings)
-    // Adiciona listener de scroll para mobile
-    this.$nextTick(() => {
-      if (this.$refs.carouselTrack) {
-        this.$refs.carouselTrack.addEventListener('scroll', this.handleTrackScroll)
+    carouselStyle() {
+      if (this.isMobile) {
+        return {
+          display: "flex",
+         
+    width: "auto",         // garante largura natural
+    minWidth: "max-content" 
+        };
       }
-    })
+      return {
+        transform: `translateX(-${(this.currentSlide * 100) / this.slidesToShow}%)`,
+        transition: "transform 0.5s ease-in-out",
+        width: `${(this.declaracoes.length / this.slidesToShow) * 100}%`,
+      };
+    },
+
+    maxSlide() {
+      return Math.max(0, this.declaracoes.length - this.slidesToShow);
+    },
+
+    dotsCount() {
+      if (this.isMobile) {
+        return this.declaracoes.length;
+      }
+      return Math.ceil(this.declaracoes.length / this.slidesToShow);
+    },
+
+    currentDotIndex() {
+      if (this.isMobile) {
+        return this.currentSlide;
+      }
+      return Math.floor(this.currentSlide / this.slidesToShow);
+    },
   },
-  beforeUnmount() {
-    this.stopAutoSlide()
-    window.removeEventListener('resize', this.updateResponsiveSettings)
-    // Remove listener de scroll
-    if (this.$refs.carouselTrack) {
-      this.$refs.carouselTrack.removeEventListener('scroll', this.handleTrackScroll)
+
+  async created() {
+    try {
+      this.loading = true;
+      const data = await CertificationsService.getAll();
+
+      this.declaracoes = data.map((item) => ({
+        id: item.id,
+        nomeCompleto: item.nome_completo,
+        curso: item.curso,
+        cargaHoraria: item.carga_horaria,
+        dataConclusao: item.data_conclusao,
+        codigo: item.codigo,
+        status: item.status,
+        depoimento: item.depoimento || "Excelente curso! Recomendo a todos.",
+        duracao: item.duracao,
+        documento: item.documento,
+        foto: item.foto || "https://via.placeholder.com/90",
+      }));
+    } catch (err) {
+      this.error = "Não foi possível carregar as declarações.";
+      console.error(err);
+    } finally {
+      this.loading = false;
     }
   },
-  
+
+  mounted() {
+    this.updateResponsiveSettings();
+    window.addEventListener("resize", this.updateResponsiveSettings);
+    if (this.$refs.carouselTrack) {
+      this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
+    }
+    // Garante que no mobile, o scroll inicial seja para o card correto
+    this.$nextTick(() => {
+      if (this.isMobile) this.scrollToCurrentSlide();
+    });
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.updateResponsiveSettings);
+    this.stopAutoSlide();
+    if (this.$refs.carouselTrack) {
+      this.$refs.carouselTrack.removeEventListener("scroll", this.handleTrackScroll);
+    }
+  },
+
+  watch: {
+    isMobile(newVal) {
+      this.$nextTick(() => {
+        if (this.$refs.carouselTrack) {
+          if (newVal) {
+            this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
+            this.scrollToCurrentSlide();
+          } else {
+            this.$refs.carouselTrack.removeEventListener("scroll", this.handleTrackScroll);
+          }
+        }
+      });
+    },
+    declaracoes() {
+      // Quando os dados mudam, garante que o scroll está correto no mobile
+      this.$nextTick(() => {
+        if (this.isMobile) this.scrollToCurrentSlide();
+      });
+    }
+  },
+
   methods: {
     nextSlide() {
       if (this.currentSlide < this.maxSlide) {
-        this.currentSlide++
+        this.currentSlide++;
       } else {
-        this.currentSlide = 0
+        this.currentSlide = 0;
       }
-      this.resetAutoSlide()
+      this.resetAutoSlide();
     },
-    
+
     prevSlide() {
       if (this.currentSlide > 0) {
-        this.currentSlide--
+        this.currentSlide--;
       } else {
-        this.currentSlide = this.maxSlide
+        this.currentSlide = this.maxSlide;
       }
-      this.resetAutoSlide()
+      this.resetAutoSlide();
     },
-    
+
     goToSlide(index) {
-      this.currentSlide = index * this.slidesToShow
-      this.resetAutoSlide()
-    },
-    
-    startAutoSlide() {
-      if (!this.isMobile) {
-        this.autoSlideInterval = setInterval(() => {
-          this.nextSlide()
-        }, 5000)
+      if (this.isMobile) {
+        const track = this.$refs.carouselTrack;
+        if (!track) return;
+        
+        const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 0;
+        const gap = 15;
+        const scrollPosition = index * (slideWidth + gap);
+        
+        track.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+        this.currentSlide = index;
+      } else {
+        this.currentSlide = index * this.slidesToShow;
+        this.resetAutoSlide();
       }
     },
-    
+
+    startAutoSlide() {
+      if (!this.isMobile && this.declaracoes.length > this.slidesToShow) {
+        this.autoSlideInterval = setInterval(() => {
+          this.nextSlide();
+        }, 5000);
+      }
+    },
+
     stopAutoSlide() {
       if (this.autoSlideInterval) {
-        clearInterval(this.autoSlideInterval)
-        this.autoSlideInterval = null
+        clearInterval(this.autoSlideInterval);
+        this.autoSlideInterval = null;
       }
     },
-    
+
     resetAutoSlide() {
-      this.stopAutoSlide()
-      this.startAutoSlide()
+      this.stopAutoSlide();
+      this.startAutoSlide();
     },
-    
+
     updateResponsiveSettings() {
-      const width = window.innerWidth
-      const wasMobile = this.isMobile
-      
+      const width = window.innerWidth;
+      const wasMobile = this.isMobile;
+
       if (width < 768) {
-        this.slidesToShow = 1
-        this.isMobile = true
-        this.stopAutoSlide()
+        this.slidesToShow = 1;
+        this.isMobile = true;
+        this.stopAutoSlide();
       } else if (width < 1200) {
-        this.slidesToShow = 2
-        this.isMobile = false
+        this.slidesToShow = 2;
+        this.isMobile = false;
       } else {
-        this.slidesToShow = 3
-        this.isMobile = false
+        this.slidesToShow = 3;
+        this.isMobile = false;
       }
-      
+
       if (wasMobile !== this.isMobile) {
-        this.currentSlide = 0
-        this.resetAutoSlide()
+        this.currentSlide = 0;
+        if (!this.isMobile) {
+          this.resetAutoSlide();
+        }
       }
     },
-    
+
     viewDetails(declaracao) {
-      this.$emit('viewDetails', declaracao)
+      this.$emit("viewDetails", declaracao);
     },
-    
+
     formatDate(dateString) {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('pt-BR')
+      if (!dateString) return "Data não disponível";
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "Data inválida";
+      return date.toLocaleDateString("pt-BR");
     },
 
     handleTrackScroll() {
-      if (!this.isMobile) return
-      const track = this.$refs.carouselTrack
-      const slideWidth = track.querySelector('.carousel-slide')?.offsetWidth || 1
-      const scrollLeft = track.scrollLeft
-      const index = Math.round(scrollLeft / (slideWidth + 0)) // 0 = gap/padding se houver
-      this.currentSlide = index
+      if (!this.isMobile || this.isScrolling) return;
+      
+      this.isScrolling = true;
+      
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(() => {
+        const track = this.$refs.carouselTrack;
+        if (!track) return;
+        
+        const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 1;
+        const gap = 15;
+        const scrollLeft = track.scrollLeft;
+        const index = Math.round(scrollLeft / (slideWidth + gap));
+        
+        this.currentSlide = Math.max(0, Math.min(index, this.declaracoes.length - 1));
+        this.isScrolling = false;
+      }, 100);
     },
-  }
-}
+
+    scrollToCurrentSlide() {
+      // No mobile, scroll para o card correto
+      if (!this.isMobile) return;
+      this.$nextTick(() => {
+        const track = this.$refs.carouselTrack;
+        if (!track) return;
+        const slides = track.querySelectorAll(".carousel-slide");
+        if (slides.length === 0) return;
+        const slideWidth = slides[0].offsetWidth;
+        const gap = 15;
+        track.scrollLeft = this.currentSlide * (slideWidth + gap);
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -329,6 +363,14 @@ export default {
 .carousel-section {
   padding: 4rem 0;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
 .section-title {
@@ -342,20 +384,21 @@ export default {
   font-size: 1.2rem;
   color: #6c757d;
   font-weight: 300;
+  margin-bottom: 0.6rem;
 }
 
 .carousel-container {
   position: relative;
-  max-width: 1500px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0;
-  display: flex;
-  overflow: visible;
+  overflow: hidden;
+  min-height: 560px;
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
+  align-items: flex-start;
 }
 
 .carousel-slide {
@@ -363,7 +406,6 @@ export default {
   padding: 0 12px;
   box-sizing: border-box;
 }
-
 
 .student-card {
   background: white;
@@ -377,9 +419,7 @@ export default {
   height: 520px;
   width: 100%;
   max-width: 340px;
-  margin: 0 auto;
-  /* Remove margin extra */
-  border: none;
+  margin: 40px auto 0;
 }
 
 .student-card:hover {
@@ -403,7 +443,7 @@ export default {
   height: 90px;
   margin: 25px auto 15px;
   z-index: 2;
-  top: -5px;
+  flex-shrink: 0;
 }
 
 .student-photo img {
@@ -414,10 +454,6 @@ export default {
   object-position: center;
   border: 4px solid white;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  min-width: 90px;
-  min-height: 90px;
-  max-width: 90px;
-  max-height: 90px;
 }
 
 .photo-overlay {
@@ -449,8 +485,7 @@ export default {
   font-size: 1.1rem;
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 0.4rem;
-  margin-top: 1.2rem; /* Novo: afasta o nome da foto */
+  margin: 1.2rem 0 0.4rem;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -508,6 +543,7 @@ export default {
   color: #3b4cb8;
   font-size: 1.2rem;
   margin-bottom: 0.4rem;
+  flex-shrink: 0;
 }
 
 .student-testimonial p {
@@ -540,6 +576,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  word-break: break-all;
 }
 
 .btn-view-cert {
@@ -604,14 +641,11 @@ export default {
 }
 
 .carousel-dots {
-  position: relative;
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-top: 2rem;
-  margin-bottom: 0;
   width: 100%;
-  z-index: 1;
 }
 
 .dot {
@@ -622,6 +656,7 @@ export default {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
 }
 
 .dot.active {
@@ -668,6 +703,7 @@ export default {
 @media (max-width: 768px) {
   .carousel-section {
     padding: 2.5rem 0;
+    overflow: visible;
   }
   
   .section-title {
@@ -681,20 +717,25 @@ export default {
   
   .carousel-container {
     padding: 0;
-    max-width: 100vw;
+    overflow: visible;
+    min-height: auto;
   }
 
   .carousel-track {
     overflow-x: auto;
+    overflow-y: visible;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     gap: 15px;
-    padding: 0 10px 20px 10px;
+    padding: 0 15px 20px 15px;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    min-width: 100%;
-    box-sizing: border-box;
+    min-width: max-content;
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
   }
   
   .carousel-slide {
@@ -706,34 +747,23 @@ export default {
   .student-card {
     height: 480px;
     border-radius: 16px;
-    margin: 0; /* Remove margin extra */
+    margin: 40px 0 0;
     max-width: 100%;
-    background: white;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: none;
   }
 
   .student-name {
     font-size: 1rem;
     min-height: 2rem;
-    margin-bottom: 0.4rem;
-    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
   }
 
   .carousel-dots {
-    position: relative;
     margin-top: 2rem;
-    display: flex; /* Garante que apareça no mobile */
   }
 }
 
 @media (max-width: 576px) {
-  .carousel-container {
-    padding: 0;
-  }
-  
   .carousel-track {
-    padding: 0 15px;
+    padding: 0 10px 20px 10px;
   }
   
   .carousel-slide {
@@ -753,22 +783,15 @@ export default {
   }
   
   .student-photo {
-    width: 60px;
-    height: 60px;
-    margin: 15px auto 10px;
-  }
-  
-  .student-photo img {
-    min-width: 60px;
-    min-height: 60px;
-    max-width: 60px;
-    max-height: 60px;
+    width: 70px;
+    height: 70px;
+    margin: 20px auto 12px;
   }
   
   .photo-overlay {
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
   }
   
   .student-info {
@@ -776,48 +799,40 @@ export default {
   }
   
   .student-name {
-    font-size: 0.9rem;
-    min-height: 1.8rem;
-    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
+    font-size: 0.95rem;
   }
   
   .student-course {
     font-size: 0.75rem;
-    min-height: 1.8rem;
   }
   
   .detail-item {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
   }
   
   .student-testimonial {
-    padding: 0.6rem;
+    padding: 0.7rem;
     min-height: 70px;
   }
   
   .student-testimonial p {
-    font-size: 0.65rem;
-    -webkit-line-clamp: 2;
+    font-size: 0.7rem;
   }
   
   .certificate-code {
     font-size: 0.65rem;
-    padding: 0.3rem;
+    padding: 0.4rem;
   }
   
   .btn-view-cert {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
-  }
-
-  .carousel-dots {
-    margin-top: 1.2rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 375px) {
   .carousel-track {
-    padding: 0 10px;
+    padding: 0 10px 20px 10px;
   }
   
   .carousel-slide {
@@ -825,7 +840,7 @@ export default {
   }
   
   .student-card {
-    height: 420px;
+    height: 430px;
   }
   
   .section-title {
@@ -837,29 +852,22 @@ export default {
   }
   
   .card-background {
-    height: 80px;
+    height: 100px;
   }
   
   .student-photo {
-    width: 50px;
-    height: 50px;
-    margin: 10px auto 8px;
-  }
-  
-  .student-photo img {
-    min-width: 50px;
-    min-height: 50px;
-    max-width: 50px;
-    max-height: 50px;
-    border-width: 2px;
+    width: 60px;
+    height: 60px;
+    margin: 15px auto 10px;
   }
   
   .photo-overlay {
-    width: 18px;
-    height: 18px;
-    font-size: 0.6rem;
-    bottom: -2px;
-    right: -2px;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    bottom: -3px;
+    right: -3px;
+    border-width: 2px;
   }
   
   .student-info {
@@ -867,25 +875,24 @@ export default {
   }
   
   .student-name {
-    font-size: 0.85rem;
-    min-height: 1.6rem;
-    margin-bottom: 0.3rem;
-    margin-top: 1.2rem; /* Novo: afasta o nome da foto no mobile */
+    font-size: 0.9rem;
+    min-height: 1.8rem;
+    margin-top: 1rem;
   }
   
   .student-course {
     font-size: 0.7rem;
-    min-height: 1.6rem;
+    min-height: 1.8rem;
     margin-bottom: 0.8rem;
   }
   
   .student-details {
-    gap: 0.2rem;
+    gap: 0.25rem;
     margin-bottom: 0.8rem;
   }
   
   .detail-item {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
   }
   
   .detail-item i {
@@ -894,8 +901,8 @@ export default {
   }
   
   .student-testimonial {
-    padding: 0.5rem;
-    min-height: 60px;
+    padding: 0.6rem;
+    min-height: 65px;
     margin-bottom: 0.8rem;
   }
   
@@ -906,7 +913,7 @@ export default {
   
   .student-testimonial p {
     font-size: 0.65rem;
-    line-height: 1.3;
+    line-height: 1.35;
     -webkit-line-clamp: 2;
   }
   
@@ -916,17 +923,22 @@ export default {
   
   .certificate-code {
     font-size: 0.6rem;
-    padding: 0.25rem;
+    padding: 0.3rem;
   }
   
   .btn-view-cert {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.7rem;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
     gap: 0.3rem;
   }
   
   .carousel-dots {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
   }
 }
 </style>

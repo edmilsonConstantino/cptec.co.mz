@@ -3,15 +3,15 @@ import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 import axios from 'axios';
-import { useAuthStore } from './stores/auth'; // Ajuste o caminho se necessário
-import 'bootstrap/dist/css/bootstrap.min.css' //bootstrap
+import { useAuthStore } from './stores/auth';
+import 'bootstrap/dist/css/bootstrap.min.css' 
 import 'bootstrap'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './assets/styles/main.css';
 
 // Configurações globais do Axios
 axios.defaults.baseURL = 'http://127.0.0.1:8000/';
-axios.defaults.withCredentials = true; // Para enviar cookies
+axios.defaults.withCredentials = true; 
 
 const pinia = createPinia();
 const app = createApp(App);
