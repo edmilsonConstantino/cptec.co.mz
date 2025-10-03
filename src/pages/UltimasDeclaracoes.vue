@@ -2,7 +2,7 @@
   <section class="carousel-section">
     <div class="container">
       <div class="row">
-        <div class="col-12 text-center mb-4 mb-md-5">
+        <div class="col-12 text-center mb-1 mb-md-5 ">
           <h2 class="section-title">Últimas Declarações Emitidas</h2>
           <p class="section-subtitle">Conheça os alunos que acabaram de concluir nossos cursos</p>
         </div>
@@ -126,9 +126,6 @@ export default {
       if (this.isMobile) {
         return {
           display: "flex",
-         
-    width: "auto",         // garante largura natural
-    minWidth: "max-content" 
         };
       }
       return {
@@ -186,41 +183,18 @@ export default {
   mounted() {
     this.updateResponsiveSettings();
     window.addEventListener("resize", this.updateResponsiveSettings);
+    
     if (this.$refs.carouselTrack) {
       this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
     }
-    // Garante que no mobile, o scroll inicial seja para o card correto
-    this.$nextTick(() => {
-      if (this.isMobile) this.scrollToCurrentSlide();
-    });
   },
 
   beforeUnmount() {
     window.removeEventListener("resize", this.updateResponsiveSettings);
     this.stopAutoSlide();
+    
     if (this.$refs.carouselTrack) {
       this.$refs.carouselTrack.removeEventListener("scroll", this.handleTrackScroll);
-    }
-  },
-
-  watch: {
-    isMobile(newVal) {
-      this.$nextTick(() => {
-        if (this.$refs.carouselTrack) {
-          if (newVal) {
-            this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
-            this.scrollToCurrentSlide();
-          } else {
-            this.$refs.carouselTrack.removeEventListener("scroll", this.handleTrackScroll);
-          }
-        }
-      });
-    },
-    declaracoes() {
-      // Quando os dados mudam, garante que o scroll está correto no mobile
-      this.$nextTick(() => {
-        if (this.isMobile) this.scrollToCurrentSlide();
-      });
     }
   },
 
@@ -337,20 +311,6 @@ export default {
         this.isScrolling = false;
       }, 100);
     },
-
-    scrollToCurrentSlide() {
-      // No mobile, scroll para o card correto
-      if (!this.isMobile) return;
-      this.$nextTick(() => {
-        const track = this.$refs.carouselTrack;
-        if (!track) return;
-        const slides = track.querySelectorAll(".carousel-slide");
-        if (slides.length === 0) return;
-        const slideWidth = slides[0].offsetWidth;
-        const gap = 15;
-        track.scrollLeft = this.currentSlide * (slideWidth + gap);
-      });
-    },
   },
 };
 </script>
@@ -402,7 +362,7 @@ export default {
 }
 
 .carousel-slide {
-  flex: 0 0 calc(100% / 3);
+  flex: 0 0 calc(60% / 3);
   padding: 0 12px;
   box-sizing: border-box;
 }
@@ -439,9 +399,9 @@ export default {
 
 .student-photo {
   position: relative;
-  width: 90px;
+  width: 92px;
   height: 90px;
-  margin: 25px auto 15px;
+  margin: 15px auto 15px;
   z-index: 2;
   flex-shrink: 0;
 }
@@ -482,16 +442,17 @@ export default {
 }
 
 .student-name {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 1.2rem 0 0.4rem;
+  margin: 0.6rem 0 0.4rem;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.8rem;
+  text-overflow: ellipsis;
+  min-height: 2.4rem;
 }
 
 .student-course {
@@ -503,13 +464,12 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.4rem;
 }
 
 .student-details {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.30rem;
   margin-bottom: 1rem;
 }
 
@@ -533,10 +493,10 @@ export default {
   border-radius: 10px;
   margin-bottom: 1rem;
   position: relative;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 80px;
+  height: 110px;
+  flex-shrink: 0;
 }
 
 .quote-icon {
@@ -547,21 +507,21 @@ export default {
 }
 
 .student-testimonial p {
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: #495057;
+  font-size: 0.85rem;
+  line-height: 1.4;
   margin: 0;
-  flex: 1;
-  overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .certificate-info {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-top: auto;
 }
 
@@ -577,6 +537,7 @@ export default {
   align-items: center;
   justify-content: center;
   word-break: break-all;
+  margin:0 ;
 }
 
 .btn-view-cert {
@@ -644,7 +605,7 @@ export default {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
@@ -661,7 +622,7 @@ export default {
 
 .dot.active {
   background: linear-gradient(135deg, #3b4cb8, #4e73df);
-  transform: scale(1.3);
+  transform: scale(1.1);
 }
 
 @media (max-width: 1200px) {
@@ -702,23 +663,27 @@ export default {
 
 @media (max-width: 768px) {
   .carousel-section {
-    padding: 2.5rem 0;
+    padding: 1.5rem 0;
     overflow: visible;
+    background: transparent;
   }
   
   .section-title {
     font-size: 1.8rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.4rem;
   }
   
   .section-subtitle {
     font-size: 1rem;
+    margin-bottom: 0.6rem;
   }
   
   .carousel-container {
     padding: 0;
     overflow: visible;
     min-height: auto;
+    margin-top: 0;
+    display: contents; 
   }
 
   .carousel-track {
@@ -731,7 +696,6 @@ export default {
     padding: 0 15px 20px 15px;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    min-width: max-content;
   }
 
   .carousel-track::-webkit-scrollbar {
@@ -745,33 +709,108 @@ export default {
   }
   
   .student-card {
-    height: 480px;
+    height: 450px;
+    min-height: 450px;
+    max-height: 450px;
     border-radius: 16px;
     margin: 40px 0 0;
     max-width: 100%;
   }
 
-  .student-name {
-    font-size: 1rem;
-    min-height: 2rem;
+  .card-background {
+    height: 90px;
   }
 
-  .carousel-dots {
-    margin-top: 2rem;
+  .student-photo {
+    width: 70px;
+    height: 70px;
+    margin: 10px auto 10px;
+  }
+
+  .photo-overlay {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+
+  .student-info {
+    padding: 0 0.8rem 0.8rem;
+  }
+
+  .student-name {
+    font-size: 0.9rem;
+    min-height: 2.2rem;
+    max-height: 2.2rem;
+    line-height: 1.2;
+    margin: 0.4rem 0 0.3rem;
+  }
+
+  .student-course {
+    font-size: 0.8rem;
+    min-height: 2rem;
+    max-height: 2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .student-details {
+    gap: 0.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .detail-item {
+    font-size: 0.7rem;
+  }
+
+  .student-testimonial {
+    height: 85px;
+    min-height: 85px;
+    max-height: 85px;
+    overflow: hidden;
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .quote-icon {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .student-testimonial p {
+    -webkit-line-clamp: 3;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .certificate-code {
+    font-size: 0.65rem;
+    padding: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .btn-view-cert {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .certificate-info {
+    margin-top: auto;
+    gap: 0.4rem;
   }
 }
 
 @media (max-width: 576px) {
   .carousel-track {
-    padding: 0 10px 20px 10px;
+    padding: 0 10px 15px 10px;
   }
   
   .carousel-slide {
-    flex: 0 0 260px;
+    flex: 0 0 250px;
   }
   
   .student-card {
-    height: 450px;
+    height: 430px;
+    min-height: 430px;
+    max-height: 430px;
   }
   
   .section-title {
@@ -783,50 +822,62 @@ export default {
   }
   
   .student-photo {
-    width: 70px;
-    height: 70px;
-    margin: 20px auto 12px;
+    width: 60px;
+    height: 60px;
+    margin: 10px auto 8px;
   }
   
   .photo-overlay {
-    width: 24px;
-    height: 24px;
-    font-size: 0.8rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
   }
   
   .student-info {
-    padding: 0 0.8rem 0.8rem;
+    padding: 0 0.6rem 0.6rem;
   }
   
   .student-name {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    min-height: 2rem;
+    max-height: 2rem;
+    margin-top: 0.4rem;
   }
   
   .student-course {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
+    margin-bottom: 0.5rem;
+    min-height: 1.8rem;
+    max-height: 1.8rem;
   }
   
   .detail-item {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.15rem;
   }
   
   .student-testimonial {
-    padding: 0.7rem;
-    min-height: 70px;
+    min-height: 75px;
+    max-height: 75px;
+    height: 75px;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
   }
-  
+
   .student-testimonial p {
+    -webkit-line-clamp: 3;
     font-size: 0.7rem;
+    line-height: 1.25;
   }
   
   .certificate-code {
-    font-size: 0.65rem;
-    padding: 0.4rem;
+    font-size: 0.6rem;
+    padding: 0.3rem;
   }
   
   .btn-view-cert {
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -840,7 +891,9 @@ export default {
   }
   
   .student-card {
-    height: 430px;
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;
   }
   
   .section-title {
@@ -852,84 +905,89 @@ export default {
   }
   
   .card-background {
-    height: 100px;
+    height: 80px;
   }
   
   .student-photo {
-    width: 60px;
-    height: 60px;
-    margin: 15px auto 10px;
+    width: 55px;
+    height: 55px;
+    margin: 8px auto 8px;
   }
   
   .photo-overlay {
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
-    bottom: -3px;
-    right: -3px;
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    bottom: -2px;
+    right: -2px;
     border-width: 2px;
   }
   
   .student-info {
-    padding: 0 0.6rem 0.6rem;
+    padding: 0 0.5rem 0.5rem;
   }
   
   .student-name {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     min-height: 1.8rem;
-    margin-top: 1rem;
+    max-height: 1.8rem;
+    margin-top: 0.8rem;
   }
   
   .student-course {
-    font-size: 0.7rem;
-    min-height: 1.8rem;
-    margin-bottom: 0.8rem;
+    font-size: 0.68rem;
+    min-height: 1.6rem;
+    max-height: 1.6rem;
+    margin-bottom: 0.5rem;
   }
   
   .student-details {
-    gap: 0.25rem;
-    margin-bottom: 0.8rem;
+    gap: 0.2rem;
+    margin-bottom: 0.5rem;
   }
   
   .detail-item {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
   
   .detail-item i {
-    width: 12px;
-    margin-right: 0.3rem;
+    width: 11px;
+    margin-right: 0.25rem;
   }
   
   .student-testimonial {
-    padding: 0.6rem;
-    min-height: 65px;
-    margin-bottom: 0.8rem;
+    padding: 0.5rem;
+    min-height: 70px;
+    max-height: 70px;
+    height: 70px;
+    margin-bottom: 0.5rem;
   }
   
   .quote-icon {
-    font-size: 1rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
   }
   
   .student-testimonial p {
     font-size: 0.65rem;
-    line-height: 1.35;
-    -webkit-line-clamp: 2;
+    line-height: 1.3;
+    -webkit-line-clamp: 3;
   }
   
   .certificate-info {
-    gap: 0.8rem;
+    gap: 0.4rem;
+    margin-top: auto;
   }
   
   .certificate-code {
-    font-size: 0.6rem;
+    font-size: 0.58rem;
     padding: 0.3rem;
   }
   
   .btn-view-cert {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
-    gap: 0.3rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.7rem;
+    gap: 0.25rem;
   }
   
   .carousel-dots {

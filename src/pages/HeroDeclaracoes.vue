@@ -91,7 +91,7 @@ export default {
 
 .hero-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 80vh;
   background-image: url('@/assets/imagens/livro.png');
   background-size: cover;
   background-position: center;
@@ -315,12 +315,60 @@ export default {
 @media (max-width: 768px) {
   .hero-actions {
     flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-actions .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .hero-badge {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 576px) {
   .hero-section {
     background-attachment: scroll;
+    padding: 3rem 0;
+  }
+  
+  .hero-badge {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hero-features {
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    font-size: 0.9rem;
   }
   
   .scroll-indicator {
