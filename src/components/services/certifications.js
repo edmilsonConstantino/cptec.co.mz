@@ -1,12 +1,12 @@
 import axios from "axios";
-
-const API_URL = "/api/certifications/";
+const BASE_URL = "https://cestificacoesiso-back.onrender.com"; 
+const API_URL = `${BASE_URL}/api/certifications/`;
 
 export default {
   async getAll() {
     try {
       const response = await axios.get(API_URL);
-      return response.data; // já retorna array
+      return response.data;
     } catch (error) {
       console.error("Erro ao buscar certificações:", error);
       throw error;

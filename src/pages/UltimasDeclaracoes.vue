@@ -2,7 +2,7 @@
   <section class="carousel-section">
     <div class="container">
       <div class="row">
-        <div class="col-12 text-center mb-1 mb-md-5 ">
+        <div class="col-12 text-center mb-1 mb-md-1 ">
           <h2 class="section-title">Últimos Certificados Emitidos</h2>
           <p class="section-subtitle">Conheça os alunos que acabaram de concluir nossos cursos</p>
         </div>
@@ -170,8 +170,12 @@ export default {
         depoimento: item.depoimento || "Excelente curso! Recomendo a todos.",
         duracao: item.duracao,
         documento: item.documento,
-        foto: item.foto || "https://via.placeholder.com/90",
-      }));
+          foto: item.foto
+    ? (item.foto.startsWith("http")
+        ? item.foto
+        : `https://cestificacoesiso-back.onrender.com${item.foto}`)
+    : "https://via.placeholder.com/90",
+}));
     } catch (err) {
       this.error = "Não foi possível carregar as declarações.";
       console.error(err);
