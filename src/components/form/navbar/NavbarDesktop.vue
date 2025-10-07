@@ -175,7 +175,7 @@ export default {
       const currentRoute = this.$route?.path || window.location.pathname;
       const routeMap = {
         '/': 'inicio',
-        '/Depoimentos': 'depoimentos',
+        '/Depoimento': 'depoimentos',
         '/Cursos': 'cursos', 
         '/Certificacoes': 'certificacoes',
         '/declaracoes': 'declaracoes',
