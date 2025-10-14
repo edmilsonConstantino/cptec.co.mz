@@ -555,7 +555,7 @@ export default {
 .btn-view-cert {
   width: 100%;
   padding: 0.8rem 1.2rem;
-  background: linear-gradient(135deg, #285da7, #20c997);
+  background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
   border: none;
   border-radius: 10px;
