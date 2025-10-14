@@ -1,117 +1,117 @@
 <template>
-    <nav class="professional-navbar" :class="{ scrolled: isScrolled }">
-      <div class="navbar-container">
-        <router-link to="/" class="navbar-brand">
-          <div class="logo-container">
-            <img src="@/assets/imagens/LogoNav.png" alt="Logo" class="logo-image main-logo">
-          </div>
-        </router-link>
-
-        <button class="menu-toggle" @click="toggleMenu" :class="{ active: isMenuOpen }">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <div class="nav-menu" :class="{ active: isMenuOpen }">
-          <ul class="nav-links">
-            <li class="nav-item" :class="{ active: activeSection === 'inicio' }">
-              <router-link class="nav-link" to="/" @click="setActiveSection('inicio')">
-                <span>Início</span>
-              </router-link>
-            </li>
-            <li class="nav-item" :class="{ active: activeSection === 'depoimentos' }">
-              <router-link class="nav-link" to="/Depoimento" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'depoimentos')" class="nav-link">
-                  <span>Depoimentos</span>
-                </a>
-              </router-link>
-            </li>
-            <li class="nav-item" :class="{ active: activeSection === 'cursos' }">
-              <router-link class="nav-link" to="/Cursos" @click="setActiveSection('cursos')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'cursos')" class="nav-link">
-                  <span>Cursos</span>
-                </a>
-              </router-link>
-            </li>
-            
-            <!-- Dropdown Desktop para Certificações -->
-            <li class="nav-item dropdown-item" 
-                :class="{ active: activeSection === 'certificacoes' || activeSection === 'declaracoes' }"
-                @mouseenter="showDropdown = true"
-                @mouseleave="showDropdown = false">
-              <div class="nav-link dropdown-trigger">
-                <span class="dropdown-text">{{ currentDropdownText }}</span>
-                <i class="bi bi-chevron-down dropdown-icon" :class="{ rotated: showDropdown }"></i>
-              </div>
-              
-              <div class="dropdown-menu" :class="{ show: showDropdown }">
-                <router-link 
-                  to="/Certificacoes" 
-                  class="dropdown-item-link"
-                  @click="setActiveSection('certificacoes')"
-                  custom 
-                  v-slot="{ navigate }">
-                  <a @click="handleNavigation(navigate, 'certificacoes')" class="dropdown-item-link">
-                    <i class="bi bi-award-fill"></i>
-                    <div class="dropdown-item-content">
-                      <span class="dropdown-item-title">Certificações</span>
-                      <span class="dropdown-item-desc">Certificados oficiais</span>
-                    </div>
-                  </a>
-                </router-link>
-                
-                <router-link 
-                  to="/declaracoes" 
-                  class="dropdown-item-link"
-                  @click="setActiveSection('declaracoes')"
-                  custom 
-                  v-slot="{ navigate }">
-                  <a @click="handleNavigation(navigate, 'declaracoes')" class="dropdown-item-link">
-                    <i class="bi bi-file-earmark-text-fill"></i>
-                    <div class="dropdown-item-content">
-                      <span class="dropdown-item-title">Declarações</span>
-                      <span class="dropdown-item-desc">Consulte declarações</span>
-                    </div>
-                  </a>
-                </router-link>
-              </div>
-            </li>
-
-            <!-- Mobile: Manter separado -->
-            <li class="nav-item mobile-only" :class="{ active: activeSection === 'certificacoes' }">
-              <router-link class="nav-link" to="/Certificacoes" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
-                  <span>Certificações</span>
-                </a>
-              </router-link>
-            </li>
-            <li class="nav-item mobile-only" :class="{ active: activeSection === 'declaracoes' }">
-              <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('declaracoes')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'declaracoes')" class="nav-link">
-                  <span>Declarações</span>
-                </a>
-              </router-link>
-            </li>
-
-            <li class="nav-item" :class="{ active: activeSection === 'contato' }">
-              <router-link class="nav-link" to="/Contacto" @click="setActiveSection('contato')" custom v-slot="{ navigate }">
-                <a @click="handleNavigation(navigate, 'contato')" class="nav-link">
-                  <span>Contacto</span>
-                </a>
-              </router-link>
-            </li>
-            <li class="nav-item whatsapp-item">
-              <a href="https://wa.me/+258846949523?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
-                <i class="bi bi-whatsapp"></i>
-                <span>WhatsApp</span>
-              </a>
-            </li>
-          </ul>
+  <nav class="professional-navbar" :class="{ scrolled: isScrolled }">
+    <div class="navbar-container">
+      <router-link to="/" class="navbar-brand">
+        <div class="logo-container">
+          <img src="@/assets/imagens/LogoNav.png" alt="Logo" class="logo-image main-logo">
         </div>
-        <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
+      </router-link>
+
+      <button class="menu-toggle" @click="toggleMenu" :class="{ active: isMenuOpen }">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-menu" :class="{ active: isMenuOpen }">
+        <ul class="nav-links">
+          <li class="nav-item" :class="{ active: activeSection === 'inicio' }">
+            <router-link class="nav-link" to="/" @click="setActiveSection('inicio')">
+              <span>Início</span>
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{ active: activeSection === 'depoimentos' }">
+            <router-link class="nav-link" to="/Depoimento" @click="setActiveSection('depoimentos')" custom v-slot="{ navigate }">
+              <a @click="handleNavigation(navigate, 'depoimentos')" class="nav-link">
+                <span>Depoimentos</span>
+              </a>
+            </router-link>
+          </li>
+          <li class="nav-item" :class="{ active: activeSection === 'cursos' }">
+            <router-link class="nav-link" to="/Cursos" @click="setActiveSection('cursos')" custom v-slot="{ navigate }">
+              <a @click="handleNavigation(navigate, 'cursos')" class="nav-link">
+                <span>Cursos</span>
+              </a>
+            </router-link>
+          </li>
+          
+          <!-- Dropdown Desktop para Certificações -->
+          <li class="nav-item dropdown-item" 
+              :class="{ active: activeSection === 'certificacoes' || activeSection === 'declaracoes' }"
+              @mouseenter="showDropdown = true"
+              @mouseleave="showDropdown = false">
+            <div class="nav-link dropdown-trigger">
+              <span class="dropdown-text">{{ currentDropdownText }}</span>
+              <i class="bi bi-chevron-down dropdown-icon" :class="{ rotated: showDropdown }"></i>
+            </div>
+            
+            <div class="dropdown-menu" :class="{ show: showDropdown }">
+              <router-link 
+                to="/Certificacoes" 
+                class="dropdown-item-link"
+                @click="setActiveSection('certificacoes')"
+                custom 
+                v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'certificacoes')" class="dropdown-item-link">
+                  <i class="bi bi-award-fill"></i>
+                  <div class="dropdown-item-content">
+                    <span class="dropdown-item-title">Certificações</span>
+                    <span class="dropdown-item-desc">Certificados oficiais</span>
+                  </div>
+                </a>
+              </router-link>
+              
+              <router-link 
+                to="/declaracoes" 
+                class="dropdown-item-link"
+                @click="setActiveSection('declaracoes')"
+                custom 
+                v-slot="{ navigate }">
+                <a @click="handleNavigation(navigate, 'declaracoes')" class="dropdown-item-link">
+                  <i class="bi bi-file-earmark-text-fill"></i>
+                  <div class="dropdown-item-content">
+                    <span class="dropdown-item-title">Declarações</span>
+                    <span class="dropdown-item-desc">Consulte declarações</span>
+                  </div>
+                </a>
+              </router-link>
+            </div>
+          </li>
+
+          <!-- Mobile: Manter separado -->
+          <li class="nav-item mobile-only" :class="{ active: activeSection === 'certificacoes' }">
+            <router-link class="nav-link" to="/Certificacoes" @click="setActiveSection('certificacoes')" custom v-slot="{ navigate }">
+              <a @click="handleNavigation(navigate, 'certificacoes')" class="nav-link">
+                <span>Certificações</span>
+              </a>
+            </router-link>
+          </li>
+          <li class="nav-item mobile-only" :class="{ active: activeSection === 'declaracoes' }">
+            <router-link class="nav-link" to="/declaracoes" @click="setActiveSection('declaracoes')" custom v-slot="{ navigate }">
+              <a @click="handleNavigation(navigate, 'declaracoes')" class="nav-link">
+                <span>Declarações</span>
+              </a>
+            </router-link>
+          </li>
+
+          <li class="nav-item" :class="{ active: activeSection === 'contato' }">
+            <router-link class="nav-link" to="/Contacto" @click="setActiveSection('contato')" custom v-slot="{ navigate }">
+              <a @click="handleNavigation(navigate, 'contato')" class="nav-link">
+                <span>Contacto</span>
+              </a>
+            </router-link>
+          </li>
+          <li class="nav-item whatsapp-item">
+            <a href="https://wa.me/+258846949523?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+              <i class="bi bi-whatsapp"></i>
+              <span>WhatsApp</span>
+            </a>
+          </li>
+        </ul>
       </div>
-    </nav>
+      <div v-if="isMenuOpen" class="menu-overlay" @click="closeMenu"></div>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -622,11 +622,18 @@ export default {
 
   .nav-item {
     width: 100%;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+    position: relative;
   }
 
-  .nav-item:last-child {
-    border-bottom: none;
+  /* ✅ Separador elegante entre os itens no mobile */
+  .nav-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.2), transparent);
   }
 
   .nav-link {

@@ -50,7 +50,7 @@
                 
                 <div class="student-testimonial">
                   <i class="bi bi-quote quote-icon"></i>
-                  <p>{{ declaracao.depoimento }}</p>
+                  <p>{{ getDeclarationPreview(declaracao) }}</p>
                 </div>
                 
                 <div class="certificate-info">
@@ -170,12 +170,12 @@ export default {
         depoimento: item.depoimento || "Excelente curso! Recomendo a todos.",
         duracao: item.duracao,
         documento: item.documento,
-          foto: item.foto
-    ? (item.foto.startsWith("http")
-        ? item.foto
-        : `https://cestificacoesiso-back.onrender.com${item.foto}`)
-    : "https://via.placeholder.com/90",
-}));
+        foto: item.foto
+          ? (item.foto.startsWith("http")
+              ? item.foto
+              : `https://cestificacoesiso-back.onrender.com${item.foto}`)
+          : "https://via.placeholder.com/90",
+      }));
     } catch (err) {
       this.error = "Não foi possível carregar as declarações.";
       console.error(err);
@@ -203,6 +203,11 @@ export default {
   },
 
   methods: {
+    getDeclarationPreview(declaracao) {
+      const texto = `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
+      return texto;
+    },
+
     nextSlide() {
       if (this.currentSlide < this.maxSlide) {
         this.currentSlide++;
@@ -510,7 +515,7 @@ export default {
   margin-bottom: 0.4rem;
   flex-shrink: 0;
   margin-top: 0;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .student-testimonial p {
@@ -550,7 +555,7 @@ export default {
 .btn-view-cert {
   width: 100%;
   padding: 0.8rem 1.2rem;
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #285da7, #20c997);
   color: white;
   border: none;
   border-radius: 10px;
@@ -781,7 +786,7 @@ export default {
   .quote-icon {
     font-size: 1rem;
     margin-bottom: 0.3rem;
-    align-self: flex-start;
+    align-self: center;
   }
 
   .student-testimonial p {
@@ -977,7 +982,7 @@ export default {
   .quote-icon {
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
-    align-self: flex-start;
+    align-self: center;
   }
   
   .student-testimonial p {

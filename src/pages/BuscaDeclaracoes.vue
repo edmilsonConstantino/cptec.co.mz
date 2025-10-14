@@ -137,7 +137,7 @@
                 </div>
                 <div class="testimonial-preview">
                   <i class="bi bi-quote"></i>
-                  <p>{{ declaracao.depoimento.substring(0, 80) }}...</p>
+                  <p>{{ getDeclarationPreview(declaracao) }}</p>
                 </div>
                 <div class="card-footer">
                   <div class="certificate-code-small">
@@ -173,7 +173,7 @@
                 <p class="list-course">{{ declaracao.curso }}</p>
                 <div class="list-testimonial">
                   <i class="bi bi-quote"></i>
-                  <span>{{ declaracao.depoimento.substring(0, 120) }}...</span>
+                  <span>{{ getDeclarationPreview(declaracao) }}</span>
                 </div>
               </div>
               <div class="list-details">
@@ -266,7 +266,7 @@ export default {
         codigo: item.codigo,
         status: item.status,
         documento: item.documento,
-        duracao: item.duracao ,
+        duracao: item.duracao,
         depoimento: item.depoimento || "Excelente curso!",
         foto: item.foto || "https://via.placeholder.com/90" 
       }));
@@ -327,6 +327,11 @@ export default {
   },
 
   methods: {
+    getDeclarationPreview(declaracao) {
+      const texto = `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
+      return texto.substring(0, 120) + '...';
+    },
+
     formatDate(dateString) {
       if (!dateString) return "Data indisponível";
       return new Date(dateString).toLocaleDateString("pt-BR");
@@ -343,7 +348,15 @@ export default {
     },
 
     viewDeclaracao(declaracao) {
-      console.log("Abrir detalhes:", declaracao);
+      this.$emit('viewDetails', declaracao);
+    },
+
+    filterDeclaracoes() {
+      this.currentPage = 1;
+    },
+
+    sortDeclaracoes() {
+      // Implementar ordenação se necessário
     }
   }
 };

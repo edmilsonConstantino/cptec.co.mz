@@ -4,8 +4,7 @@
       <button @click="closeModal" class="modal-close">
         <i class="bi bi-x"></i>
       </button>
-      
-      <!-- Header Mobile -->
+
       <div class="mobile-header" v-if="isMobile">
         <div class="mobile-header-background"></div>
         <div class="mobile-student-info">
@@ -70,73 +69,13 @@
         </div>
         
         <div class="certificate-content">
-          <!-- infromcoes de  Mobile -->
-          <div class="mobile-info-section" v-if="isMobile">
-            <div class="info-grid">
-              <div class="info-card modern">
-                <div class="card-icon curso">
-                  <i class="bi bi-mortarboard"></i>
-                </div>
-                <div class="card-content">
-                  <span class="info-label">Curso</span>
-                  <span class="info-value">{{ selectedDeclaracao.curso }}</span>
-                </div>
-                <div class="card-accent"></div>
-              </div>
-              
-              <div class="info-card modern">
-                <div class="card-icon data">
-                  <i class="bi bi-calendar3"></i>
-                </div>
-                <div class="card-content">
-                  <span class="info-label">Conclusão</span>
-                  <span class="info-value">{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</span>
-                </div>
-                <div class="card-accent"></div>
-              </div>
-              
-              <div class="info-card modern">
-                <div class="card-icon carga">
-                  <i class="bi bi-clock"></i>
-                </div>
-                <div class="card-content">
-                  <span class="info-label">Carga Horária</span>
-                  <span class="info-value">{{ selectedDeclaracao.cargaHoraria }}</span>
-                </div>
-                <div class="card-accent"></div>
-              </div>
-
-              <div class="info-card modern">
-                <div class="card-icon duracao">
-                  <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="card-content">
-                  <span class="info-label">Duração</span>
-                  <span class="info-value">{{ selectedDeclaracao.duracao }}</span>
-                </div>
-                <div class="card-accent"></div>
-              </div>
-
-              <div class="info-card modern">
-                <div class="card-icon documento">
-                  <i class="bi bi-person-badge"></i>
-                </div>
-                <div class="card-content">
-                  <span class="info-label">Documento</span>
-                  <span class="info-value">{{ selectedDeclaracao.documento }}</span>
-                </div>
-                <div class="card-accent"></div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Texto da fake wareva sei la tambem heide ver depois -->
+          <!-- Texto da Declaração -->
           <div class="certificate-text-section" :class="{ 'mobile-text-section': isMobile }">
-            <div class="text-ornament"></div>
+           
             <div class="certificate-text-content">
               <p v-if="!isMobile" class="declaration-text">
                 Declaramos para os devidos fins que <strong class="highlight">{{ selectedDeclaracao.nomeCompleto }}</strong>,
-                portador(a) do documento de identidade nº <strong class="highlight">{{ selectedDeclaracao.documento }}</strong>,
+                portador(a) do documento de identidade nº <strong class="highlight">{{ ocultarBI(selectedDeclaracao.documento) }}</strong>,
                 concluiu com aproveitamento o curso de <strong class="highlight">{{ selectedDeclaracao.curso }}</strong>,
                 com carga horária de <strong class="highlight">{{ selectedDeclaracao.cargaHoraria }}</strong>,
                 no período de <strong class="highlight">{{ selectedDeclaracao.duracao }}</strong>.
@@ -150,24 +89,50 @@
             </div>
           </div>
 
-          <!-- Depoimentos warevaaa -->
-          <div class="testimonial-section">
-            <div class="section-header">
-              <div class="section-icon">
-                <i class="bi bi-chat-quote"></i>
+          <!-- Cards de Informações -->
+          <div class="info-cards-section" :class="{ 'mobile-info-cards': isMobile }">
+            <div class="info-cards-grid">
+              <div class="info-display-card">
+                <div class="card-gradient curso"></div>
+                <div class="card-icon-large">
+                  <i class="bi bi-mortarboard"></i>
+                </div>
+                <div class="card-details">
+                  <span class="card-label">CURSO</span>
+                  <h5 class="card-value">{{ selectedDeclaracao.curso }}</h5>
+                </div>
               </div>
-              <h4>{{ isMobile ? 'Depoimento' : 'Depoimento do Aluno' }}</h4>
-            </div>
-            
-            <div class="testimonial-card">
-              <div class="quote-decoration">
-                <i class="bi bi-quote" v-if="!isMobile"></i>
+
+              <div class="info-display-card">
+                <div class="card-gradient duracao"></div>
+                <div class="card-icon-large">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="card-details">
+                  <span class="card-label">DURAÇÃO</span>
+                  <h5 class="card-value">{{ selectedDeclaracao.duracao }}</h5>
+                </div>
               </div>
-              <p class="testimonial-text">{{ selectedDeclaracao.depoimento }}</p>
-              <div class="testimonial-footer" v-if="!isMobile">
-                <div class="author-info">
-                  <strong>{{ selectedDeclaracao.nomeCompleto }}</strong>
-                  <span>Estudante</span>
+
+              <div class="info-display-card">
+                <div class="card-gradient carga"></div>
+                <div class="card-icon-large">
+                  <i class="bi bi-clock"></i>
+                </div>
+                <div class="card-details">
+                  <span class="card-label">CARGA HORÁRIA</span>
+                  <h5 class="card-value">{{ selectedDeclaracao.cargaHoraria }}</h5>
+                </div>
+              </div>
+
+              <div class="info-display-card">
+                <div class="card-gradient conclusao"></div>
+                <div class="card-icon-large">
+                  <i class="bi bi-calendar3"></i>
+                </div>
+                <div class="card-details">
+                  <span class="card-label">CONCLUSÃO</span>
+                  <h5 class="card-value">{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</h5>
                 </div>
               </div>
             </div>
@@ -175,126 +140,12 @@
 
           <div class="details-grid-section" v-if="!isMobile">
             <div class="details-grid">
-              <div class="detail-card premium">
-                <div class="card-header">
-                  <div class="detail-icon curso">
-                    <i class="bi bi-mortarboard"></i>
-                  </div>
-                  <div class="card-glow"></div>
-                </div>
-                <div class="card-body">
-                  <span class="detail-label">Curso</span>
-                  <span class="detail-value">{{ selectedDeclaracao.curso }}</span>
-                </div>
-              </div>
-              
-              <div class="detail-card premium">
-                <div class="card-header">
-                  <div class="detail-icon duracao">
-                    <i class="bi bi-calendar-check"></i>
-                  </div>
-                  <div class="card-glow"></div>
-                </div>
-                <div class="card-body">
-                  <span class="detail-label">Duração</span>
-                  <span class="detail-value">{{ selectedDeclaracao.duracao }}</span>
-                </div>
-              </div>
-              
-              <div class="detail-card premium">
-                <div class="card-header">
-                  <div class="detail-icon carga">
-                    <i class="bi bi-clock-history"></i>
-                  </div>
-                  <div class="card-glow"></div>
-                </div>
-                <div class="card-body">
-                  <span class="detail-label">Carga Horária</span>
-                  <span class="detail-value">{{ selectedDeclaracao.cargaHoraria }}</span>
-                </div>
-              </div>
-              
-              <div class="detail-card premium">
-                <div class="card-header">
-                  <div class="detail-icon data">
-                    <i class="bi bi-calendar3"></i>
-                  </div>
-                  <div class="card-glow"></div>
-                </div>
-                <div class="card-body">
-                  <span class="detail-label">Conclusão</span>
-                  <span class="detail-value">{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
         <div class="certificate-footer-full" v-if="!isMobile">
-          <div class="signature-section">
-            <div class="signature-card">
-              <div class="signature-decoration"></div>
-              <div class="signature-line-full"></div>
-              <div class="signature-info">
-                <p class="signature-name">Prof. João Silva</p>
-                <p class="signature-title">Diretor Acadêmico</p>
-              </div>
-              <div class="signature-seal">
-                <i class="bi bi-award"></i>
-              </div>
-            </div>
-          </div>
-          
-          <div class="verification-section">
-            <div class="verification-card">
-              <div class="qr-section">
-                <div class="qr-placeholder">
-                  <i class="bi bi-qr-code"></i>
-                  <div class="qr-glow"></div>
-                </div>
-              </div>
-              <div class="code-info">
-                <p class="code-title">Código de Verificação</p>
-                <p class="code-number">{{ selectedDeclaracao.codigo }}</p>
-                <p class="code-url">https://cptec.co.mz/</p>
-              </div>
-            </div>
-          </div>
         </div>
-
-        <div class="mobile-verification" v-if="isMobile">
-          <div class="verification-card mobile">
-            <div class="qr-mobile">
-              <i class="bi bi-qr-code"></i>
-              <div class="qr-glow"></div>
-            </div>
-            <div class="verification-info">
-              <span class="code-label">Código de Verificação</span>
-              <span class="code-value">{{ selectedDeclaracao.codigo }}</span>
-              <span class="code-site">cptec.co.mz</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- acoes waarevaa -->
-      <div class="certificate-actions" :class="{ 'mobile-actions': isMobile }">
-        <button @click="downloadPDF" class="action-btn primary" :class="{ 'mobile-action-btn': isMobile }">
-          <div class="btn-icon">
-            <i class="bi bi-download"></i>
-          </div>
-          <span v-if="!isMobile" class="btn-text">Baixar PDF</span>
-          <div class="btn-glow"></div>
-        </button>
-
-        
-        <button @click="shareCertificate" class="action-btn success" :class="{ 'mobile-action-btn': isMobile }">
-          <div class="btn-icon">
-            <i class="bi bi-share"></i>
-          </div>
-          <span v-if="!isMobile" class="btn-text">Compartilhar</span>
-          <div class="btn-glow"></div>
-        </button>
       </div>
     </div>
   </div>
@@ -339,13 +190,6 @@ export default {
       document.body.style.overflow = 'auto'
     },
     
-    downloadPDF() {
-  
-      alert('Funcionalidade de download PDF será implementada em breve!')
-    },
-    
-
-    
     shareCertificate() {
       if (navigator.share) {
         navigator.share({
@@ -366,6 +210,17 @@ export default {
         month: 'long', 
         day: 'numeric' 
       })
+    },
+
+    ocultarBI(documento) {
+      if (!documento || documento.length < 10) return documento
+      
+      // Mantém os primeiros 3 caracteres e os últimos 7
+      const inicio = documento.substring(0, 3)
+      const fim = documento.substring(documento.length - 7)
+      const meio = '**'
+      
+      return `${inicio}${meio}${fim}`
     },
 
     handleBack() {
@@ -393,7 +248,7 @@ export default {
 </script>
 
 <style scoped>
-
+/* Todo o CSS permanece igual ao original */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -452,7 +307,7 @@ export default {
 
 .modal-close {
   position: absolute;
-  top: 20px;
+  top: 35px;
   right: 20px;
   width: 50px;
   height: 50px;
@@ -506,7 +361,7 @@ export default {
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2.5rem;
 }
 
 .photo-container {
@@ -524,6 +379,7 @@ export default {
     0 8px 25px rgba(0, 0, 0, 0.3),
     0 0 0 8px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease;
+  margin-top: 15%;
 }
 
 .photo-badge {
@@ -576,7 +432,7 @@ export default {
 }
 
 .certificate-full {
-  padding: 3rem 2.5rem;
+  padding: 5rem 2.5rem;
   position: relative;
 }
 
@@ -761,12 +617,12 @@ export default {
 
 .title-ornament.top {
   width: 200px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .title-ornament.bottom {
   width: 150px;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .certificate-title h3 {
@@ -789,92 +645,6 @@ export default {
   margin-bottom: 2rem !important;
 }
 
-/* Informações Mobile */
-.mobile-info-section {
-  margin-bottom: 3rem;
-}
-
-.info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.info-card.modern {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  transition: all 0.3s ease;
-}
-
-.info-card.modern:hover {
-  transform: translateY(-5px);
-  box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.15),
-    0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-icon {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.card-icon.curso { background: linear-gradient(135deg, #667eea, #764ba2); }
-.card-icon.data { background: linear-gradient(135deg, #f093fb, #f5576c); }
-.card-icon.carga { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.card-icon.duracao { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-.card-icon.documento { background: linear-gradient(135deg, #fa709a, #fee140); }
-
-.card-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.info-label {
-  font-size: 0.8rem;
-  color: #6c757d;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 0.3rem;
-}
-
-.info-value {
-  font-size: 1.1rem;
-  color: #2c3e50;
-  font-weight: 800;
-  line-height: 1.3;
-}
-
-.card-accent {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 0 20px 20px 0;
-}
-
 /* Texto da Declaração */
 .certificate-text-section {
   margin-bottom: 3rem;
@@ -882,7 +652,7 @@ export default {
 }
 
 .mobile-text-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .text-ornament {
@@ -925,8 +695,9 @@ export default {
 
 .declaration-text.mobile {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.8;
   text-align: left;
+  margin-top: -5%;
 }
 
 .highlight {
@@ -935,547 +706,120 @@ export default {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
   padding: 0.2rem 0.4rem;
   border-radius: 5px;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 1px solid #667eea;
 }
 
-/* Depoimento */
-.testimonial-section {
+/* Cards de Informações */
+.info-cards-section {
   margin-bottom: 3rem;
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.mobile-info-cards {
   margin-bottom: 2rem;
-  justify-content: center;
 }
 
-.section-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.section-header h4 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #2c3e50;
-  margin: 0;
-  background: linear-gradient(135deg, #2c3e50, #667eea);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.testimonial-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  position: relative;
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.08),
-    0 5px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  overflow: hidden;
-}
-
-.quote-decoration {
-  position: absolute;
-  top: 1.5rem;
-  left: 2rem;
-  font-size: 4rem;
-  color: rgba(102, 126, 234, 0.1);
-  z-index: 1;
-}
-
-.testimonial-text {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #495057;
-  font-style: italic;
-  margin: 0 0 1.5rem 0;
-  position: relative;
-  z-index: 2;
-  text-align: left;
-}
-
-.testimonial-footer {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-  z-index: 2;
-}
-
-.author-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.2rem;
-}
-
-.author-info strong {
-  font-size: 1rem;
-  color: #667eea;
-  font-weight: 800;
-}
-
-.author-info span {
-  font-size: 0.9rem;
-  color: #6c757d;
-  font-weight: 500;
-}
-
-/* Grid de Detalhes Desktop */
-.details-grid-section {
-  margin-bottom: 3rem;
-}
-
-.details-grid {
+.info-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
 }
 
-.detail-card.premium {
+.info-display-card {
   background: white;
   border-radius: 20px;
-  overflow: hidden;
+  padding: 2rem;
   position: relative;
+  overflow: hidden;
   box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.08),
-    0 5px 15px rgba(0, 0, 0, 0.05);
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 3px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(102, 126, 234, 0.1);
   transition: all 0.4s ease;
-}
-
-.detail-card.premium:hover {
-  transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.15),
-    0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-  position: relative;
-  padding: 2rem 1.5rem 1rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-}
-
-.detail-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.4rem;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-.card-glow {
-  position: absolute;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  opacity: 0.3;
-  filter: blur(20px);
-}
-
-.detail-card.premium:nth-child(1) .card-glow {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.detail-card.premium:nth-child(2) .card-glow {
-  background: linear-gradient(135deg, #43e97b, #38f9d7);
-}
-
-.detail-card.premium:nth-child(3) .card-glow {
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
-}
-
-.detail-card.premium:nth-child(4) .card-glow {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
-}
-
-.card-body {
-  padding: 1rem 1.5rem 2rem;
   text-align: center;
 }
 
-.detail-label {
-  font-size: 0.85rem;
-  color: #6c757d;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.detail-value {
-  font-size: 1.2rem;
-  color: #2c3e50;
-  font-weight: 800;
-  line-height: 1.3;
-  display: block;
-}
-
-/* Footer Desktop */
-/* Footer Desktop */
-.certificate-footer-full {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  gap: 2rem; /* espaço entre os dois cards */
-  margin-top: 3rem;
-}
-
-.signature-section, 
-.verification-section {
-  flex: 1; /* ocupa metade cada */
-  display: flex;
-  justify-content: center;
-}
-
-.signature-card,
-.verification-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 400px; /* limite de largura */
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-.signature-card:hover,
-.verification-card:hover {
-  transform: translateY(-5px);
-}
-
-.signature-section {
-  flex: 1;
-}
-
-.signature-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
+.info-display-card:hover {
+  transform: translateY(-10px);
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    0 3px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  position: relative;
-  text-align: center;
-  max-width: 300px;
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.signature-decoration {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 20px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 0 0 20px 20px;
-}
-
-.signature-line-full {
-  width: 180px;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  margin: 0 auto 1.5rem;
-  border-radius: 2px;
-}
-
-.signature-info {
-  margin-bottom: 1rem;
-}
-
-.signature-name {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #2c3e50;
-  margin-bottom: 0.3rem;
-}
-
-.signature-title {
-  font-size: 0.95rem;
-  color: #6c757d;
-  margin: 0;
-  font-weight: 600;
-}
-
-.signature-seal {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #ffc107, #ff8c00);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
-  margin: 0 auto;
-  box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
-}
-
-.verification-section {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.verification-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    0 3px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 350px;
-}
-
-.qr-section {
-  position: relative;
-}
-
-.qr-placeholder {
-  font-size: 4rem;
-  color: #667eea;
-  position: relative;
-  z-index: 2;
-}
-
-.qr-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.3), transparent);
-  border-radius: 50%;
-  filter: blur(15px);
-  animation: pulse 2s infinite;
-}
-
-.code-info {
-  text-align: left;
-}
-
-.code-title {
-  font-size: 0.9rem;
-  color: #6c757d;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
-}
-
-.code-number {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #2c3e50;
-  font-family: 'Courier New', monospace;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  padding: 0.3rem 0.5rem;
-  border-radius: 8px;
-}
-
-.code-url {
-  font-size: 0.9rem;
-  color: #667eea;
-  margin: 0;
-  font-weight: 600;
-}
-
-/* Verificação Mobile */
-.mobile-verification {
-  margin: 2rem 0;
-}
-
-.verification-card.mobile {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    0 3px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-}
-
-.qr-mobile {
-  position: relative;
-  font-size: 3rem;
-  color: #667eea;
-  flex-shrink: 0;
-}
-
-.verification-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.code-label {
-  font-size: 0.8rem;
-  color: #6c757d;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
-}
-
-.code-value {
-  font-size: 1.2rem;
-  color: #2c3e50;
-  font-weight: 800;
-  font-family: 'Courier New', monospace;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  padding: 0.4rem 0.6rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-.code-site {
-  font-size: 0.9rem;
-  color: #667eea;
-  font-weight: 600;
-}
-
-/* Ações */
-.certificate-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2.5rem;
-  border-top: 2px solid #e3e6f0;
-  background: linear-gradient(135deg, rgba(248, 249, 250, 0.5), rgba(233, 236, 239, 0.5));
-  border-radius: 0 0 25px 25px;
-}
-
-.mobile-actions {
-  display: flex !important;
-  justify-content: space-around !important;
-  padding: 2rem 1.5rem !important;
-  gap: 1rem !important;
-}
-
-.action-btn {
-  position: relative;
-  padding: 1.2rem 2.5rem;
-  border: none;
-  border-radius: 50px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  min-width: 180px;
-  justify-content: center;
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.action-btn:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(0, 0, 0, 0.15);
-}
-
-.action-btn.primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-}
-
-.action-btn.secondary {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-}
-
-.action-btn.secondary:hover {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border-color: transparent;
-}
-
-.action-btn.success {
-  background: white;
-  color: #28a745;
-  border: 2px solid #28a745;
-}
-
-.action-btn.success:hover {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  border-color: transparent;
-}
-
-.btn-icon {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-text {
-  font-size: 0.95rem;
-}
-
-.btn-glow {
+.card-gradient {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 50px;
+  height: 8px;
+  border-radius: 20px 20px 0 0;
 }
 
-.action-btn:hover .btn-glow {
-  opacity: 1;
+.card-gradient.curso {
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-.mobile-action-btn {
-  min-width: auto !important;
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 50% !important;
-  padding: 0 !important;
-  justify-content: center !important;
-  font-size: 1.5rem !important;
+.card-gradient.duracao {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.card-gradient.carga {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.card-gradient.conclusao {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.card-icon-large {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  position: relative;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.info-display-card:nth-child(2) .card-icon-large {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 8px 25px rgba(31, 102, 234, 0.3);
+}
+
+.info-display-card:nth-child(3) .card-icon-large {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+ box-shadow: 0 8px 25px rgba(24, 108, 233, 0.3);
+}
+
+.info-display-card:nth-child(4) .card-icon-large {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 8px 25px rgba(41, 130, 213, 0.3);
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1.3;
 }
 
 /* Responsividade */
@@ -1514,23 +858,25 @@ export default {
     font-size: 1.6rem !important;
     letter-spacing: 1.5px !important;
   }
-  
-  .section-header {
-    flex-direction: column;
-    gap: 0.8rem;
+
+  .info-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  
-  .section-header h4 {
-    font-size: 1.3rem;
+
+  .info-display-card {
+    padding: 1.8rem 1.5rem;
   }
-  
-  .testimonial-card {
-    padding: 1.8rem;
+
+  .card-icon-large {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
   }
-  
-  .testimonial-text {
-    font-size: 1rem;
-    line-height: 1.6;
+
+  .card-value {
+    font-size: 1.2rem;
   }
 }
 
@@ -1553,40 +899,28 @@ export default {
     padding: 1rem;
   }
   
-  .info-card.modern {
-    padding: 1.2rem;
-    gap: 1rem;
+  .info-cards-grid {
+    gap: 1.2rem;
   }
+
+  .info-display-card {
+    padding: 1.5rem 1.2rem;
+  }
+
+  .card-icon-large {
+    width: 55px;
+    height: 55px;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-label {
+    font-size: 0.7rem;
+  }
+
+  .card-value {
   
-  .card-icon {
-    width: 45px;
-    height: 45px;
     font-size: 1.1rem;
   }
-  
-  .info-value {
-    font-size: 1rem;
-  }
-  
-  .verification-card.mobile {
-    padding: 1.5rem;
-    gap: 1rem;
-  }
-  
-  .qr-mobile {
-    font-size: 2.5rem;
-  }
-  
-  .mobile-actions {
-    padding: 1.8rem 1rem !important;
-    gap: 0.8rem !important;
-  }
-  
-  .mobile-action-btn {
-    width: 60px !important;
-    height: 60px !important;
-    font-size: 1.3rem !important;
-  }
 }
-
 </style>
