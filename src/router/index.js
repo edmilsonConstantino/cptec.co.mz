@@ -29,6 +29,12 @@ const routes = [
       // { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/GestaoDetalhes.vue') },
 
       { path: '/Cursos', name: 'Cursos', component: () => import('@/pages/CursosCompletos.vue') },
+      { 
+        path: '/declaracoes/:uniqueLink', 
+        name: 'declaracoesLink', 
+        component: () => import('@/pages/CertificacaoLink.vue'),
+        props: true
+      },
     ]
   },
   {

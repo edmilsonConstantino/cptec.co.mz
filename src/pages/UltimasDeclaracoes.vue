@@ -173,7 +173,7 @@ export default {
         foto: item.foto
           ? (item.foto.startsWith("http")
               ? item.foto
-              : `https://cestificacoesiso-back.onrender.com${item.foto}`)
+              : `http://127.0.0.1:8000/admin/certifications/certification/${item.foto}`)
           : "https://via.placeholder.com/90",
       }));
     } catch (err) {
@@ -372,7 +372,7 @@ export default {
 
 .carousel-slide {
   flex: 0 0 calc(60% / 3);
-  padding: 0 12px;
+  padding: 0 5px;
   box-sizing: border-box;
 }
 

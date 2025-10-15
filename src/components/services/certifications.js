@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://cestificacoesiso-back.onrender.com"; 
+const BASE_URL = "http://127.0.0.1:8000"; 
 const API_URL = `${BASE_URL}/api/certifications/`;
 
 export default {
@@ -29,6 +29,15 @@ export default {
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar certificação com id ${id}:`, error);
+      throw error;
+    }
+  },
+  async getByUniqueLink(uniqueLink) {
+    try {
+      const response = await axios.get(`${API_URL}link/${uniqueLink}/`);
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao buscar certificação com link único ${uniqueLink}:`, error);
       throw error;
     }
   }
