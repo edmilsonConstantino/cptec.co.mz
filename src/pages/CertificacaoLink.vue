@@ -1,23 +1,20 @@
 <template>
   <div class="certificacao-link-page">
-    <!-- Loading -->
     <div v-if="loading" class="loading-container">
       <div class="spinner"></div>
       <p>Carregando certificação...</p>
     </div>
 
-    <!-- Erro -->
     <div v-else-if="error" class="error-container">
       <i class="bi bi-exclamation-triangle"></i>
       <h2>Certificação não encontrada</h2>
       <p>{{ error }}</p>
-      <router-link to="/" class="btn-voltar">
+      <router-link to="/home" class="btn-voltar">
         <i class="bi bi-house"></i>
         Voltar para Home
       </router-link>
     </div>
 
-    <!-- Modal de Detalhes -->
     <DetailsModal
       v-if="certificacao && showModal"
       :selectedDeclaracao="certificacao"
@@ -57,10 +54,8 @@ export default {
       try {
         this.loading = true;
         
-        // Busca a certificação pelo link único
         const data = await CertificationsService.getByUniqueLink(this.uniqueLink);
         
-        // Formata os dados para o modal
         this.certificacao = {
           id: data.id,
           nomeCompleto: data.nome_completo,
@@ -75,7 +70,7 @@ export default {
           foto: data.foto
             ? (data.foto.startsWith("http")
                 ? data.foto
-                : `http://127.0.0.1:8000${data.foto}`)
+                : `https://cestificacoesiso-back.onrender.com${data.foto}`)
             : "https://via.placeholder.com/90",
         };
         
