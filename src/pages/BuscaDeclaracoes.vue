@@ -137,8 +137,11 @@
                 </div>
                 <div class="testimonial-preview">
                   <i class="bi bi-quote"></i>
-                  <p>{{ getDeclarationPreview(declaracao) }}</p>
-                </div>
+                  <p >
+                    <span>
+                      {{ declaracao.declaracao ? declaracao.declaracao : getDeclarationPreview(declaracao) }}
+                    </span>
+                  </p>                </div>
                 <div class="card-footer">
                   <div class="certificate-code-small">
                     {{ declaracao.codigo }}
@@ -267,6 +270,7 @@ export default {
         status: item.status,
         documento: item.documento,
         duracao: item.duracao,
+        declaracao: item.declaracao,
         depoimento: item.depoimento || "Excelente curso!",
         foto: item.foto || "https://via.placeholder.com/90" 
       }));
@@ -356,7 +360,6 @@ export default {
     },
 
     sortDeclaracoes() {
-      // Implementar ordenação se necessário
     }
   }
 };

@@ -14,6 +14,7 @@
           ref="carouselTrack" 
           :style="carouselStyle"
           @scroll="handleTrackScroll"
+          :class="{ 'centered-cards': shouldCenterCards }"
         >
           <div 
             v-for="(declaracao) in declaracoes" 
@@ -50,7 +51,11 @@
                 
                 <div class="student-testimonial">
                   <i class="bi bi-quote quote-icon"></i>
-                  <p>{{ getDeclarationPreview(declaracao) }}</p>
+                  <p>
+                    <span>
+                      {{ declaracao.declaracao ? declaracao.declaracao : getDeclarationPreview(declaracao) }}
+                    </span>
+                  </p>
                 </div>
                 
                 <div class="certificate-info">
@@ -69,26 +74,40 @@
             </div>
           </div>
         </div>
-        
+           <div class="pagination-controls" v-show="!isMobile && totalPages > 1">
         <button 
-          @click="prevSlide" 
-          class="carousel-btn prev-btn" 
-          :disabled="currentSlide === 0"
-          v-show="!isMobile"
+          @click="prevPage" 
+          class="pagination-arrow" 
+          :disabled="currentPage === 0"
         >
           <i class="bi bi-chevron-left"></i>
         </button>
+        
+        <div class="pagination-numbers">
+          <button 
+            v-for="page in totalPages" 
+            :key="page"
+            @click="goToPage(page - 1)"
+            class="page-number"
+            :class="{ active: currentPage === page - 1 }"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
         <button 
-          @click="nextSlide" 
-          class="carousel-btn next-btn" 
-          :disabled="currentSlide >= maxSlide"
-          v-show="!isMobile"
+          @click="nextPage" 
+          class="pagination-arrow" 
+          :disabled="currentPage >= totalPages - 1"
         >
           <i class="bi bi-chevron-right"></i>
         </button>
       </div>
+      </div>
       
-      <div class="carousel-dots">
+   
+
+      <div class="carousel-dots" v-show="isMobile">
         <button 
           v-for="(_, index) in dotsCount" 
           :key="index"
@@ -111,7 +130,7 @@ export default {
   data() {
     return {
       currentSlide: 0,
-      slidesToShow: 3,
+      slidesToShow: 4,
       autoSlideInterval: null,
       isMobile: false,
       declaracoes: [], 
@@ -124,12 +143,19 @@ export default {
   computed: {
     carouselStyle() {
       if (this.isMobile) {
+        return { display: "flex" };
+      }
+      
+      if (this.declaracoes.length <= 4) {
         return {
-          display: "flex",
+          transition: "none",
+          width: "100%",
         };
       }
+      
+      const translatePercentage = (this.currentSlide / this.declaracoes.length) * 100;
       return {
-        transform: `translateX(-${(this.currentSlide * 100) / this.slidesToShow}%)`,
+        transform: `translateX(-${translatePercentage}%)`,
         transition: "transform 0.5s ease-in-out",
         width: `${(this.declaracoes.length / this.slidesToShow) * 100}%`,
       };
@@ -140,17 +166,26 @@ export default {
     },
 
     dotsCount() {
-      if (this.isMobile) {
-        return this.declaracoes.length;
-      }
-      return Math.ceil(this.declaracoes.length / this.slidesToShow);
+      return this.isMobile ? this.declaracoes.length : Math.ceil(this.declaracoes.length / this.slidesToShow);
     },
 
     currentDotIndex() {
-      if (this.isMobile) {
-        return this.currentSlide;
-      }
+      return this.isMobile ? this.currentSlide : Math.floor(this.currentSlide / this.slidesToShow);
+    },
+
+    currentPage() {
       return Math.floor(this.currentSlide / this.slidesToShow);
+    },
+
+    totalPages() {
+      if (this.declaracoes.length <= 4) {
+        return 1;
+      }
+      return Math.ceil(this.maxSlide / this.slidesToShow) + 1;
+    },
+
+    shouldCenterCards() {
+      return !this.isMobile && this.declaracoes.length < 4;
     },
   },
 
@@ -170,10 +205,9 @@ export default {
         depoimento: item.depoimento || "Excelente curso! Recomendo a todos.",
         duracao: item.duracao,
         documento: item.documento,
+        declaracao: item.declaracao,
         foto: item.foto
-          ? (item.foto.startsWith("http")
-              ? item.foto
-              : `https://cestificacoesiso-back.onrender.com${item.foto}`)
+          ? (item.foto.startsWith("http") ? item.foto : `http://127.0.0.1:8000/${item.foto}`)
           : "https://via.placeholder.com/90",
       }));
     } catch (err) {
@@ -191,6 +225,10 @@ export default {
     if (this.$refs.carouselTrack) {
       this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
     }
+    
+    this.$nextTick(() => {
+      this.startAutoSlide();
+    });
   },
 
   beforeUnmount() {
@@ -203,12 +241,21 @@ export default {
   },
 
   methods: {
+    viewDetails(declaracao) {
+      const declaracaoCompleta = {
+        ...declaracao,
+        declaracao: declaracao.declaracao || this.getDeclarationPreview(declaracao)
+      };
+      this.$emit("viewDetails", declaracaoCompleta);
+    },
+
     getDeclarationPreview(declaracao) {
-      const texto = `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
-      return texto;
+      return `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
     },
 
     nextSlide() {
+      if (this.declaracoes.length <= 4) return;
+      
       if (this.currentSlide < this.maxSlide) {
         this.currentSlide++;
       } else {
@@ -218,6 +265,8 @@ export default {
     },
 
     prevSlide() {
+      if (this.declaracoes.length <= 4) return;
+      
       if (this.currentSlide > 0) {
         this.currentSlide--;
       } else {
@@ -226,28 +275,51 @@ export default {
       this.resetAutoSlide();
     },
 
+    nextPage() {
+      if (this.declaracoes.length <= 4) return;
+      
+      if (this.currentPage < this.totalPages - 1) {
+        const newSlide = (this.currentPage + 1) * this.slidesToShow;
+        this.currentSlide = Math.min(newSlide, this.maxSlide);
+        this.resetAutoSlide();
+      }
+    },
+
+    prevPage() {
+      if (this.declaracoes.length <= 4) return;
+      
+      if (this.currentPage > 0) {
+        const newSlide = (this.currentPage - 1) * this.slidesToShow;
+        this.currentSlide = Math.max(0, newSlide);
+        this.resetAutoSlide();
+      }
+    },
+
+    goToPage(pageIndex) {
+      if (this.declaracoes.length <= 4) return;
+      
+      const newSlide = pageIndex * this.slidesToShow;
+      this.currentSlide = Math.min(newSlide, this.maxSlide);
+      this.resetAutoSlide();
+    },
+
     goToSlide(index) {
       if (this.isMobile) {
         const track = this.$refs.carouselTrack;
         if (!track) return;
-        
         const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 0;
         const gap = 15;
-        const scrollPosition = index * (slideWidth + gap);
-        
-        track.scrollTo({
-          left: scrollPosition,
-          behavior: "smooth",
-        });
+        track.scrollTo({ left: index * (slideWidth + gap), behavior: "smooth" });
         this.currentSlide = index;
       } else {
-        this.currentSlide = index * this.slidesToShow;
+        this.currentSlide = Math.min(index * this.slidesToShow, this.maxSlide);
         this.resetAutoSlide();
       }
     },
 
     startAutoSlide() {
-      if (!this.isMobile && this.declaracoes.length > this.slidesToShow) {
+      if (!this.isMobile && this.declaracoes.length > 4) {
+        this.stopAutoSlide(); 
         this.autoSlideInterval = setInterval(() => {
           this.nextSlide();
         }, 5000);
@@ -274,48 +346,37 @@ export default {
         this.slidesToShow = 1;
         this.isMobile = true;
         this.stopAutoSlide();
-      } else if (width < 1200) {
-        this.slidesToShow = 2;
-        this.isMobile = false;
       } else {
-        this.slidesToShow = 3;
+        this.slidesToShow = 4; 
         this.isMobile = false;
       }
 
       if (wasMobile !== this.isMobile) {
         this.currentSlide = 0;
         if (!this.isMobile) {
-          this.resetAutoSlide();
+          this.$nextTick(() => {
+            this.startAutoSlide();
+          });
         }
       }
-    },
-
-    viewDetails(declaracao) {
-      this.$emit("viewDetails", declaracao);
     },
 
     formatDate(dateString) {
       if (!dateString) return "Data não disponível";
       const date = new Date(dateString);
-      if (isNaN(date.getTime())) return "Data inválida";
-      return date.toLocaleDateString("pt-BR");
+      return isNaN(date.getTime()) ? "Data inválida" : date.toLocaleDateString("pt-BR");
     },
 
     handleTrackScroll() {
       if (!this.isMobile || this.isScrolling) return;
-      
       this.isScrolling = true;
-      
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
         const track = this.$refs.carouselTrack;
         if (!track) return;
-        
         const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 1;
         const gap = 15;
-        const scrollLeft = track.scrollLeft;
-        const index = Math.round(scrollLeft / (slideWidth + gap));
-        
+        const index = Math.round(track.scrollLeft / (slideWidth + gap));
         this.currentSlide = Math.max(0, Math.min(index, this.declaracoes.length - 1));
         this.isScrolling = false;
       }, 100);
@@ -337,7 +398,7 @@ export default {
 
 .container {
   width: 100%;
-  max-width: 1500px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 15px;
 }
@@ -361,34 +422,40 @@ export default {
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  min-height: 560px;
+  min-height: 500px;
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
   align-items: flex-start;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.carousel-track.centered-cards {
+  justify-content: center;
+  gap: 20px;
 }
 
 .carousel-slide {
-  flex: 0 0 calc(60% / 3);
-  padding: 0 12px;
+  flex: 0 0 calc(25% - 15px);
   box-sizing: border-box;
+  max-width: 320px;
 }
 
 .student-card {
   background: rgb(255, 255, 255);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 520px;
   width: 100%;
-  max-width: 340px;
-  margin: 40px auto 0;
+  margin: 30px auto 0;
 }
 
 .student-card:hover {
@@ -549,7 +616,7 @@ export default {
   align-items: center;
   justify-content: center;
   word-break: break-all;
-  margin:0 ;
+  margin: 0;
 }
 
 .btn-view-cert {
@@ -576,41 +643,78 @@ export default {
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
 
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #3b4cb8, #4e73df);
-  color: white;
+/* Controles de paginação estilo imagem */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 2rem;
+  padding: 0.4rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pagination-arrow {
+  min-width: 40px;
+  height: 40px;
+  background: transparent;
+  color: #6c757d;
   border: none;
-  border-radius: 50%;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  box-shadow: 0 5px 20px rgba(59, 76, 184, 0.3);
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
 }
 
-.carousel-btn:hover:not(:disabled) {
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 8px 25px rgba(59, 76, 184, 0.4);
+.pagination-arrow:hover:not(:disabled) {
+  background: #f1f3f5;
+  color: #495057;
 }
 
-.carousel-btn:disabled {
-  opacity: 0.5;
+.pagination-arrow:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
-.prev-btn {
-  left: 10px;
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.next-btn {
-  right: 10px;
+.page-number {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 0.5rem;
+  background: transparent;
+  color: #495057;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.page-number:hover:not(.active) {
+  background: #f1f3f5;
+}
+
+.page-number.active {
+  background: #5469d4;
+  color: white;
+  font-weight: 600;
 }
 
 .carousel-dots {
@@ -639,25 +743,13 @@ export default {
 
 @media (max-width: 1200px) {
   .carousel-slide {
-    flex: 0 0 50%;
-  }
-  
-  .carousel-container {
-    padding: 0 70px;
-  }
-  
-  .prev-btn {
-    left: 15px;
-  }
-  
-  .next-btn {
-    right: 15px;
+    flex: 0 0 calc(25% - 15px);
   }
 }
 
 @media (max-width: 992px) {
-  .carousel-section {
-    padding: 3rem 0;
+  .carousel-slide {
+    flex: 0 0 calc(25% - 15px);
   }
   
   .section-title {
@@ -666,10 +758,6 @@ export default {
   
   .section-subtitle {
     font-size: 1.1rem;
-  }
-  
-  .carousel-container {
-    padding: 0 60px;
   }
 }
 
@@ -1015,5 +1103,15 @@ export default {
     width: 10px;
     height: 10px;
   }
+}
+
+.carousel-track.centered-cards {
+  justify-content: center !important;
+  gap: 20px !important;
+}
+
+.carousel-track.centered-cards .carousel-slide {
+  flex: 0 0 calc(25% - 15px) !important;
+  max-width: 320px !important;
 }
 </style>

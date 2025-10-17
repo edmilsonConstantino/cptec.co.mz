@@ -69,27 +69,14 @@
         </div>
         
         <div class="certificate-content">
-          <!-- Texto da Declaração -->
           <div class="certificate-text-section" :class="{ 'mobile-text-section': isMobile }">
-           
-            <div class="certificate-text-content">
-              <p v-if="!isMobile" class="declaration-text">
-                Declaramos para os devidos fins que <strong class="highlight">{{ selectedDeclaracao.nomeCompleto }}</strong>,
-                portador(a) do documento de identidade nº <strong class="highlight">{{ ocultarBI(selectedDeclaracao.documento) }}</strong>,
-                concluiu com aproveitamento o curso de <strong class="highlight">{{ selectedDeclaracao.curso }}</strong>,
-                com carga horária de <strong class="highlight">{{ selectedDeclaracao.cargaHoraria }}</strong>,
-                no período de <strong class="highlight">{{ selectedDeclaracao.duracao }}</strong>.
-              </p>
-              
-              <p v-if="isMobile" class="declaration-text mobile">
-                <strong class="highlight">{{ selectedDeclaracao.nomeCompleto }}</strong> concluiu com aproveitamento 
-                o curso de <strong class="highlight">{{ selectedDeclaracao.curso }}</strong> em 
-                <strong class="highlight">{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</strong>.
-              </p>
-            </div>
-          </div>
+  <div class="certificate-text-content">
+    <p v-if="!isMobile" class="declaration-text" v-html="selectedDeclaracao.declaracao"></p>
+    <p v-if="isMobile" class="declaration-text mobile" v-html="selectedDeclaracao.declaracao"></p>
+  </div>
+</div>
 
-          <!-- Cards de Informações -->
+
           <div class="info-cards-section" :class="{ 'mobile-info-cards': isMobile }">
             <div class="info-cards-grid">
               <div class="info-display-card">
@@ -215,7 +202,6 @@ export default {
     ocultarBI(documento) {
       if (!documento || documento.length < 10) return documento
       
-      // Mantém os primeiros 3 caracteres e os últimos 7
       const inicio = documento.substring(0, 3)
       const fim = documento.substring(documento.length - 7)
       const meio = '**'
@@ -248,7 +234,6 @@ export default {
 </script>
 
 <style scoped>
-/* Todo o CSS permanece igual ao original */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
