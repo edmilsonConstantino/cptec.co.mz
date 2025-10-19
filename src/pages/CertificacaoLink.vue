@@ -1,21 +1,30 @@
 <template>
-  <div class="certificacao-link-page">
+  <div>
+    <HeroDeclaracoes />
+
+    <UltimasDeclaracoes />
+
+    <BuscarDeclaracoes />
+
+    <!-- ✅ Enquanto carrega -->
     <div v-if="loading" class="loading-container">
       <div class="spinner"></div>
       <p>Carregando certificação...</p>
     </div>
 
+    <!-- ✅ Erro -->
     <div v-else-if="error" class="error-container">
       <i class="bi bi-exclamation-triangle"></i>
       <h2>Certificação não encontrada</h2>
       <p>{{ error }}</p>
-      <router-link to="/home" class="btn-voltar">
-        <i class="bi bi-house"></i>
-        Voltar para Home
+      <router-link to="/declaracoes" class="btn-voltar">
+        <i class="bi bi-arrow-left"></i>
+        Voltar às Declarações
       </router-link>
     </div>
 
-    <DetailsModal
+    <!-- ✅ Card (modal) -->
+    <DetalheDeclaracoes
       v-if="certificacao && showModal"
       :selectedDeclaracao="certificacao"
       @close="closeModal"
@@ -23,14 +32,21 @@
   </div>
 </template>
 
+
 <script>
 import CertificationsService from "@/components/services/certifications";
-import DetailsModal from "@/pages/DetalheDeclaracoes.vue";
+import DetalheDeclaracoes from "@/pages/DetalheDeclaracoes.vue";
+import HeroDeclaracoes from "@/pages/HeroDeclaracoes.vue";
+import UltimasDeclaracoes from "@/pages/UltimasDeclaracoes.vue";
+import BuscarDeclaracoes from "@/pages/BuscaDeclaracoes.vue";
 
 export default {
   name: "CertificacaoLink",
   components: {
-    DetailsModal
+    DetalheDeclaracoes,
+    HeroDeclaracoes,
+    UltimasDeclaracoes,
+    BuscarDeclaracoes
   },
   props: {
     uniqueLink: {
@@ -53,9 +69,9 @@ export default {
     async buscarCertificacao() {
       try {
         this.loading = true;
-        
+
         const data = await CertificationsService.getByUniqueLink(this.uniqueLink);
-        
+
         this.certificacao = {
           id: data.id,
           nomeCompleto: data.nome_completo,
@@ -71,32 +87,32 @@ export default {
             ? (data.foto.startsWith("http")
                 ? data.foto
                 : `https://cestificacoesiso-back.onrender.com${data.foto}`)
+                // : `http://127.0.0.1:8000/${data.foto}`)
             : "https://via.placeholder.com/90",
         };
-        
+
         this.loading = false;
-        
-        // Abre o modal após carregar os dados
         setTimeout(() => {
           this.showModal = true;
         }, 300);
-        
       } catch (err) {
-        this.error = err.response?.data?.error || "Erro ao carregar certificação. Verifique se o link está correto.";
+        this.error =
+          err.response?.data?.error ||
+          "Erro ao carregar certificação. Verifique se o link está correto.";
         this.loading = false;
       }
     },
-    
     closeModal() {
       this.showModal = false;
-      // Redireciona para home após fechar o modal
+      // Volta à página principal de declarações
       setTimeout(() => {
-        this.$router.push('/');
+        this.$router.push("/declaracoes");
       }, 300);
     }
   }
 };
 </script>
+
 
 <style scoped>
 .certificacao-link-page {
