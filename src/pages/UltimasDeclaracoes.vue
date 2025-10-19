@@ -194,7 +194,7 @@ export default {
         foto: item.foto
           ? item.foto.startsWith("http")
             ? item.foto
-            : `http://127.0.0.1:8000/${item.foto}`
+            : `https://cestificacoesiso-back.onrender.com/${item.foto}`
           : "https://via.placeholder.com/90",
       }));
     } catch (err) {
