@@ -52,8 +52,10 @@
                 <div class="photo-overlay">
                   <i class="bi bi-award"></i>
                 </div>
+               
               </div>
             </div>
+            <h4 class="student-name">{{ selectedDeclaracao.nomeCompleto }}</h4>
             <div class="completion-badge">
               <i class="bi bi-check-circle-fill"></i>
               <span>Concluído com Sucesso</span>
@@ -319,12 +321,23 @@ export default {
   transform: scale(1.1) rotate(90deg);
   box-shadow: 0 10px 30px rgba(220, 53, 69, 0.4);
 }
+.student-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin-top: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #2c3e50, #313131);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* Header Mobile */
 .mobile-header {
   position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 5rem 2rem 2rem;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+    padding: 5rem 2rem 2rem;
   color: white;
   border-radius: 25px 25px 0 0;
   overflow: hidden;

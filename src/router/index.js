@@ -32,7 +32,7 @@ const routes = [
      {
   path: '/declaracoes/:uniqueLink',
   name: 'declaracoesLink',
-  component: () => import('@/pages/Declaracoes.vue'), 
+  component: () => import('@/pages/BuscaDeclaracoes.vue'), 
   props: true
 }
     ]
