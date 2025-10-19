@@ -40,10 +40,20 @@
               :class="{ active: activeSection === 'certificacoes' || activeSection === 'declaracoes' }"
               @mouseenter="showDropdown = true"
               @mouseleave="showDropdown = false">
-            <div class="nav-link dropdown-trigger">
-              <span class="dropdown-text">{{ currentDropdownText }}</span>
-              <i class="bi bi-chevron-down dropdown-icon" :class="{ rotated: showDropdown }"></i>
-            </div>
+        <div class="nav-link dropdown-trigger">
+            <i
+              v-if="currentDropdownText === 'Certificações'"
+              class="bi bi-award-fill dropdown-visible-icon"
+            ></i>
+            <i
+              v-else
+              class="bi bi-file-earmark-text-fill dropdown-visible-icon"
+            ></i>
+
+            <span class="dropdown-text">{{ currentDropdownText }}</span>
+            <i class="bi bi-chevron-down dropdown-icon" :class="{ rotated: showDropdown }"></i>
+          </div>
+
             
             <div class="dropdown-menu" :class="{ show: showDropdown }">
               <router-link 
@@ -367,7 +377,6 @@ export default {
   width: 60%;
 }
 
-/* Dropdown Styles - Desktop Only */
 .dropdown-item {
   position: relative;
 }

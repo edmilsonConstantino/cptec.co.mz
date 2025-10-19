@@ -88,7 +88,6 @@ export default {
 </script>
 
 <style scoped>
-
 .hero-section {
   position: relative;
   min-height: 80vh;
@@ -276,7 +275,6 @@ export default {
   letter-spacing: 1px;
 }
 
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -311,68 +309,219 @@ export default {
   }
 }
 
-
-@media (max-width: 768px) {
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .hero-actions .btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .hero-badge {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
+/* Tablet */
+@media (max-width: 992px) {
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
   }
   
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 }
 
+/* Mobile Large */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🔹 volta a centralizar o container */
+    justify-content: center;
+    text-align: center;  /* 🔹 centraliza textos por padrão */
+    padding: 0;
+  }
+
+  .hero-badge {
+    margin-bottom: 1.5rem;
+    text-align: left;
+    align-self: flex-start; /* 🔹 mas apenas ele se encosta à esquerda */
+  }
+
+  .hero-title {
+    font-size: 3.1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;     /* 🔹 título à esquerda */
+    align-self: flex-start; /* 🔹 mas apenas ele se encosta à esquerda */
+    margin-left: 1rem;    /* 🔹 opcional: pequeno espaçamento da borda */
+  }
+
+  .hero-subtitle {
+    font-size: 2.1rem;
+    margin-bottom: 2rem;
+    text-align: center;   /* 🔹 subtítulo centralizado */
+  }
+
+  .hero-features {
+    justify-content: center;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-item {
+    font-size: 0.95rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 350px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-actions .btn i {
+    font-size: 1.2rem;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+}
+
+
+/* Mobile Medium */
 @media (max-width: 576px) {
   .hero-section {
     background-attachment: scroll;
-    padding: 3rem 0;
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+  
+  .hero-content {
+    padding: 0 0.75rem;
   }
   
   .hero-badge {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
     font-size: 0.85rem;
     padding: 0.6rem 1.2rem;
+    margin-bottom: 1.2rem;
   }
   
   .hero-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+    margin-left: 0rem;
   }
   
   .hero-subtitle {
     font-size: 1rem;
+    margin-bottom: 1.8rem;
+    line-height: 1.5;
   }
   
   .hero-features {
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+    align-items: center;
   }
   
   .feature-item {
     font-size: 0.9rem;
   }
   
-  .scroll-indicator {
-    display: none !important;
+  .hero-actions {
+    gap: 0.8rem;
+  }
+  
+  .hero-actions .btn {
+    max-width: 320px;
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 375px) {
+  .hero-section {
+    padding: 0rem 0;
+  }
+  
+  .hero-content {
+    padding: 0 0.5rem;
+  }
+  
+  .hero-badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .hero-title {
+    font-size: 2.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .title-highlight::after {
+    width: 60px;
+    height: 3px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-features {
+    gap: 0.7rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-item {
+    font-size: 0.85rem;
+  }
+  
+  .feature-item i {
+    font-size: 1rem;
+  }
+  
+  .hero-actions {
+    gap: 0.7rem;
+  }
+  
+  .hero-actions .btn {
+    max-width: 280px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .hero-actions .btn i {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Extra Small */
+@media (max-width: 320px) {
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.9rem;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .hero-actions .btn {
+    max-width: 260px;
+    padding: 0.75rem 1.3rem;
+    font-size: 0.85rem;
   }
 }
 </style>

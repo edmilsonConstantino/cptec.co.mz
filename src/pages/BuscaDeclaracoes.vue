@@ -367,7 +367,7 @@ export default {
 
 <style scoped>
 .search-section {
-  padding: 4rem 0;
+  padding: 0.1rem 0;
   background: linear-gradient(135deg, #3b4cb8, #2c3e50);
   color: white;
 }

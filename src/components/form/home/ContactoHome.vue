@@ -349,7 +349,6 @@ export default {
       this.isSubmitting = true;
       
       try {
-        // estou a tentar diferentes URLs do backend
         const backendUrls = [
           "http://127.0.0.1:8000/api/submissions/",
           "http://localhost:8000/api/submissions/"
@@ -375,11 +374,11 @@ export default {
                 consent: this.form.consent
               }),
             });
-            break; // Se chegou aqui deu certo
+            break; 
           } catch (error) {
     
             console.log(`Tentativa falhou para ${url}:`, error.message);
-            continue; // Tenta prxima URL
+            continue; 
           }
         }
     

@@ -60,20 +60,17 @@ export default {
     }
   },
   mounted() {
-    // Texto rotativo
     setInterval(() => {
       this.index = (this.index + 1) % this.words.length;
       this.rotatingText = this.words[this.index];
     }, 3000);
 
-    // Menu responsivo
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
         this.isMenuOpen = false
       }
     })
     
-    // Efeito de scroll
     window.addEventListener('scroll', this.handleScroll)
   },
   beforeUnmount() {
@@ -83,7 +80,6 @@ export default {
 </script>
 
 <style scoped>
-/* Cor customizada - ALTERADA PARA AMARELO */
 .text-custom-yellow {
   color: #ffc107 !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);

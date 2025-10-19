@@ -133,44 +133,31 @@ export default {
       slidesToShow: 4,
       autoSlideInterval: null,
       isMobile: false,
-      declaracoes: [], 
+      declaracoes: [],
       loading: true,
       error: null,
       isScrolling: false,
+      userInteracted: false,
+      userInteractionTimeout: null,
+      scrollTimeout: null,
     };
   },
 
   computed: {
     carouselStyle() {
-      if (this.isMobile) {
-        return { display: "flex" };
-      }
-      
-      if (this.declaracoes.length <= 4) {
-        return {
-          transition: "none",
-          width: "100%",
-        };
-      }
-      
-      const translatePercentage = (this.currentSlide / this.declaracoes.length) * 100;
-      return {
-        transform: `translateX(-${translatePercentage}%)`,
-        transition: "transform 0.5s ease-in-out",
-        width: `${(this.declaracoes.length / this.slidesToShow) * 100}%`,
-      };
+      return { display: "flex" };
     },
 
     maxSlide() {
-      return Math.max(0, this.declaracoes.length - this.slidesToShow);
+      return this.isMobile
+        ? Math.max(0, this.declaracoes.length - 1)
+        : Math.max(0, this.declaracoes.length - this.slidesToShow);
     },
 
     dotsCount() {
-      return this.isMobile ? this.declaracoes.length : Math.ceil(this.declaracoes.length / this.slidesToShow);
-    },
-
-    currentDotIndex() {
-      return this.isMobile ? this.currentSlide : Math.floor(this.currentSlide / this.slidesToShow);
+      return this.isMobile
+        ? Math.min(3, this.declaracoes.length)
+        : Math.ceil(this.declaracoes.length / this.slidesToShow);
     },
 
     currentPage() {
@@ -178,14 +165,12 @@ export default {
     },
 
     totalPages() {
-      if (this.declaracoes.length <= 4) {
-        return 1;
-      }
-      return Math.ceil(this.maxSlide / this.slidesToShow) + 1;
+      if (this.declaracoes.length <= this.slidesToShow) return 1;
+      return Math.ceil(this.declaracoes.length / this.slidesToShow);
     },
 
     shouldCenterCards() {
-      return !this.isMobile && this.declaracoes.length < 4;
+      return !this.isMobile && this.declaracoes.length < this.slidesToShow;
     },
   },
 
@@ -207,7 +192,9 @@ export default {
         documento: item.documento,
         declaracao: item.declaracao,
         foto: item.foto
-          ? (item.foto.startsWith("http") ? item.foto : `http://127.0.0.1:8000/${item.foto}`)
+          ? item.foto.startsWith("http")
+            ? item.foto
+            : `http://127.0.0.1:8000/${item.foto}`
           : "https://via.placeholder.com/90",
       }));
     } catch (err) {
@@ -221,22 +208,36 @@ export default {
   mounted() {
     this.updateResponsiveSettings();
     window.addEventListener("resize", this.updateResponsiveSettings);
-    
-    if (this.$refs.carouselTrack) {
-      this.$refs.carouselTrack.addEventListener("scroll", this.handleTrackScroll);
-    }
-    
+
     this.$nextTick(() => {
-      this.startAutoSlide();
+      const track = this.$refs.carouselTrack;
+      if (track) {
+        track.addEventListener("scroll", this.handleTrackScroll, { passive: true });
+        track.addEventListener("touchstart", this.handleUserInteraction, { passive: true });
+        track.addEventListener("mousedown", this.handleUserInteraction);
+        track.addEventListener("wheel", this.handleUserInteraction, { passive: true });
+        track.addEventListener("mouseenter", this.handleUserInteraction);
+      }
+
+      setTimeout(() => {
+        this.startAutoSlide();
+      }, 800);
     });
   },
 
   beforeUnmount() {
     window.removeEventListener("resize", this.updateResponsiveSettings);
     this.stopAutoSlide();
-    
-    if (this.$refs.carouselTrack) {
-      this.$refs.carouselTrack.removeEventListener("scroll", this.handleTrackScroll);
+
+    if (this.userInteractionTimeout) clearTimeout(this.userInteractionTimeout);
+
+    const track = this.$refs.carouselTrack;
+    if (track) {
+      track.removeEventListener("scroll", this.handleTrackScroll);
+      track.removeEventListener("touchstart", this.handleUserInteraction);
+      track.removeEventListener("mousedown", this.handleUserInteraction);
+      track.removeEventListener("wheel", this.handleUserInteraction);
+      track.removeEventListener("mouseenter", this.handleUserInteraction);
     }
   },
 
@@ -244,7 +245,7 @@ export default {
     viewDetails(declaracao) {
       const declaracaoCompleta = {
         ...declaracao,
-        declaracao: declaracao.declaracao || this.getDeclarationPreview(declaracao)
+        declaracao: declaracao.declaracao || this.getDeclarationPreview(declaracao),
       };
       this.$emit("viewDetails", declaracaoCompleta);
     },
@@ -253,77 +254,64 @@ export default {
       return `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
     },
 
-    nextSlide() {
-      if (this.declaracoes.length <= 4) return;
-      
-      if (this.currentSlide < this.maxSlide) {
-        this.currentSlide++;
-      } else {
-        this.currentSlide = 0;
-      }
-      this.resetAutoSlide();
+    handleUserInteraction() {
+      this.userInteracted = true;
+      this.stopAutoSlide();
+
+      if (this.userInteractionTimeout) clearTimeout(this.userInteractionTimeout);
+      this.userInteractionTimeout = setTimeout(() => {
+        this.userInteracted = false;
+        this.startAutoSlide();
+      }, 10000);
     },
+
+    getSlideMetrics() {
+      const track = this.$refs.carouselTrack;
+      const slideEl = track?.querySelector(".carousel-slide");
+      const slideWidth = slideEl ? slideEl.getBoundingClientRect().width : 0;
+      const gap = parseInt(getComputedStyle(track || document.documentElement).gap) || 20;
+      return { track, slideWidth, gap };
+    },
+
+    nextSlide() {
+      const { track, slideWidth, gap } = this.getSlideMetrics();
+      if (!track || this.declaracoes.length <= 1) return;
+
+      this.currentSlide = (this.currentSlide + 1) % this.declaracoes.length;
+      const left = this.currentSlide * (slideWidth + gap);
+      track.scrollTo({ left, behavior: "smooth" });
+    },
+   goToPage(page) {
+  const { track, slideWidth, gap } = this.getSlideMetrics();
+  if (!track) return;
+
+  const targetIndex = this.isMobile
+    ? page - 1
+    : (page - 1) * this.slidesToShow; 
+
+  this.currentSlide = Math.max(0, Math.min(targetIndex, this.declaracoes.length - 1));
+
+  const left = this.currentSlide * (slideWidth + gap);
+  track.scrollTo({ left, behavior: "smooth" });
+},
 
     prevSlide() {
-      if (this.declaracoes.length <= 4) return;
-      
-      if (this.currentSlide > 0) {
-        this.currentSlide--;
-      } else {
-        this.currentSlide = this.maxSlide;
-      }
-      this.resetAutoSlide();
-    },
+      const { track, slideWidth, gap } = this.getSlideMetrics();
+      if (!track || this.declaracoes.length <= 1) return;
 
-    nextPage() {
-      if (this.declaracoes.length <= 4) return;
-      
-      if (this.currentPage < this.totalPages - 1) {
-        const newSlide = (this.currentPage + 1) * this.slidesToShow;
-        this.currentSlide = Math.min(newSlide, this.maxSlide);
-        this.resetAutoSlide();
-      }
-    },
-
-    prevPage() {
-      if (this.declaracoes.length <= 4) return;
-      
-      if (this.currentPage > 0) {
-        const newSlide = (this.currentPage - 1) * this.slidesToShow;
-        this.currentSlide = Math.max(0, newSlide);
-        this.resetAutoSlide();
-      }
-    },
-
-    goToPage(pageIndex) {
-      if (this.declaracoes.length <= 4) return;
-      
-      const newSlide = pageIndex * this.slidesToShow;
-      this.currentSlide = Math.min(newSlide, this.maxSlide);
-      this.resetAutoSlide();
-    },
-
-    goToSlide(index) {
-      if (this.isMobile) {
-        const track = this.$refs.carouselTrack;
-        if (!track) return;
-        const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 0;
-        const gap = 15;
-        track.scrollTo({ left: index * (slideWidth + gap), behavior: "smooth" });
-        this.currentSlide = index;
-      } else {
-        this.currentSlide = Math.min(index * this.slidesToShow, this.maxSlide);
-        this.resetAutoSlide();
-      }
+      this.currentSlide =
+        this.currentSlide > 0 ? this.currentSlide - 1 : this.declaracoes.length - 1;
+      const left = this.currentSlide * (slideWidth + gap);
+      track.scrollTo({ left, behavior: "smooth" });
     },
 
     startAutoSlide() {
-      if (!this.isMobile && this.declaracoes.length > 4) {
-        this.stopAutoSlide(); 
-        this.autoSlideInterval = setInterval(() => {
-          this.nextSlide();
-        }, 5000);
-      }
+      this.stopAutoSlide();
+      if (this.declaracoes.length <= 1) return;
+
+      this.autoSlideInterval = setInterval(() => {
+        if (!this.userInteracted) this.nextSlide();
+      }, 5000);
     },
 
     stopAutoSlide() {
@@ -333,11 +321,6 @@ export default {
       }
     },
 
-    resetAutoSlide() {
-      this.stopAutoSlide();
-      this.startAutoSlide();
-    },
-
     updateResponsiveSettings() {
       const width = window.innerWidth;
       const wasMobile = this.isMobile;
@@ -345,37 +328,40 @@ export default {
       if (width < 768) {
         this.slidesToShow = 1;
         this.isMobile = true;
-        this.stopAutoSlide();
       } else {
-        this.slidesToShow = 4; 
+        this.slidesToShow = 4;
         this.isMobile = false;
       }
 
       if (wasMobile !== this.isMobile) {
         this.currentSlide = 0;
-        if (!this.isMobile) {
-          this.$nextTick(() => {
-            this.startAutoSlide();
-          });
-        }
+        this.$nextTick(() => {
+          const { track } = this.getSlideMetrics();
+          if (track) track.scrollTo({ left: 0, behavior: "smooth" });
+          this.startAutoSlide();
+        });
       }
     },
 
     formatDate(dateString) {
       if (!dateString) return "Data não disponível";
       const date = new Date(dateString);
-      return isNaN(date.getTime()) ? "Data inválida" : date.toLocaleDateString("pt-BR");
+      return isNaN(date.getTime())
+        ? "Data inválida"
+        : date.toLocaleDateString("pt-BR");
     },
 
     handleTrackScroll() {
-      if (!this.isMobile || this.isScrolling) return;
+      if (!this.$refs.carouselTrack || this.isScrolling) return;
       this.isScrolling = true;
+
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(() => {
-        const track = this.$refs.carouselTrack;
-        if (!track) return;
-        const slideWidth = track.querySelector(".carousel-slide")?.offsetWidth || 1;
-        const gap = 15;
+        const { track, slideWidth, gap } = this.getSlideMetrics();
+        if (!track) {
+          this.isScrolling = false;
+          return;
+        }
         const index = Math.round(track.scrollLeft / (slideWidth + gap));
         this.currentSlide = Math.max(0, Math.min(index, this.declaracoes.length - 1));
         this.isScrolling = false;
@@ -385,16 +371,20 @@ export default {
 };
 </script>
 
+
 <style scoped>
 * {
   box-sizing: border-box;
 }
 
 .carousel-section {
-  padding: 4rem 0;
+  padding: 1rem 0;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  background: transparent;
   overflow: hidden;
+  
 }
+
 
 .container {
   width: 100%;
@@ -421,8 +411,8 @@ export default {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  overflow: hidden;
-  min-height: 500px;
+  overflow: visible;
+  min-height: 480px;
 }
 
 .carousel-track {
@@ -431,7 +421,13 @@ export default {
   align-items: flex-start;
   gap: 20px;
   padding: 0 10px;
+  overflow-x: auto;    
+  scroll-behavior: smooth;  
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;    
 }
+
+.carousel-track::-webkit-scrollbar { display: none; }
 
 .carousel-track.centered-cards {
   justify-content: center;
@@ -643,13 +639,12 @@ export default {
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
 
-/* Controles de paginação estilo imagem */
 .pagination-controls {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0.4rem;
   background: white;
   border-radius: 8px;
@@ -687,7 +682,7 @@ export default {
 .pagination-numbers {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.20rem;
 }
 
 .page-number {
@@ -763,7 +758,7 @@ export default {
 
 @media (max-width: 768px) {
   .carousel-section {
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     overflow: visible;
     background: transparent;
   }
