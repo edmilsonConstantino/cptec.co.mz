@@ -112,7 +112,7 @@
             </router-link>
           </li>
           <li class="nav-item whatsapp-item">
-            <a href="https://wa.me/+258846949523?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
+            <a href="https://wa.me/+258875531696?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20vossos%20serviços%20e%20cursos%20de%20certificação.%20Podem%20me%20ajudar?" target="_blank" class="nav-link whatsapp-link" @click="closeMenu">
               <i class="bi bi-whatsapp"></i>
               <span>WhatsApp</span>
             </a>
