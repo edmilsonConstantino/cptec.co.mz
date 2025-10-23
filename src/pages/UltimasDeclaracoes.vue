@@ -243,12 +243,16 @@ export default {
 
   methods: {
     viewDetails(declaracao) {
-      const declaracaoCompleta = {
-        ...declaracao,
-        declaracao: declaracao.declaracao || this.getDeclarationPreview(declaracao),
-      };
-      this.$emit("viewDetails", declaracaoCompleta);
-    },
+      
+       if (declaracao.unique_link) {
+      this.$router.push({
+        name: 'declaracoesLink',
+        params: { uniqueLink: declaracao.unique_link }
+      });
+    } else {
+      this.$emit('viewDetails', declaracao);
+    }
+  },
 
     getDeclarationPreview(declaracao) {
       return `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;

@@ -26,7 +26,6 @@
       </div>
       
       <div class="certificate-full">
-        <!-- Header Desktop -->
         <div class="certificate-header" v-if="!isMobile">
           <div class="institution-section">
             <div class="institution-logo-wrapper">
@@ -72,11 +71,11 @@
         
         <div class="certificate-content">
           <div class="certificate-text-section" :class="{ 'mobile-text-section': isMobile }">
-  <div class="certificate-text-content">
-    <p v-if="!isMobile" class="declaration-text" v-html="selectedDeclaracao.declaracao"></p>
-    <p v-if="isMobile" class="declaration-text mobile" v-html="selectedDeclaracao.declaracao"></p>
-  </div>
-</div>
+            <div class="certificate-text-content">
+              <p v-if="!isMobile" class="declaration-text" v-html="selectedDeclaracao.declaracao"></p>
+              <p v-if="isMobile" class="declaration-text mobile" v-html="selectedDeclaracao.declaracao"></p>
+            </div>
+          </div>
 
 
           <div class="info-cards-section" :class="{ 'mobile-info-cards': isMobile }">
@@ -141,99 +140,127 @@
 </template>
 
 <script>
+import CertificationsService from "@/components/services/certifications.js";
+
 export default {
-  name: 'DetailsModal',
+  name: "DetailsModal",
   props: {
     selectedDeclaracao: {
       type: Object,
       default: null
+    },
+    uniqueLink: { 
+      type: String,
+      default: null
     }
   },
-  emits: ['close'],
+  emits: ["close", "update:selectedDeclaracao"],
   data() {
     return {
       isMobile: false
-    }
+    };
   },
-  mounted() {
-    this.checkMobile()
-    window.addEventListener('resize', this.checkMobile)
-   
+  async mounted() {
+    this.checkMobile();
+    window.addEventListener("resize", this.checkMobile);
+
+    if (this.uniqueLink && !this.selectedDeclaracao) {
+      await this.fetchDeclaracao(this.uniqueLink);
+    }
+
     if (this.isMobile && this.selectedDeclaracao) {
-      window.history.pushState({ modal: true }, '')
-      window.addEventListener('popstate', this.handleBack)
+      window.history.pushState({ modal: true }, "");
+      window.addEventListener("popstate", this.handleBack);
     }
   },
   beforeUnmount() {
-    window.removeEventListener('resize', this.checkMobile)
-    
-    window.removeEventListener('popstate', this.handleBack)
+    window.removeEventListener("resize", this.checkMobile);
+    window.removeEventListener("popstate", this.handleBack);
   },
   methods: {
     checkMobile() {
-      this.isMobile = window.innerWidth < 768
+      this.isMobile = window.innerWidth < 768;
     },
-    
+
     closeModal() {
-      this.$emit('close')
-      document.body.style.overflow = 'auto'
+      this.$emit("close");
+      document.body.style.overflow = "auto";
     },
-    
+
     shareCertificate() {
       if (navigator.share) {
         navigator.share({
           title: `Declaração - ${this.selectedDeclaracao.nomeCompleto}`,
           text: `Veja a declaração de conclusão do curso ${this.selectedDeclaracao.curso}`,
           url: window.location.href
-        })
+        });
       } else {
-        navigator.clipboard.writeText(window.location.href)
-        alert('Link copiado para a área de transferência!')
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copiado para a área de transferência!");
       }
     },
-    
+
     formatDateFull(dateString) {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('pt-BR', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      })
+      const date = new Date(dateString);
+      return date.toLocaleDateString("pt-BR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
     },
 
     ocultarBI(documento) {
-      if (!documento || documento.length < 10) return documento
-      
-      const inicio = documento.substring(0, 3)
-      const fim = documento.substring(documento.length - 7)
-      const meio = '**'
-      
-      return `${inicio}${meio}${fim}`
+      if (!documento || documento.length < 10) return documento;
+
+      const inicio = documento.substring(0, 3);
+      const fim = documento.substring(documento.length - 7);
+      const meio = "**";
+
+      return `${inicio}${meio}${fim}`;
     },
 
     handleBack() {
       if (this.isMobile && this.selectedDeclaracao) {
-        this.closeModal()
+        this.closeModal();
+      }
+    },
+
+    async fetchDeclaracao(uniqueLink) {
+      try {
+        const data = await CertificationsService.getByUniqueLink(uniqueLink);
+        this.$emit("update:selectedDeclaracao", data);
+      } catch (error) {
+        console.error(`Erro ao buscar declaração com link ${uniqueLink}:`, error);
       }
     }
   },
-  
+
   watch: {
     selectedDeclaracao(newVal) {
       if (newVal) {
-        document.body.style.overflow = 'hidden'
-        this.checkMobile()
+        document.body.style.overflow = "hidden";
+        this.checkMobile();
         if (this.isMobile) {
-          window.history.pushState({ modal: true }, '')
-          window.addEventListener('popstate', this.handleBack)
+          window.history.pushState({ modal: true }, "");
+          window.addEventListener("popstate", this.handleBack);
         }
       } else {
-        window.removeEventListener('popstate', this.handleBack)
+        window.removeEventListener("popstate", this.handleBack);
+      }
+    },
+
+    uniqueLink: {
+      immediate: true,
+      async handler(newLink) {
+        if (newLink && !this.selectedDeclaracao) {
+          await this.fetchDeclaracao(newLink);
+        }
       }
     }
   }
-}
+};
 </script>
+
 
 <style scoped>
 @keyframes fadeIn {
