@@ -5,136 +5,130 @@
         <i class="bi bi-x"></i>
       </button>
 
-      <div class="mobile-header" v-if="isMobile">
-        <div class="mobile-header-background"></div>
-        <div class="mobile-student-info">
-          <div class="photo-container">
-            <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" class="mobile-photo" />
+      <!-- Desktop -->
+      <div class="certificate-wrapper" v-if="!isMobile">
+        <div class="certificate-header">
+          <div class="institution-block">
+            <div class="logo-circle">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+            <div class="institution-info">
+              <h2>Centro de Formação Profissional</h2>
+              <p>Reconhecido pelo Ministério da Educação</p>
+            </div>
+          </div>
+          
+          <div class="student-block">
+            <div class="student-photo">
+              <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" />
+            </div>
+            <h3>{{ selectedDeclaracao.nomeCompleto }}</h3>
+            <div class="badge-success">
+              <i class="bi bi-check-circle-fill"></i>
+              Concluído
+            </div>
+          </div>
+        </div>
+
+        <div class="certificate-body">
+          <div class="title-section">
+            <div class="line-ornament"></div>
+            <h1>DECLARAÇÃO DE CONCLUSÃO</h1>
+            <div class="line-ornament"></div>
+          </div>
+
+          <div class="declaration-text">
+            <p v-html="getDeclaracaoTexto(selectedDeclaracao.declaracao)"></p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <i class="bi bi-mortarboard"></i>
+              <div class="info-content">
+                <span class="label">CURSO</span>
+                <strong>{{ selectedDeclaracao.curso }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="bi bi-calendar-check"></i>
+              <div class="info-content">
+                <span class="label">DURAÇÃO</span>
+                <strong>{{ selectedDeclaracao.duracao }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="bi bi-clock"></i>
+              <div class="info-content">
+                <span class="label">CARGA HORÁRIA</span>
+                <strong>{{ selectedDeclaracao.cargaHoraria }}</strong>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="bi bi-calendar3"></i>
+              <div class="info-content">
+                <span class="label">DATA DE CONCLUSÃO</span>
+                <strong>{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="certificate-mobile" v-else>
+        <div class="mobile-header">
+          <div class="mobile-photo">
+            <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" />
             <div class="photo-badge">
               <i class="bi bi-award"></i>
             </div>
           </div>
-          <div class="mobile-details">
-            <h3>{{ selectedDeclaracao.nomeCompleto }}</h3>
-            <p>{{ selectedDeclaracao.curso }}</p>
-            <div class="status-badge">
-              <i class="bi bi-check-circle"></i>
-              <span>Concluído</span>
-            </div>
+          <h3>{{ selectedDeclaracao.nomeCompleto }}</h3>
+          <p>{{ selectedDeclaracao.curso }}</p>
+          <div class="badge-success">
+            <i class="bi bi-check-circle-fill"></i>
+            Concluído
           </div>
         </div>
-      </div>
-      
-      <div class="certificate-full">
-        <div class="certificate-header" v-if="!isMobile">
-          <div class="institution-section">
-            <div class="institution-logo-wrapper">
-              <div class="institution-logo-full">
-                <i class="bi bi-mortarboard"></i>
-                <div class="logo-glow"></div>
-              </div>
-            </div>
-            <div class="institution-details">
-              <h2>Centro de Formação Profissional</h2>
-              <p>Reconhecido pelo Ministério da Educação</p>
-              <div class="institution-badge">
-                <i class="bi bi-shield-check"></i>
-                <span>Certificado</span>
-              </div>
-            </div>
-          </div>
+
+        <div class="mobile-body">
+          <h2>DECLARAÇÃO DE CONCLUSÃO</h2>
           
-          <div class="student-section">
-            <div class="student-photo-wrapper">
-              <div class="student-photo-full">
-                <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" />
-                <div class="photo-overlay">
-                  <i class="bi bi-award"></i>
-                </div>
-               
-              </div>
-            </div>
-            <h4 class="student-name">{{ selectedDeclaracao.nomeCompleto }}</h4>
-            <div class="completion-badge">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>Concluído com Sucesso</span>
-            </div>
-          </div>
-        </div>
-        
-    
-        <div class="certificate-title">
-          <div class="title-ornament top"></div>
-          <h3 :class="{ 'mobile-title': isMobile }">DECLARAÇÃO DE CONCLUSÃO</h3>
-          <div class="title-ornament bottom"></div>
-        </div>
-        
-        <div class="certificate-content">
-          <div class="certificate-text-section" :class="{ 'mobile-text-section': isMobile }">
-            <div class="certificate-text-content">
-              <p v-if="!isMobile" class="declaration-text" v-html="selectedDeclaracao.declaracao"></p>
-              <p v-if="isMobile" class="declaration-text mobile" v-html="selectedDeclaracao.declaracao"></p>
-            </div>
+          <div class="mobile-text">
+            <p v-html="getDeclaracaoTexto(selectedDeclaracao.declaracao)"></p>
           </div>
 
-
-          <div class="info-cards-section" :class="{ 'mobile-info-cards': isMobile }">
-            <div class="info-cards-grid">
-              <div class="info-display-card">
-                <div class="card-gradient curso"></div>
-                <div class="card-icon-large">
-                  <i class="bi bi-mortarboard"></i>
-                </div>
-                <div class="card-details">
-                  <span class="card-label">CURSO</span>
-                  <h5 class="card-value">{{ selectedDeclaracao.curso }}</h5>
-                </div>
+          <div class="mobile-info">
+            <div class="mobile-info-row">
+              <i class="bi bi-calendar-check"></i>
+              <div>
+                <span>Duração</span>
+                <strong>{{ selectedDeclaracao.duracao }}</strong>
               </div>
+            </div>
 
-              <div class="info-display-card">
-                <div class="card-gradient duracao"></div>
-                <div class="card-icon-large">
-                  <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="card-details">
-                  <span class="card-label">DURAÇÃO</span>
-                  <h5 class="card-value">{{ selectedDeclaracao.duracao }}</h5>
-                </div>
+            <div class="mobile-info-row">
+              <i class="bi bi-clock"></i>
+              <div>
+                <span>Carga Horária</span>
+                <strong>{{ selectedDeclaracao.cargaHoraria }}</strong>
               </div>
+            </div>
 
-              <div class="info-display-card">
-                <div class="card-gradient carga"></div>
-                <div class="card-icon-large">
-                  <i class="bi bi-clock"></i>
-                </div>
-                <div class="card-details">
-                  <span class="card-label">CARGA HORÁRIA</span>
-                  <h5 class="card-value">{{ selectedDeclaracao.cargaHoraria }}</h5>
-                </div>
-              </div>
-
-              <div class="info-display-card">
-                <div class="card-gradient conclusao"></div>
-                <div class="card-icon-large">
-                  <i class="bi bi-calendar3"></i>
-                </div>
-                <div class="card-details">
-                  <span class="card-label">CONCLUSÃO</span>
-                  <h5 class="card-value">{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</h5>
-                </div>
+            <div class="mobile-info-row">
+              <i class="bi bi-calendar3"></i>
+              <div>
+                <span>Conclusão</span>
+                <strong>{{ formatDateFull(selectedDeclaracao.dataConclusao) }}</strong>
               </div>
             </div>
           </div>
-
-          <div class="details-grid-section" v-if="!isMobile">
-            <div class="details-grid">
-            </div>
-          </div>
-        </div>
-
-        <div class="certificate-footer-full" v-if="!isMobile">
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -167,15 +161,9 @@ export default {
     if (this.uniqueLink && !this.selectedDeclaracao) {
       await this.fetchDeclaracao(this.uniqueLink);
     }
-
-    if (this.isMobile && this.selectedDeclaracao) {
-      window.history.pushState({ modal: true }, "");
-      window.addEventListener("popstate", this.handleBack);
-    }
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.checkMobile);
-    window.removeEventListener("popstate", this.handleBack);
   },
   methods: {
     checkMobile() {
@@ -187,19 +175,6 @@ export default {
       document.body.style.overflow = "auto";
     },
 
-    shareCertificate() {
-      if (navigator.share) {
-        navigator.share({
-          title: `Declaração - ${this.selectedDeclaracao.nomeCompleto}`,
-          text: `Veja a declaração de conclusão do curso ${this.selectedDeclaracao.curso}`,
-          url: window.location.href
-        });
-      } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert("Link copiado para a área de transferência!");
-      }
-    },
-
     formatDateFull(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString("pt-BR", {
@@ -209,28 +184,29 @@ export default {
       });
     },
 
-    ocultarBI(documento) {
-      if (!documento || documento.length < 10) return documento;
-
-      const inicio = documento.substring(0, 3);
-      const fim = documento.substring(documento.length - 7);
-      const meio = "**";
-
-      return `${inicio}${meio}${fim}`;
-    },
-
-    handleBack() {
-      if (this.isMobile && this.selectedDeclaracao) {
-        this.closeModal();
-      }
-    },
-
     async fetchDeclaracao(uniqueLink) {
       try {
         const data = await CertificationsService.getByUniqueLink(uniqueLink);
         this.$emit("update:selectedDeclaracao", data);
       } catch (error) {
-        console.error(`Erro ao buscar declaração com link ${uniqueLink}:`, error);
+        console.error("Erro ao buscar declaração:", error);
+      }
+    },
+
+    getDeclaracaoTexto(texto) {
+      if (texto && texto.trim() !== "") {
+        return texto;
+      } else {
+        const nome = this.selectedDeclaracao?.nomeCompleto || "________________";
+        const curso = this.selectedDeclaracao?.curso || "________________";
+        const carga = this.selectedDeclaracao?.cargaHoraria || "não informada";
+        const duracao = this.selectedDeclaracao?.duracao || "não informada";
+
+        return `
+          Certificamos que o(a) <strong>${nome}</strong> concluiu com aproveitamento o curso de
+          <strong>${curso}</strong>, com carga horária de <strong>${carga}</strong>, no período de
+          <strong>${duracao}</strong>. Esta declaração é emitida para os devidos efeitos legais.
+        `;
       }
     }
   },
@@ -240,12 +216,6 @@ export default {
       if (newVal) {
         document.body.style.overflow = "hidden";
         this.checkMobile();
-        if (this.isMobile) {
-          window.history.pushState({ modal: true }, "");
-          window.addEventListener("popstate", this.handleBack);
-        }
-      } else {
-        window.removeEventListener("popstate", this.handleBack);
       }
     },
 
@@ -261,14 +231,46 @@ export default {
 };
 </script>
 
-
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes slideInUp {
+.modal-container {
+  background: white;
+  border-radius: 20px;
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -279,673 +281,382 @@ export default {
   }
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.05); opacity: 1; }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 76, 184, 0.3); }
-  50% { box-shadow: 0 0 30px rgba(59, 76, 184, 0.6); }
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(59, 76, 184, 0.2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-  backdrop-filter: blur(10px);
-  animation: fadeIn 0.3s ease;
-}
-
-.modal-container {
-  background: linear-gradient(135deg, #ffffff, #f8f9ff);
-  border-radius: 25px;
-  max-width: 1100px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  animation: slideInUp 0.5s ease;
-  box-shadow: 
-    0 25px 80px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.2);
-}
-
 .modal-close {
   position: absolute;
-  top: 35px;
+  top: 20px;
   right: 20px;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
-  color: #495057;
+  background: white;
+  color: #333;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 1001;
-  font-size: 1.8rem;
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  z-index: 10;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .modal-close:hover {
-  background: linear-gradient(135deg, #dc3545, #c82333);
+  background: #dc3545;
   color: white;
-  transform: scale(1.1) rotate(90deg);
-  box-shadow: 0 10px 30px rgba(220, 53, 69, 0.4);
-}
-.student-name {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #2c3e50;
-  margin-top: 0.5rem;
-  text-align: center;
-  letter-spacing: 0.5px;
-  background: linear-gradient(135deg, #2c3e50, #313131);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  transform: rotate(90deg);
 }
 
-/* Header Mobile */
-.mobile-header {
-  position: relative;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-    padding: 5rem 2rem 2rem;
-  color: white;
-  border-radius: 25px 25px 0 0;
-  overflow: hidden;
+/* Desktop Layout */
+.certificate-wrapper {
+  padding: 50px 60px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
 }
 
-.mobile-header-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+.certificate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #e8e8e8;
+  margin-bottom: 40px;
 }
 
-.mobile-student-info {
-  position: relative;
-  z-index: 2;
+.institution-block {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 20px;
 }
 
-.photo-container {
-  position: relative;
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 36px;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.institution-info h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.institution-info p {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.student-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #667eea;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.student-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.student-block h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.badge-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.certificate-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.title-section {
+  text-align: center;
+}
+
+.line-ornament {
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
+  margin: 15px auto;
+}
+
+.title-section h1 {
+  font-size: 36px;
+  font-weight: 900;
+  color: #2c3e50;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.declaration-text {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  padding: 30px;
+  border-radius: 15px;
+  border-left: 4px solid #667eea;
+}
+
+.declaration-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #495057;
+  text-align: justify;
+  margin: 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.info-item {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.info-item i {
+  font-size: 32px;
+  color: #667eea;
   flex-shrink: 0;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-content .label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-content strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: #2c3e50;
+  line-height: 1.3;
+}
+
+/* Mobile Layout */
+.certificate-mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.mobile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 20px 30px;
+  color: white;
+  text-align: center;
 }
 
 .mobile-photo {
   width: 90px;
   height: 90px;
+  margin: 0 auto 15px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   border: 4px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.3),
-    0 0 0 8px rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease;
-  margin-top: 15%;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .photo-badge {
   position: absolute;
   bottom: -5px;
   right: -5px;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   background: linear-gradient(135deg, #ffc107, #ff8c00);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 1rem;
-  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
-  animation: pulse 2s infinite;
+  font-size: 14px;
 }
 
-.mobile-details {
-  flex: 1;
-}
-
-.mobile-details h3 {
-  font-size: 1.5rem;
+.mobile-header h3 {
+  font-size: 22px;
   font-weight: 800;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 8px;
 }
 
-.mobile-details p {
-  font-size: 1rem;
-  opacity: 0.9;
-  margin-bottom: 1rem;
-  line-height: 1.4;
+.mobile-header p {
+  font-size: 14px;
+  opacity: 0.95;
+  margin-bottom: 15px;
 }
 
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(40, 167, 69, 0.9);
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.certificate-full {
-  padding: 5rem 2.5rem;
-  position: relative;
-}
-
-.certificate-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4rem;
-  padding-bottom: 2.5rem;
-  border-bottom: 2px solid #e3e6f0;
-  position: relative;
-}
-
-.certificate-header::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 2px;
-}
-
-.institution-section {
-  display: flex;
-  align-items: center;
+.mobile-body {
   flex: 1;
-}
-
-.institution-logo-wrapper {
-  position: relative;
-  margin-right: 2rem;
-}
-
-.institution-logo-full {
-  width: 90px;
-  height: 90px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 2.2rem;
-  position: relative;
-  z-index: 2;
-  box-shadow: 
-    0 15px 35px rgba(102, 126, 234, 0.4),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2);
-}
-
-.logo-glow {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 50%;
-  opacity: 0.3;
-  filter: blur(15px);
-  animation: glow 3s ease-in-out infinite;
-}
-
-.institution-details h2 {
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #2c3e50, #3498db);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.institution-details p {
-  font-size: 1.1rem;
-  color: #6c757d;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.institution-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.student-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.student-photo-wrapper {
-  position: relative;
-}
-
-.student-photo-full {
-  width: 130px;
-  height: 130px;
-  position: relative;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 5px solid #667eea;
-  box-shadow: 
-    0 15px 35px rgba(102, 126, 234, 0.4),
-    0 0 0 10px rgba(102, 126, 234, 0.1);
-}
-
-.student-photo-full img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.photo-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 2rem;
-  opacity: 0;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.student-photo-full:hover .photo-overlay {
-  opacity: 1;
-}
-
-.student-photo-full:hover img {
-  transform: scale(1.1);
-}
-
-.completion-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Título */
-.certificate-title {
-  text-align: center;
-  margin-bottom: 4rem;
-  position: relative;
-}
-
-.title-ornament {
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
-  margin: 1rem auto;
-  border-radius: 2px;
-  position: relative;
-}
-
-.title-ornament.top {
-  width: 200px;
-  margin-bottom: 1.5rem;
-}
-
-.title-ornament.bottom {
-  width: 150px;
-  margin-top: 1rem;
-}
-
-.certificate-title h3 {
-  font-size: 3rem;
-  font-weight: 900;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin: 0;
-  background: linear-gradient(135deg, #2c3e50, #667eea);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.mobile-title {
-  font-size: 1.8rem !important;
-  letter-spacing: 2px !important;
-  margin-bottom: 2rem !important;
-}
-
-/* Texto da Declaração */
-.certificate-text-section {
-  margin-bottom: 3rem;
-  position: relative;
-}
-
-.mobile-text-section {
-  margin-bottom: 1rem;
-}
-
-.text-ornament {
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  border-radius: 2px;
-  margin: 0 auto 2rem;
-}
-
-.certificate-text-content {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
-  padding: 2.5rem;
-  border-radius: 20px;
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.certificate-text-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 0 3px 3px 0;
-}
-
-.declaration-text {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  color: #495057;
-  margin: 0;
-  text-align: justify;
-  position: relative;
-  z-index: 2;
-}
-
-.declaration-text.mobile {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  text-align: left;
-  margin-top: -5%;
-}
-
-.highlight {
-  color: #2c3e50;
-  font-weight: 800;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  padding: 0.2rem 0.4rem;
-  border-radius: 5px;
-  border-bottom: 1px solid #667eea;
-}
-
-/* Cards de Informações */
-.info-cards-section {
-  margin-bottom: 3rem;
-}
-
-.mobile-info-cards {
-  margin-bottom: 2rem;
-}
-
-.info-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-}
-
-.info-display-card {
+  padding: 30px 20px;
   background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    0 3px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  transition: all 0.4s ease;
+}
+
+.mobile-body h2 {
+  font-size: 20px;
+  font-weight: 900;
+  color: #2c3e50;
   text-align: center;
-}
-
-.info-display-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  border-radius: 20px 20px 0 0;
-}
-
-.card-gradient.curso {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.card-gradient.duracao {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.card-gradient.carga {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.card-gradient.conclusao {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.card-icon-large {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 1.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: white;
-  position: relative;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.info-display-card:nth-child(2) .card-icon-large {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-    box-shadow: 0 8px 25px rgba(31, 102, 234, 0.3);
-}
-
-.info-display-card:nth-child(3) .card-icon-large {
-  background: linear-gradient(135deg, #667eea, #764ba2);
- box-shadow: 0 8px 25px rgba(24, 108, 233, 0.3);
-}
-
-.info-display-card:nth-child(4) .card-icon-large {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-    box-shadow: 0 8px 25px rgba(41, 130, 213, 0.3);
-}
-
-.card-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.card-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #6c757d;
   text-transform: uppercase;
   letter-spacing: 1px;
+  margin-bottom: 25px;
 }
 
-.card-value {
-  font-size: 1.3rem;
+.mobile-text {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 3px solid #667eea;
+  margin-bottom: 25px;
+}
+
+.mobile-text p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #495057;
+  margin: 0;
+}
+
+.mobile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mobile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.mobile-info-row i {
+  font-size: 28px;
+  color: #667eea;
+}
+
+.mobile-info-row div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mobile-info-row span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+}
+
+.mobile-info-row strong {
+  font-size: 14px;
   font-weight: 800;
   color: #2c3e50;
-  margin: 0;
-  line-height: 1.3;
 }
 
-/* Responsividade */
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .modal-overlay {
     padding: 0;
-    align-items: stretch;
   }
-  
+
   .modal-container {
     border-radius: 0;
-    max-height: 100vh;
+    max-width: 100%;
     height: 100vh;
-    max-width: none;
-    margin: 0;
   }
-  
-  .certificate-full {
-    padding: 1.5rem;
-  }
-  
+
   .modal-close {
-    top: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
-  
-  .mobile-header {
-    padding: 4.5rem 1.5rem 2rem;
-    border-radius: 0;
-  }
-  
-  .certificate-title h3 {
-    font-size: 1.6rem !important;
-    letter-spacing: 1.5px !important;
-  }
-
-  .info-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .info-display-card {
-    padding: 1.8rem 1.5rem;
-  }
-
-  .card-icon-large {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .card-value {
-    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.95);
   }
 }
 
 @media (max-width: 576px) {
   .mobile-header {
-    padding: 4rem 1.2rem 1.5rem;
-  }
-  
-  .mobile-student-info {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-  
-  .mobile-details h3 {
-    font-size: 1.3rem;
-  }
-  
-  .certificate-full {
-    padding: 1rem;
-  }
-  
-  .info-cards-grid {
-    gap: 1.2rem;
+    padding: 70px 15px 25px;
   }
 
-  .info-display-card {
-    padding: 1.5rem 1.2rem;
+  .mobile-body {
+    padding: 25px 15px;
   }
 
-  .card-icon-large {
-    width: 55px;
-    height: 55px;
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+  .mobile-body h2 {
+    font-size: 18px;
   }
 
-  .card-label {
-    font-size: 0.7rem;
-  }
-
-  .card-value {
-  
-    font-size: 1.1rem;
+  .mobile-text p {
+    font-size: 13px;
   }
 }
 </style>

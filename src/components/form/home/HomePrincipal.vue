@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { wakeServer } from '@/components/services/wakeServer.js' 
+
 export default {
   name: 'HomePage',
   data() {
@@ -59,7 +61,9 @@ export default {
       this.isScrolled = window.scrollY > 50
     }
   },
-  mounted() {
+  async mounted() {
+    await wakeServer()
+
     setInterval(() => {
       this.index = (this.index + 1) % this.words.length;
       this.rotatingText = this.words[this.index];
@@ -78,6 +82,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .text-custom-yellow {

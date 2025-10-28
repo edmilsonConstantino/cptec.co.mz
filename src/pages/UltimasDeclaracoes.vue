@@ -255,7 +255,7 @@ export default {
   },
 
     getDeclarationPreview(declaracao) {
-      return `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
+      return `Certificamos que o(a)  ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
     },
 
     handleUserInteraction() {

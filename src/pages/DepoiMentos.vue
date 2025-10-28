@@ -465,7 +465,7 @@ export default {
 .cta-card {
   background: white;
   border-radius: 20px;
-  padding: 3rem 2.5rem;
+  padding: 2rem 2.5rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 2;
