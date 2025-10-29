@@ -195,7 +195,9 @@ export default {
           ? item.foto.startsWith("http")
             ? item.foto
             : `https://cestificacoesiso-back.onrender.com/${item.foto}`
+            // : `http://127.0.0.1:8000/admin/certifications/${item.foto}`
           : "https://via.placeholder.com/90",
+           modulos: item.modulos || [], 
       }));
     } catch (err) {
       this.error = "Não foi possível carregar as declarações.";

@@ -5,7 +5,6 @@
         <i class="bi bi-x"></i>
       </button>
 
-      <!-- Desktop -->
       <div class="certificate-wrapper" v-if="!isMobile">
         <div class="certificate-header">
           <div class="institution-block">
@@ -17,10 +16,13 @@
               <p>Reconhecido pelo Ministério da Educação</p>
             </div>
           </div>
-          
+
           <div class="student-block">
             <div class="student-photo">
-              <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" />
+              <img
+                :src="selectedDeclaracao.foto || defaultPhoto"
+                :alt="selectedDeclaracao.nomeCompleto"
+              />
             </div>
             <h3>{{ selectedDeclaracao.nomeCompleto }}</h3>
             <div class="badge-success">
@@ -38,7 +40,7 @@
           </div>
 
           <div class="declaration-text">
-            <p v-html="getDeclaracaoTexto(selectedDeclaracao.declaracao)"></p>
+            <p v-html="getDeclaracaoTexto()"></p>
           </div>
 
           <div class="info-grid">
@@ -74,14 +76,28 @@
               </div>
             </div>
           </div>
+
+          <div v-if="modulos && modulos.length > 0" class="modules-section">
+            <h3 class="modules-title">
+              <i class="bi bi-list-check"></i> Módulos Concluídos
+            </h3>
+            <div class="modules-grid">
+              <div v-for="(modulo, index) in modulos" :key="index" class="module-card">
+                <div class="module-number">{{ index + 1 }}</div>
+                <div class="module-name">{{ modulo.nome || modulo }}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Mobile -->
       <div class="certificate-mobile" v-else>
         <div class="mobile-header">
           <div class="mobile-photo">
-            <img :src="selectedDeclaracao.foto" :alt="selectedDeclaracao.nomeCompleto" />
+            <img
+              :src="selectedDeclaracao.foto || defaultPhoto"
+              :alt="selectedDeclaracao.nomeCompleto"
+            />
             <div class="photo-badge">
               <i class="bi bi-award"></i>
             </div>
@@ -96,9 +112,9 @@
 
         <div class="mobile-body">
           <h2>DECLARAÇÃO DE CONCLUSÃO</h2>
-          
+
           <div class="mobile-text">
-            <p v-html="getDeclaracaoTexto(selectedDeclaracao.declaracao)"></p>
+            <p v-html="getDeclaracaoTexto()"></p>
           </div>
 
           <div class="mobile-info">
@@ -126,9 +142,20 @@
               </div>
             </div>
           </div>
+
+          <div v-if="modulos && modulos.length > 0" class="modules-section mobile-modules">
+            <h3 class="modules-title">
+              <i class="bi bi-list-check"></i> Módulos Concluídos
+            </h3>
+            <div class="modules-list-mobile">
+              <div v-for="(modulo, index) in modulos" :key="index" class="module-item-mobile">
+                <span class="module-number-mobile">{{ index + 1 }}</span>
+                <span class="module-name-mobile">{{ modulo.nome || modulo }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -143,7 +170,7 @@ export default {
       type: Object,
       default: null
     },
-    uniqueLink: { 
+    uniqueLink: {
       type: String,
       default: null
     }
@@ -151,7 +178,9 @@ export default {
   emits: ["close", "update:selectedDeclaracao"],
   data() {
     return {
-      isMobile: false
+      isMobile: false,
+      modulos: [],
+      defaultPhoto: "https://via.placeholder.com/100"
     };
   },
   async mounted() {
@@ -160,6 +189,9 @@ export default {
 
     if (this.uniqueLink && !this.selectedDeclaracao) {
       await this.fetchDeclaracao(this.uniqueLink);
+    } else if (this.selectedDeclaracao) {
+      this.modulos = this.selectedDeclaracao.modulos || [];
+      console.log("Módulos recebidos no modal:", this.modulos);
     }
   },
   beforeUnmount() {
@@ -176,6 +208,7 @@ export default {
     },
 
     formatDateFull(dateString) {
+      if (!dateString) return "Data não disponível";
       const date = new Date(dateString);
       return date.toLocaleDateString("pt-BR", {
         year: "numeric",
@@ -188,14 +221,18 @@ export default {
       try {
         const data = await CertificationsService.getByUniqueLink(uniqueLink);
         this.$emit("update:selectedDeclaracao", data);
+        this.modulos = data.modulos || [];
+        console.log("Módulos carregados do backend:", this.modulos);
       } catch (error) {
         console.error("Erro ao buscar declaração:", error);
       }
     },
 
-    getDeclaracaoTexto(texto) {
-      if (texto && texto.trim() !== "") {
-        return texto;
+    getDeclaracaoTexto() {
+      const declaracao = this.selectedDeclaracao?.declaracao;
+      
+      if (declaracao && declaracao.trim() !== "") {
+        return declaracao;
       } else {
         const nome = this.selectedDeclaracao?.nomeCompleto || "________________";
         const curso = this.selectedDeclaracao?.curso || "________________";
@@ -205,7 +242,7 @@ export default {
         return `
           Certificamos que o(a) <strong>${nome}</strong> concluiu com aproveitamento o curso de
           <strong>${curso}</strong>, com carga horária de <strong>${carga}</strong>, no período de
-          <strong>${duracao}</strong>. Esta declaração é emitida para os devidos efeitos legais.
+          <strong>${duracao}</strong>. Esta declaração é emitida para os devidos fins.
         `;
       }
     }
@@ -216,6 +253,8 @@ export default {
       if (newVal) {
         document.body.style.overflow = "hidden";
         this.checkMobile();
+        this.modulos = newVal.modulos || [];
+        console.log("Módulos atualizados:", this.modulos);
       }
     },
 
@@ -264,10 +303,11 @@ export default {
   border-radius: 20px;
   max-width: 1200px;
   width: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
   position: relative;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.4s ease;
-  overflow: hidden;
 }
 
 @keyframes slideUp {
@@ -307,7 +347,116 @@ export default {
   transform: rotate(90deg);
 }
 
-/* Desktop Layout */
+.modules-section {
+  margin-top: -20px;
+  padding: 25px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
+  border-radius: 15px;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.modules-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.modules-title i {
+  color: #667eea;
+  font-size: 24px;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.module-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s ease;
+}
+
+.module-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.module-number {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.module-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.4;
+}
+
+.mobile-modules {
+  margin-top: 25px;
+}
+
+.modules-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.module-item-mobile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+}
+
+.module-number-mobile {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.module-name-mobile {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.3;
+}
+
 .certificate-wrapper {
   padding: 50px 60px;
   min-height: 600px;
@@ -493,7 +642,7 @@ export default {
 .certificate-mobile {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  max-height: 100vh;
   overflow-y: auto;
 }
 
@@ -624,6 +773,10 @@ export default {
   .info-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .modules-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -635,6 +788,7 @@ export default {
     border-radius: 0;
     max-width: 100%;
     height: 100vh;
+    max-height: 100vh;
   }
 
   .modal-close {
@@ -657,6 +811,14 @@ export default {
 
   .mobile-text p {
     font-size: 13px;
+  }
+  
+  .modules-section {
+    padding: 20px 15px;
+  }
+  
+  .modules-title {
+    font-size: 18px;
   }
 }
 </style>

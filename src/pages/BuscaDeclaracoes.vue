@@ -137,11 +137,8 @@
                 </div>
                 <div class="testimonial-preview">
                   <i class="bi bi-quote"></i>
-                  <p >
-                    <span>
-                      {{ declaracao.declaracao ? declaracao.declaracao : getDeclarationPreview(declaracao) }}
-                    </span>
-                  </p>                </div>
+                  <p>{{ declaracao.depoimento.substring(0, 80) }}...</p>
+                </div>
                 <div class="card-footer">
                   <div class="certificate-code-small">
                     {{ declaracao.codigo }}
@@ -176,7 +173,7 @@
                 <p class="list-course">{{ declaracao.curso }}</p>
                 <div class="list-testimonial">
                   <i class="bi bi-quote"></i>
-                  <span>{{ getDeclarationPreview(declaracao) }}</span>
+                  <span>{{ declaracao.depoimento.substring(0, 120) }}...</span>
                 </div>
               </div>
               <div class="list-details">
@@ -228,6 +225,7 @@
             </nav>
           </div>
         </div>
+        
       </div>
     </section>
   </div>
@@ -269,10 +267,10 @@ export default {
         codigo: item.codigo,
         status: item.status,
         documento: item.documento,
-        duracao: item.duracao,
-        declaracao: item.declaracao,
+        duracao: item.duracao ,
         depoimento: item.depoimento || "Excelente curso!",
-        foto: item.foto || "https://via.placeholder.com/90" 
+        foto: item.foto || "https://via.placeholder.com/90",
+         modulos: item.modulos || [],
       }));
     } catch (err) {
       this.error = "Erro ao carregar declarações.";
@@ -331,11 +329,6 @@ export default {
   },
 
   methods: {
-    getDeclarationPreview(declaracao) {
-      const texto = `Declaramos que ${declaracao.nomeCompleto} concluiu com aproveitamento o curso de ${declaracao.curso}, com carga horária de ${declaracao.cargaHoraria}, no período de ${declaracao.duracao}.`;
-      return texto.substring(0, 120) + '...';
-    },
-
     formatDate(dateString) {
       if (!dateString) return "Data indisponível";
       return new Date(dateString).toLocaleDateString("pt-BR");
@@ -352,14 +345,7 @@ export default {
     },
 
     viewDeclaracao(declaracao) {
-      this.$emit('viewDetails', declaracao);
-    },
-
-    filterDeclaracoes() {
-      this.currentPage = 1;
-    },
-
-    sortDeclaracoes() {
+      console.log("Abrir detalhes:", declaracao);
     }
   }
 };
@@ -367,7 +353,7 @@ export default {
 
 <style scoped>
 .search-section {
-  padding: 0.1rem 0;
+  padding: 4rem 0;
   background: linear-gradient(135deg, #3b4cb8, #2c3e50);
   color: white;
 }
